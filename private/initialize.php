@@ -2,7 +2,7 @@
 
   ob_start(); // turn on output buffering so build whole page and 'modify' header
 
-  // session_start(); // turn on sessions if needed
+  session_start(); // turn on sessions if needed
 
   // Assign file paths to PHP constants
   // __FILE__ returns the current path to this file
@@ -29,39 +29,57 @@
   require_once('database_functions.php');
   require_once('validation_functions.php');
 
+  // combining Skoglund PHP OOP and add this from PHP Tools - OOP Login/Reg YouTube
+  $GLOBALS['config'] = array(
+  	'mysql' => array(
+  	'host' => '127.0.0.1',
+  	'username' = 'root',
+  	'password' => '',
+  	'db' => 'lr
+    ),
+    'remember' => array(
+    	'cookie_name' => 'hash',
+    	'cookie_expiry' => 604800
+    ),
+    'session' => array(
+    	'session_name' => 'user',
+    	'token_name' => 'token'
+    )
+    );
 
-  // Load class definitions manually
 
-  // -> Individually
-  // require_once('classes/bicycle.class.php');
+    // Load class definitions manually
+    // -> Individually
+    // require_once('classes/bicycle.class.php');
 
-  // -> All classes in directory
-  foreach(glob('classes/*.class.php') as $file) {
-    require_once($file);
-  }
-
-  // Autoload class definitions
-  function my_autoload($class) {
-    if(preg_match('/\A\w+\Z/', $class)) {
-      include('classes/' . $class . '.class.php');
+    // OR -> All classes in directory
+    foreach(glob('classes/' . '*.class.php') as $file) {
+      require_once($file);
     }
-  }
-  spl_autoload_register('my_autoload'); // spl = standard php library
 
-// *****NEW DB LINES BELOW ********************************
-
-// he adds: $database = new mysqli(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
-// ...??
-// $database = db_connect();
-// ?? DatabaseObject::set_database($database);
-// BUT: DB.php pdo class instead (see PHP Tools, PHP OOP Login/Resgister System: DB (p9/23))
-$db = new DB;
-// which includes:
-// pdo('mysql:host=' . Config::get('mysql/host') . '; dbname=' . Config::get('mysql/name'));
+    // (Skoglund) Autoload class definitions
+    function my_autoload($class) {
+      if(preg_match('/\A\w+\Z/', $class)) {
+        include('classes/' . $class . '.class.php');
+      }
+    }
+    spl_autoload_register('my_autoload'); // spl = standard php library
 
 
-$session = new Session;
-?>
+// *** PHP Tools - Codecourse OOP Login/Register YouTube autoload:
+//      spl_autoload_register(function($class) {	require_once 'classes/' . $class . '.php'; });
+
+  // *****NEW DB LINES BELOW ********************************
+
+  // he adds: $database = new mysqli(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
+  // ...??
+  // $database = db_connect();
+  // ?? DatabaseObject::set_database($database);
+  // BUT: DB.php pdo class instead (see PHP Tools, PHP OOP Login/Resgister System: DB (p9/23))
+  $db = new DB;
+  // which includes:
+  // pdo('mysql:host=' . Config::get('mysql/host') . '; dbname=' . Config::get('mysql/name'));
 
 
+  $session = new Session;
 ?>

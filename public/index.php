@@ -1,6 +1,6 @@
 <?php require_once('../private/initialize.php'); ?>
 
-<?php include(SHARED_PATH . '/public_header.php'); ?>
+<!-- ?php include(SHARED_PATH . '/public_header.php'); ? -->
 
 <div id="main">
 
@@ -11,6 +11,6 @@
 
 </div>
 
-<?php $super_hero_image = '0000000000000.jpeg'; ?>
+<!-- ?php $super_hero_image = '0000000000000.jpeg'; ? -->
 
-<?php include(SHARED_PATH . '/public_footer.php'); ?>
+<!-- ?php include(SHARED_PATH . '/public_footer.php'); ? -->

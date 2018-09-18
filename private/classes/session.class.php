@@ -6,7 +6,9 @@ class Session {
   public $username;
   private $last_login;
 
-  public const MAX_LOGIN_AGE = 60*60*24; // 1 day
+  // public const MAX_LOGIN_AGE = 60*60*24; // v7.1 NOT 7.0 1 day
+  const MAX_LOGIN_AGE = 60*60*24; // 1 day
+  // define('MAX_LOGIN_AGE', 60*60*24);
 
   public function __construct() {
     session_start();

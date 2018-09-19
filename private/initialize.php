@@ -57,11 +57,12 @@
       require_once($file);
     }
 
-    // (Skoglund) Autoload class definitions
+    // (Skoglund) Autoload class definitions (?redundant above ???)
     function my_autoload($class) {
       if(preg_match('/\A\w+\Z/', $class)) {
-        include('classes/' . $class . '.class.php');
-      }
+          // include('classes/' . $class . '.class.php');
+          require_once('classes/' . strtolower($class) . '.class.php');
+      } // had to use strtolower -- for some reason linux (only) would cap Session
     }
     spl_autoload_register('my_autoload'); // spl = standard php library
 

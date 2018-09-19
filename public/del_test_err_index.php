@@ -1,7 +1,8 @@
 <?php error_reporting( E_ALL );
 ini_set( "display_errors", 1 );
-// require_once( "sample.php" );
-// err not in php.ini for linux DEL above for Win ?>
+// require_once( "sample..php" );
+// err not in php.ini for linux DEL for Win ?>
+
 <?php require_once('../private/initialize.php'); ?>
 
 <!-- ?php include(SHARED_PATH . '/public_header.php'); ? -->

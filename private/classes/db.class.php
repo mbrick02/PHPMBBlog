@@ -1,3 +1,4 @@
+<?php
 class DB {
 	private static $_instance = null;
 
@@ -8,66 +9,82 @@ class DB {
 		$_count = 0;
 
 	private function __construct() {
-  		try {
-  			$this->_pdo = new PDO('mysql:host=' . Config::get('mysql/host') . '; dbname=' . Config::get('mysql/name'));
-  } catch(PDOException $e) {
-  	die($e->getMessage());
-  }
+		$hostNdb = 'mysql:host=' . Config::get('mysql/host') . ';dbname=' . Config::get('mysql/db');
+		$dbuser = Config::get('mysql/username');
+		$dbpw = Config::get('mysql/password');
+
+		try {
+			// PDO('mysql:host=x;dbname=y', 'usernam', 'pw');
+			// $this->_pdo = new PDO('mysql:host=' .
+			//  ... Config::get('mysql/host') . ';dbname=' .
+			// ... Config::get('mysql/db'),
+			// ...Config::get('mysql/username'), Config::get('mysql/password'));
+			$this->_pdo = new PDO($hostNdb, $dbuser, $dbpw);
+
+	  } catch(PDOException $e) {
+	  	die($e->getMessage());
+	  }
   }
 
   public static function getInstance() {
   	if(!isset(self::$_instance)) {
-  	self::$_instance = new DB()
-  }
-  return self::$_instance;
+  		self::$_instance = new DB();
+	  }
+	  return self::$_instance;
   }
 
-  	public function query($sql, $params = array()) {
+  public function query($sql, $params = array()) {
   	$this->_error = false;
 
-  	if($this-> _query = $this->_pdo->prepare($sql)) {
+  	if($this->_query = $this->_pdo->prepare($sql)) {
   		$x = 1;
   		if(count($params)) {
-  	foreach($params as $param) {
-  		$this->_query->bindValue($x, $param);
-  		$x++;
-  }
+  			foreach($params as $param) {
+  				$this->_query->bindValue($x, $param);
+  				$x++;
+  			}
+  		}
+
+		  if($this->_query->execute()) {
+				$this->_results = $this->_query->fetchAll(PDO::FETCH_OBJ);
+		  	$this->_count = $this->_query->rowCount();
+			} else {
+				$this->_error = true;
+			}
+  	}
+
+		return $this;
   }
 
-  if($this->_query->execute()) {
-  	$this->_results = $this->_query->fetchAll(PDO::FETCH_OBJ);
-  	$this->_count = $this->_query->rowCount();
-  } else {
-  	$this->_error = true
-  }
-  }
-
-  return $this;
-  }
-
-  	public function action($action, $table, $where = array()) {
+  public function action($action, $table, $where = array()) {
   	if(count($where) == 3) {
-  	$field = $where[0];
-  	$operator = $where[1];
-  	$value = $where[2];
+			$operators = array('=', '>', '<', '>=', '<=');
+	  	$field = $where[0];
+	  	$operator = $where[1];
+	  	$value = $where[2];
 
-  	if(in_array($operator, $operators)) {
-  	$sql = "{$action} FROM {$table} WHERE {$field} {$operator} ?";
+	  	if(in_array($operator, $operators)) {
+	  		$sql = "{$action} FROM {$table} WHERE {$field} {$operator} ?";
 
-  	if(!$this->query($sql, array($value))->error()) {
-  	return $this;
-  }
-  }
-  return false;
-  }
-
-  public function get($table, $where) {
-  	return $this->action('SELECT *', $table, $where);
-  }
+	  		if(!$this->query($sql, array($value))->error()) {
+	  			return $this;
+	  		}
+  		}
+		} // end if(count($where) == 3)
+  	return false;
   }
 
   public function get($table, $where) {
   	return $this->action('SELECT *', $table, $where);
+  }
+
+// ?*? untested 9/22/18
+	public function getFieldsStr($table, $fieldsStr, $where) {
+  	return $this->action("SELECT {$fieldsStr}", $table, $where);
+  }
+
+  public function getAll($table) {
+  	return $this->query('SELECT * FROM ' . $table);
   }
 
   public function delete($table, $where) {
@@ -75,10 +92,14 @@ class DB {
   }
 
   public function results() {
-  	return $this->results;'
+  	return $this->_results;
   }
 
-  public function error($table, $where) {
+	public function first() {
+		return $this->results()[0];
+	}
+
+  public function error() {
   	return $this->_error;
   }
 

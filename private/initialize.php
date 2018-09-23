@@ -34,8 +34,8 @@
   	'mysql' => array(
   	'host' => '127.0.0.1',
   	'username' => 'michael',
-  	'password' => '',
-  	'db' => 'lr'
+  	'password' => 'Job4Fau',
+  	'db' => 'mbblog'
     ),
     'remember' => array(
     	'cookie_name' => 'hash',
@@ -77,7 +77,7 @@
   // $database = db_connect();
   // ?? DatabaseObject::set_database($database);
   // BUT: DB.php pdo class instead (see PHP Tools, PHP OOP Login/Resgister System: DB (p9/23))
-  // $db = new DB;
+  $db = DB::getINstance();
   // which includes:
   // pdo('mysql:host=' . Config::get('mysql/host') . '; dbname=' . Config::get('mysql/name'));
 

@@ -12,12 +12,12 @@ $app->get('/api/products', function(){
     }
   // $user->first()->username;
   }
-
+  
   // DEBUG: echo json_encode($products->results()) . '<br />';
 
   echo "<br /> Thanks for looking at products!";
 });
-
+/*
 // GET by ID
 $app->get('/api/products/{id}', function($request) {
 	$id = $request->getAttribute('id');
@@ -57,3 +57,4 @@ $app->put('/api/products/{id}', function($request) {
   echo "hello " . $my_name . "<br />";
 
 });
+*/

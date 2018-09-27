@@ -74,6 +74,54 @@ class DB {
   	return false;
   }
 
+	// *************NOT TESTED 9/27/18******Create
+	public function create($aryFlds="") {
+			 global $db;
+
+			 if (!is_array($aryFlds)){
+			 	$aryFlds = array('username', 'password', 'first_name', 'last_name');
+			 }
+
+		 	$strFlds = implode(", ", $aryFlds);
+		 	$aryParams = $aryFlds;
+		 	foreach ($aryParams as &$value) {
+		 		$value = ':'.$value;
+		 	}
+		 	unset($value);
+		 	$strParams = implode(", ", $aryParams);
+
+		 	// combine so $fld_param_fld_ary[':fieldx'] = 'fieldx'
+		 	$fld_param_fld_ary = array_combine($aryParams, $aryFlds);
+
+			 // INSERT INTO table (key, key) VALUES ('value', 'value') use PDO
+			 $sql = "INSERT INTO " . static::$tbName ." (";
+			 // $sql .= 'username', 'password', 'first_name', 'last_name';
+			 $sql .= $strFlds;
+			 $sql .= ") VALUES (";
+			 // $sql .= ":username, :password, :first_name, :last_name" . ")";
+			 $sql .= $strParams . ")";
+
+			 $field_val_ary = array();
+			 foreach($fld_param_fld_ary as $key => $value) {
+			 	$field_val_ary[$key] = $this->{$value};
+			 }
+
+			 /* examp: array(':field1' => $this->field1,':field2' => $this->field2); */
+			 // $field_val_ary = array(':username' => 'ausername', ...
+
+			 $sth = $db->exec_qry($sql, $field_val_ary);  // statement handler
+
+			 if ($sth) {
+			 	$this->id = $db->pdo->lastInsertId();
+			 	return true;
+			 } else {
+			 	return false;
+			 }
+
+		}  // end public create()
+
+	// *****************end CREATE
+
   public function get($table, $where) {
   	return $this->action('SELECT *', $table, $where);
   }

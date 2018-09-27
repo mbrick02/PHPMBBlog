@@ -12,12 +12,12 @@ $app->get('/api/products', function(){
     }
   // $user->first()->username;
   }
-  
+
   // DEBUG: echo json_encode($products->results()) . '<br />';
 
   echo "<br /> Thanks for looking at products!";
 });
-/*
+
 // GET by ID
 $app->get('/api/products/{id}', function($request) {
 	$id = $request->getAttribute('id');
@@ -49,6 +49,9 @@ $app->post('/api/products', function($request) {
   // foreach($_POST as $key=> $value) {
 	//   echo "key {$key} was posted with a value of {$value}<br>";
   // }
+// INSERT INTO products (`imagePath`, `title`, `description`, `price`) 
+//    VALUES ('images/products/3PTshirtjpg', '3rd Party Tshirt', 'A T-shirt with a solution to corporate greed', 15.00);
+
 });
 
 // update a record in db
@@ -57,4 +60,3 @@ $app->put('/api/products/{id}', function($request) {
   echo "hello " . $my_name . "<br />";
 
 });
-*/

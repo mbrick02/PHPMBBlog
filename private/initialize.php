@@ -66,6 +66,16 @@
     }
     spl_autoload_register('my_autoload'); // spl = standard php library
 
+    // Slim framework
+    use \Psr\Http\Message\ServerRequestInterface as Request;
+    use \Psr\Http\Message\ResponseInterface as Response;
+
+    require '../vendor/autoload.php';
+
+    $app = new \Slim\App;
+
+    require_once('../app/api/products.php');
+
 
 // *** PHP Tools - Codecourse OOP Login/Register YouTube autoload:
 //      spl_autoload_register(function($class) {	require_once 'classes/' . $class . '.php'; });

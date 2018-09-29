@@ -43,7 +43,7 @@ $container['view'] = function($container) {  // ***DEBUG also return $vie
 };
 
 $container['HomeController'] = function ($container) {  // pass in $container for future use
-	return new app\controllers\HomeController;
-};
+	return new app\controllers\HomeController($container);
+ };
 
 require_once('../app/routes.php');

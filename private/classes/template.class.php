@@ -1,29 +1,39 @@
 <?php
 
 class Template {
-	public $filename;
+	public $filename = "main.php"; // default to views/main.php
 	public $assignedVars=array();
+	// ** UPDATE TO: protected $templatePath = TEMPLATE_PATH;
+	protected $templatePath = VIEWS_PATH;
 
 	public function set($key, $value) {
 		$this->assignedVars[$key] = $value;
 	}
 
+	protected function filePath($filename = "main.php") {
+		if ($filename != "main.php"){
+			$this->filename = $filename;
+		}
+		return $this->templatePath . $this->filename;
+	}
 
-  function display($filename, $assignedVars) {
-  	if(file_exists($this->$filename)) {
-  		$output = file_get_contents($this->$filename);
+  function display($filename = "main.php", $assignedVars) {
+		$fullpath = $this->filePath($filename);
+  	if(file_exists($fullpath)) {
+  		$output = file_get_contents($fullpath);
   		foreach($this->$assignedVars as $key => $value) {
   			$output = pregReplace('/{'.$key.'}/', $value, $output);
   			// above is: regular expression replace
   		}
   		echo $output;
   	} else {
-  		echo "*** Missing template error ****";
+  		echo "*** Missing template error filename shows: {$filename}****";
   	}
   }
 
-  function returnText($filename, $assignedVars) {
-  	if(file_exists($this->$filename)) {
+  function returnText($filename = "main.php", $assignedVars) {
+		$fullpath = $this->filePath($filename);
+  	if(file_exists($fullpath)) {
   		$output = file_get_contents($this->$filename);
   		foreach($this->$assignedVars as $key => $value) {
   			$output = pregReplace('/{'.$key.'}/', $value, $output);
@@ -31,7 +41,7 @@ class Template {
   		}
   		return $output;
   	} else {
-  		return "*** Missing template error {$filename} ****";
+  		return "*** Missing template error showing file: {$filename} ****";
   	}
   }
 }

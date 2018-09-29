@@ -4,25 +4,25 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    @include('partials._head')
+    <?php include(SHARED_PATH . 'public_header') ?>
   </head>
 
   <body>
 
-    @include('partials._nav')
+    <!-- create this: ?php include(SHARED_PATH . squt --> navhead.php <!-- squt) ? > -->
 
     <div class="container">
-      @include('partials._messages')
+      <!-- include('partials._messages') -->
 
-      @yield('content')
+      <!-- yield('content') DEBUG:*** --><h1>content</h1>
 
-      @include('partials._footer')
+      <!-- include('partials._footer') -->
 
     </div> <!-- end of .container -->
 
-        @include('partials._javascript')
+        <!-- include('partials._javascript') -->
 
-        @yield('scripts')
-
+        <!-- yield('scripts') -->
+<!-- ** below and perhaps above should be footer -->
   </body>
 </html>

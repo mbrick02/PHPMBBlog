@@ -2,17 +2,17 @@
 
 <html lang="en">
   <head>
-    <title>Chain Gang <?php if(isset($page_title)) { echo '- ' . h($page_title); } ?></title>
+    <title>MB Blog Page /{page_title}/</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" media="all" href="<?php echo url_for('/stylesheets/public.css'); ?>" />
+    <link rel="stylesheet" media="all" href="/{stylesheet}/" />
   </head>
 
   <body>
 
     <header>
       <h1>
-        <a href="<?php echo url_for('/index.php'); ?>">
-          <img class="mb-icon" src="<?php echo url_for('/images/blog_symbol.svg') ?>" /><br />
+        <a href="/{urlForIndex}/">
+          <img class="mb-icon" src="/{urlForBlogSymbol}/" /><br />
           MB Blog
         </a>
       </h1>

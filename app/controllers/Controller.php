@@ -9,12 +9,15 @@ class Controller {
 
   public function __construct($container) {
 	   $this->container = $container;
+		 // container defined in bootstrap/app.php
    }
 
   public function __get($property) {  // can be used to create shortcut calls to property values
 	    // ***WARNING if overused, these shortcuts can be confusing
 	     if ($this->container->{$property}) {
-	        return $this->container->{$property}; // if property in container, produce w/out spec. container
+	        return $this->container->{$property};
+					// if prop in container, get w/out spec. container
+					// e.g HomeConroller->view instead HomeController->container->view
         }
   }
 }

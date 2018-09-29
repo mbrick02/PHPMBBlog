@@ -7,6 +7,7 @@ $app->get('/api/products', function(){
   if(!$products->count()) {
   	echo 'No products';
   } else {
+    // controllers/products@show)
   	foreach($products->results() as $product) {
   	   echo $product->title, '<br>';
     }
@@ -15,7 +16,7 @@ $app->get('/api/products', function(){
 
   // DEBUG: echo json_encode($products->results()) . '<br />';
 
-  echo "<br /> Thanks for looking at products!";
+  echo "<br /> Hey, thanks for looking at products!";
 });
 
 // GET by ID
@@ -49,7 +50,7 @@ $app->post('/api/products', function($request) {
   // foreach($_POST as $key=> $value) {
 	//   echo "key {$key} was posted with a value of {$value}<br>";
   // }
-// INSERT INTO products (`imagePath`, `title`, `description`, `price`) 
+// INSERT INTO products (`imagePath`, `title`, `description`, `price`)
 //    VALUES ('images/products/3PTshirtjpg', '3rd Party Tshirt', 'A T-shirt with a solution to corporate greed', 15.00);
 
 });

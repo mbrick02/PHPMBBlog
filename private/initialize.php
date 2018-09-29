@@ -10,12 +10,18 @@
   define("PRIVATE_PATH", dirname(__FILE__));
   define("PROJECT_PATH", dirname(PRIVATE_PATH));
   define("PUBLIC_PATH", PROJECT_PATH . '/public');
+  define("APP_PATH", PROJECT_PATH . '/app');
   define("SHARED_PATH", PRIVATE_PATH . '/shared');
+  define("VIEWS_PATH", PRIVATE_PATH . '/resources/views');
+  define("TEMPLATE_PATH", PRIVATE_PATH . '/resources/views/templates');
+  define("PARTIALS_PATH", PRIVATE_PATH . '/resources/views/templates/partials');
+  define("CONTROLLERS_PATH", APP_PATH . '/controllers');
+  define("ROUTES_PATH", APP_PATH . "/routes");
 
   // Assign the root URL to a PHP constant
   // * Do not need to include the domain
   // * Use same document root as webserver
-  // * Can set a hardcoded value:
+  // * Can set a hardcoded value: ($_SERVER['SCRIPT_NAME'] of index.php)
   // define("WWW_ROOT", '/**PATH_TO_WEB_ROOT/chain_gang/public');
   // define("WWW_ROOT", '');
   // * Can dynamically find everything in URL up to "/public"
@@ -48,34 +54,31 @@
     );
 
 
-    // Load class definitions manually
-    // -> Individually
-    // require_once('classes/bicycle.class.php');
+  // Load class definitions manually
+  // -> Individually
+  // require_once('classes/bicycle.class.php');
 
-    // OR -> All classes in directory
-    foreach(glob('classes/' . '*.class.php') as $file) {
+  // OR -> All classes in directory
+/*  foreach(glob('classes/' . '*.class.php') as $file) {
       require_once($file);
-    }
+  } */
 
-    // (Skoglund) Autoload class definitions (?redundant above ???)
-    function my_autoload($class) {
-      if(preg_match('/\A\w+\Z/', $class)) {
+  // (Skoglund) Autoload class definitions (?redundant above ???)
+  function my_autoload($class) {
+    $class_file = PRIVATE_PATH . '/classes/' . strtolower($class) . '.class.php';
+    // $controller_file = PRIVATE_PATH . '/controllers/' . strtolower($class) . '.class.php';
+    if(preg_match('/\A\w+\Z/', $class)) {
+      if(is_file($class_file)) {
           // include('classes/' . $class . '.class.php');
           require_once('classes/' . strtolower($class) . '.class.php');
-      } // had to use strtolower -- for some reason linux (only) would cap Session
+        // had to use strtolower -- somehow linux (only) would cap Session
+      }
     }
-    spl_autoload_register('my_autoload'); // spl = standard php library
+  }
 
-    // Slim framework
-    use \Psr\Http\Message\ServerRequestInterface as Request;
-    use \Psr\Http\Message\ResponseInterface as Response;
+  spl_autoload_register('my_autoload'); // spl = standard php library
 
-    require '../vendor/autoload.php';
-
-    $app = new \Slim\App;
-
-    require_once('../app/api/products.php');
-
+  require_once('../app/bootstrap/app.php');
 
 // *** PHP Tools - Codecourse OOP Login/Register YouTube autoload:
 //      spl_autoload_register(function($class) {	require_once 'classes/' . $class . '.php'; });

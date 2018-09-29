@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controllers;
+namespace app\controllers;
 
-use Slim\Views\Twig as View;
+// use Slim\Views\Twig as View;
 
 class HomeController extends Controller {
 	protected $view;  // declare for use in constructor
@@ -17,6 +17,7 @@ public function __construct(View $view)  // was just passing in view -- now pass
 	public function index($request, $response)
 	{
     // return $this->container->view->render($response, 'home.twig');
-    return $this->view->render($response, 'home.twig');  // container interpolated by parent/base __get()
+    // return $this->view->render($response, 'home.twig');  // container interpolated by parent/base __get()
+    return $this->view;
   }
 }

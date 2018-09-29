@@ -29,7 +29,7 @@ $container['view'] = function($container) {  // ***DEBUG also return $vie
 
   return $view;
   **** end - If Twig implemented */
-  
+
   $view = new Template;  // Skoglund PHP MySQL Beyond Basics course
   /* usage:
   $template = new Template();
@@ -42,8 +42,8 @@ $container['view'] = function($container) {  // ***DEBUG also return $vie
   return $view;
 };
 
-/*$container['HomeController'] = function ($container) {  // pass in $container for future use
-	return new \App\Controllers\HomeController;
-} */
+$container['HomeController'] = function ($container) {  // pass in $container for future use
+	return new app\controllers\HomeController;
+};
 
 require_once('../app/routes.php');

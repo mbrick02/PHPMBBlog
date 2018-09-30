@@ -24,7 +24,7 @@ class Controller {
         }
   }
 
-	public function __isset($property, $value) {  // can be used to create shortcut calls to property values
+	public function __set($property, $value) {  // can be used to create shortcut calls to property values
 	    // ***WARNING if overused, these shortcuts can be confusing
 			// ** DEBUG:
 			echo "What is this property";

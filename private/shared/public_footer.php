@@ -1,4 +1,3 @@
-
   <?php if(isset($super_hero_image)) { ?>
 
     <div class="expanding-wrapper">

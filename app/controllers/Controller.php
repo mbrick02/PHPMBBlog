@@ -23,7 +23,7 @@ class Controller {
 					// e.g HomeConroller->view instead HomeController->container->view
         }
   }
-
+/*  can't be easily used like __get()
 	public function __set($property, $value) {  // can be used to create shortcut calls to property values
 	    // ***WARNING if overused, these shortcuts can be confusing
 			// ** DEBUG:
@@ -34,5 +34,6 @@ class Controller {
 					// e.g HomeConroller->view= $val instead HomeController->container->view = $val
         }
   }
+****	  */
 
 }

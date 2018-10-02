@@ -14,20 +14,21 @@ class Template {
 		if ($filename != "main.php"){
 			$this->filename = $filename;
 		}
-		return $this->templatePath . $this->filename;
+		return $this->templatePath . DS . $this->filename;
 	}
 
-  function display($filename = "main.php", $assignedVars) {
+  function display($filename = "main.php") {
+		// args?: $assignedVars
 		$fullpath = $this->filePath($filename);
   	if(file_exists($fullpath)) {
   		$output = file_get_contents($fullpath);
-  		foreach($this->$assignedVars as $key => $value) {
-  			$output = pregReplace('/{'.$key.'}/', $value, $output);
+  		foreach($this->assignedVars as $key => $value) {
+  			$output = preg_replace('/{'.$key.'}/', $value, $output);
   			// above is: regular expression replace
   		}
   		echo $output;
   	} else {
-  		echo "*** Missing template error filename shows: {$filename}****";
+  		echo "*** Missing template error filename shows: {$this->filePath($filename)}****";
   	}
   }
 

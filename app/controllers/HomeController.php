@@ -20,10 +20,10 @@ public function __construct(View $view)  // was just passing in view -- now pass
     // return $this->view->render($response, 'home.twig');
 		// container interpolated by parent/base __get()
     // $this(HomeConroller)->view;????
-		$this->view->filename = 'main.php'; // should be the default
+		$this->container->view->filename = 'main.php'; // should be the default
 		// $page_title = <****?????php if(isset($page_title)) { echo '- ' . h($page_title); };
-		// $this->view->set('pageTitle', "Template Test");
-		// $this->view->set('content', "This is a test of templating using search replace.");
+		$this->container->view->set('pageTitle', "Template Test");
+		$this->container->view->set('content', "This is a test of templating using search replace.");
 
 		/* 'view' is currently a Template instance usage:
 		$template = new Template();
@@ -34,8 +34,8 @@ public function __construct(View $view)  // was just passing in view -- now pass
 		or $template->returnText();
 		*/
 		// DEBUG **: var_dump($request->getParam('name'));
-		// DEBUG **:
-		return "<br />view-filename set in HomeController for index/home page";
-		// return $this->view->display();
+		// DEBUG **: return "<br />index/home view-filename set in HomeController";
+		// DEBUG **: $output = header, $output .= body, $output .= footer;
+		return $this->container->view->display();
   }
 }

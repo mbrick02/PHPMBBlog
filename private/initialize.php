@@ -7,16 +7,17 @@
   // Assign file paths to PHP constants
   // __FILE__ returns the current path to this file
   // dirname() returns the path to the parent directory
+  define("DS", DIRECTORY_SEPARATOR);
   define("PRIVATE_PATH", dirname(__FILE__));
   define("PROJECT_PATH", dirname(PRIVATE_PATH));
-  define("PUBLIC_PATH", PROJECT_PATH . '/public');
-  define("APP_PATH", PROJECT_PATH . '/app');
-  define("SHARED_PATH", PRIVATE_PATH . '/shared');
-  define("VIEWS_PATH", PRIVATE_PATH . '/resources/views');
-  define("TEMPLATE_PATH", PRIVATE_PATH . '/resources/views/templates');
-  define("PARTIALS_PATH", PRIVATE_PATH . '/resources/views/templates/partials');
-  define("CONTROLLERS_PATH", APP_PATH . '/controllers');
-  define("ROUTES_PATH", APP_PATH . "/routes");
+  define("PUBLIC_PATH", PROJECT_PATH . DS . 'public');
+  define("APP_PATH", PROJECT_PATH . DS . 'app');
+  define("SHARED_PATH", PRIVATE_PATH . DS . 'shared');
+  define("VIEWS_PATH", PRIVATE_PATH . DS . 'resources' . DS . 'views');
+  define("TEMPLATE_PATH", PRIVATE_PATH . DS . 'resources' . DS . 'views' . DS . 'templates');
+  define("PARTIALS_PATH", PRIVATE_PATH . DS . 'resources' . DS . 'views' . DS . 'templates' . DS . 'partials');
+  define("CONTROLLERS_PATH", APP_PATH . DS . 'controllers');
+  define("ROUTES_PATH", APP_PATH . DS . 'routes');
 
   // Assign the root URL to a PHP constant
   // * Do not need to include the domain

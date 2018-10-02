@@ -1,10 +1,11 @@
 <?php
 // based on views/main.blade.php of Laravel 2016 Build Blog
 // also look at resources/views/templates/app.twig in PHP Slim framework Authentication 6/29
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <?php include(SHARED_PATH . 'public_header') ?>
+    <?php include(SHARED_PATH . DS . 'public_header'); ?>
   </head>
 
   <body>

@@ -76,9 +76,9 @@ class DB {
 
 	// *************NOT TESTED 9/27/18******Create
 	public function create($aryFlds="") {
-			 global $db;
+			 global $db;  // container->db should refernce this
 
-			 if (!is_array($aryFlds)){
+			 if (!is_array($aryFlds)){  // default for user table
 			 	$aryFlds = array('username', 'password', 'first_name', 'last_name');
 			 }
 

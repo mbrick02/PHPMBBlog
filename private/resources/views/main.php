@@ -1,14 +1,15 @@
 <?php
 // based on views/main.blade.php of Laravel 2016 Build Blog
 // also look at resources/views/templates/app.twig in PHP Slim framework Authentication 6/29
+// header has: page_title, urlForIndex, urlForMBBloglogo
 ?>
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <?php include(SHARED_PATH . DS . 'public_header'); ?>
-  </head>
 
-  <body>
+<?php
+
+
+include(SHARED_PATH . DS . 'public_header.php');
+
+?>
 
     <!-- create this: ?php include(SHARED_PATH . squt --> navhead.php <!-- squt) ? > -->
 
@@ -24,6 +25,4 @@
         <!-- include('partials._javascript') -->
 
         <!-- yield('scripts') -->
-<!-- ** below and perhaps above should be footer -->
-  </body>
-</html>
+<?php include(SHARED_PATH . DS . 'public_footer.php'); ?>

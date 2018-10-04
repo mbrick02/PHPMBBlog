@@ -84,17 +84,12 @@
 // *** PHP Tools - Codecourse OOP Login/Register YouTube autoload:
 //      spl_autoload_register(function($class) {	require_once 'classes/' . $class . '.php'; });
 
-  // *****NEW DB LINES BELOW ********************************
-
-  // he adds: $database = new mysqli(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
-  // ...??
-  // $database = db_connect();
-  // ?? DatabaseObject::set_database($database);
-  // BUT: DB.php pdo class instead (see PHP Tools, PHP OOP Login/Resgister System: DB (p9/23))
+  // ***DB**OLD DB CODE -- NOW DB in Slim app/bootstrap/app.php ****************
+  // Originally from Skoglund OOP course as mysqli but not PDO
+  // pdo('mysql:host=' . Config::get('mysql/host') . '; dbnm=' . Config::get('mysql/name'));
+  // container in app.php will reference this as a global: 
   $db = DB::getINstance();
-  // which includes:
-  // pdo('mysql:host=' . Config::get('mysql/host') . '; dbname=' . Config::get('mysql/name'));
-
+// controller access to db is now through container
 
   $session = new Session;
 ?>

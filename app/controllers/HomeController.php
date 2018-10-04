@@ -19,11 +19,21 @@ public function __construct(View $view)  // was just passing in view -- now pass
     // return $this->container->view->render($response, 'home.twig');
     // return $this->view->render($response, 'home.twig');
 		// container interpolated by parent/base __get()
-    // $this(HomeConroller)->view;????
-		$this->container->view->filename = 'main.php'; // should be the default
-		// $page_title = <****?????php if(isset($page_title)) { echo '- ' . h($page_title); };
+
+
+		// $this->container->view->filename = 'main.php'; // should be the default
+		// ???? $page_title = <****?????php if(isset($page_title)) { echo '- ' . h($page_title); };
+		$this->container->view->filename = '/templates/partials/public_header.php';
+		// header has: page_title, urlForIndex, urlForMBBloglogo
+
 		$this->container->view->set('pageTitle', "Template Test");
+		// $this->container->view->set('pageTitle', "Template Test");
 		$this->container->view->set('content', "This is a test of templating using search replace.");
+		echo $this->container->view->returnText();
+
+		echo "<h1>This is a test page</h1>";
+
+		include(SHARED_PATH . DS . 'public_footer.php');
 
 		/* 'view' is currently a Template instance usage:
 		$template = new Template();
@@ -36,6 +46,7 @@ public function __construct(View $view)  // was just passing in view -- now pass
 		// DEBUG **: var_dump($request->getParam('name'));
 		// DEBUG **: return "<br />index/home view-filename set in HomeController";
 		// DEBUG **: $output = header, $output .= body, $output .= footer;
-		return $this->container->view->display();
+		// return $this->container->view->display();
+		// include(VIEWS_PATH . DS . "main.php");
   }
 }

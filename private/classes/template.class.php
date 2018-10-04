@@ -17,11 +17,14 @@ class Template {
 		return $this->templatePath . DS . $this->filename;
 	}
 
-  function display($filename = "main.php") {
+  function display($filename = "main.php", $assignedVars = []) {
 		// args?: $assignedVars
 		$fullpath = $this->filePath($filename);
   	if(file_exists($fullpath)) {
   		$output = file_get_contents($fullpath);
+			if (!empty($assignedVars)) {
+				$this->assignedVars = $assignedVars;
+			}
   		foreach($this->assignedVars as $key => $value) {
   			$output = preg_replace('/{'.$key.'}/', $value, $output);
   			// above is: regular expression replace
@@ -32,12 +35,15 @@ class Template {
   	}
   }
 
-  function returnText($filename = "main.php", $assignedVars) {
+  function returnText($filename = "main.php", $assignedVars = []) {
 		$fullpath = $this->filePath($filename);
   	if(file_exists($fullpath)) {
-  		$output = file_get_contents($this->$filename);
-  		foreach($this->$assignedVars as $key => $value) {
-  			$output = pregReplace('/{'.$key.'}/', $value, $output);
+  		$output = file_get_contents($fullpath);
+			if (!empty($assignedVars)) {
+				$this->assignedVars = $assignedVars;
+			}
+  		foreach($this->assignedVars as $key => $value) {
+  			$output = preg_replace('/{'.$key.'}/', $value, $output);
   			// above is: regular expression replace
   		}
   		return $output;

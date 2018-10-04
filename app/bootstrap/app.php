@@ -46,4 +46,14 @@ $container['HomeController'] = function ($container) {  // pass in $container fo
 	return new app\controllers\HomeController($container);
  };
 
+// db
+$container['db'] = function () {
+  global $db;
+	// ** old ver (See Slim Framework
+  // ** return new PDO('mysql;host=localhost;dbname=', 'root', 'root');
+  // return DB::getInstance();  // working with global $db from initialize.php
+  return $db;
+};
+
+
 require_once('../app/routes.php');

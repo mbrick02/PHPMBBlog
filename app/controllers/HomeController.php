@@ -26,7 +26,9 @@ public function __construct(View $view)  // was just passing in view -- now pass
 		$this->container->view->filename = '/templates/partials/public_header.php';
 		// header has: page_title, urlForIndex, urlForMBBloglogo
 
-		$this->container->view->set('pageTitle', "Template Test");
+		$this->container->view->set('page_title', "Template Test");
+		$this->container->view->set('urlForIndex', "/api/products");
+		$this->container->view->set('urlForMBBlogLogo', url_for("/images/mbBlogLogo.php"));
 		// $this->container->view->set('pageTitle', "Template Test");
 		$this->container->view->set('content', "This is a test of templating using search replace.");
 		echo $this->container->view->returnText();

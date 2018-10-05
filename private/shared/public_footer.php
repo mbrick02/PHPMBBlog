@@ -10,15 +10,13 @@
 
   <?php } else { ?>
 
-    <footer>
-      <?php include(SHARED_PATH . '/public_copyright_disclaimer.php'); ?>
+    <footer class="footnote">
+      <p><?php echo "&copy " . date("Y") . "Michael Brickler" ; ?></p>
     </footer>
-
   <?php } ?>
-
   </body>
 </html>
 
 <?php
-db_disconnect($database);
+  if (isset($this->container->db)) { $this->container->db->disconnect(); }
 ?>

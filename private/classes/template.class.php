@@ -26,7 +26,7 @@ class Template {
 				$this->assignedVars = $assignedVars;
 			}
   		foreach($this->assignedVars as $key => $value) {
-  			$output = preg_replace('/{'.$key.'}/', $value, $output);
+				$output = preg_replace('/{'.$key.'}/', $value, $output);
   			// above is: regular expression replace
   		}
   		echo $output;

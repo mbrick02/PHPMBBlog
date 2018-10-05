@@ -154,4 +154,8 @@ class DB {
   public function count() {
   	return $this->_count;
   }
+
+	public function disconnect() {
+		$this->_dbo = null;
+	}
 }

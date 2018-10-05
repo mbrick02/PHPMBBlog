@@ -28,6 +28,8 @@
   // * Can dynamically find everything in URL up to "/public"
   $public_end = strpos($_SERVER['SCRIPT_NAME'], '/public') + 7;
   $doc_root = substr($_SERVER['SCRIPT_NAME'], 0, $public_end);
+  echo dirname(__FILE__);
+  die();
   define("WWW_ROOT", $doc_root);
 
   require_once('functions.php');
@@ -87,7 +89,7 @@
   // ***DB**OLD DB CODE -- NOW DB in Slim app/bootstrap/app.php ****************
   // Originally from Skoglund OOP course as mysqli but not PDO
   // pdo('mysql:host=' . Config::get('mysql/host') . '; dbnm=' . Config::get('mysql/name'));
-  // container in app.php will reference this as a global: 
+  // container in app.php will reference this as a global:
   $db = DB::getINstance();
 // controller access to db is now through container
 

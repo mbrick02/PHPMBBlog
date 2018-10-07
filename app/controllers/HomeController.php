@@ -16,39 +16,33 @@ public function __construct(View $view)  // was just passing in view -- now pass
 
 	public function index($request, $response)
 	{
+		// IF USING TWIG:
     // return $this->container->view->render($response, 'home.twig');
     // return $this->view->render($response, 'home.twig');
-		// container interpolated by parent/base __get()
 
 
-		// $this->container->view->filename = 'main.php'; // should be the default
-		// ???? $page_title = <****?????php if(isset($page_title)) { echo '- ' . h($page_title); };
-		$this->container->view->filename = '/templates/partials/public_header.php';
-		// header has: page_title, urlForIndex, urlForMBBloglogo
-
-		$this->container->view->set('page_title', "Template Test");
-		$this->container->view->set('urlForIndex', "/api/products");
-		$this->container->view->set('urlForMBBlogLogo', url_for("/images/mbBlogLogo.php"));
-		// $this->container->view->set('pageTitle', "Template Test");
 		$this->container->view->set('content', "This is a test of templating using search replace.");
-		echo $this->container->view->returnText();
+		// echo "<h1>This is a test page</h1>";
+		$pageUrls = [
+					'products' => $this->container->get('router')->pathFor('products'),
+					'curURL' => $request->getUri()->getPath(), // current URL
+					// 'logout' => $this->container->get('router')->pathFor('logout'),
+					// 'login' => $this->container->get('router')->pathFor('login'),
+					// 'signin' =>$this->container->get('router')->pathFor('signin'),
+				];
 
-		echo "<h1>This is a test page</h1>";
+		$htmlSections = [
+					'content' =>"<p>Test of search/repl template.</p>",
+				];
 
-		include(SHARED_PATH . DS . 'public_footer.php');
+		// 10/6 for products and other urls use/setup named url from urlFor()
+		// //Create a named route
+// $app->get('/hello/:arg1', function ($name) use ($app) {  echo "Hello $name";})->name('hello');
 
-		/* 'view' is currently a Template instance usage:
-		$template = new Template();
-		$template->filename = "template2.php";
-		$template->set('pageTitle', "Template Test");
-		$template->set('content', "This is a test of templating using search replace.");
-		$template->display();
-		or $template->returnText();
-		*/
-		// DEBUG **: var_dump($request->getParam('name'));
-		// DEBUG **: return "<br />index/home view-filename set in HomeController";
-		// DEBUG **: $output = header, $output .= body, $output .= footer;
-		// return $this->container->view->display();
-		// include(VIEWS_PATH . DS . "main.php");
+//Generate a URL for the named route: $url = $app->urlFor('products', array('arg1' => 'value'));
+
+
+		include VIEWS_PATH . DS . 'main.php';
+
   }
 }

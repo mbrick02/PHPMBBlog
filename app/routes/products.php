@@ -17,7 +17,7 @@ $app->get('/api/products', function(){
   // DEBUG: echo json_encode($products->results()) . '<br />';
 
   echo "<br /> Hey, thanks for looking at products!";
-});
+})->setName('products');
 
 // GET by ID
 $app->get('/api/products/{id}', function($request) {

@@ -4,7 +4,7 @@ class Template {
 	public $filename = "main.php"; // default to views/main.php
 	public $assignedVars=array();
 	// ** UPDATE TO: protected $templatePath = TEMPLATE_PATH;
-	protected $templatePath = VIEWS_PATH;
+	protected $templatePath = VIEWS_PATH . DS . 'templates';
 
 	public function set($key, $value) {
 		$this->assignedVars[$key] = $value;
@@ -57,7 +57,12 @@ class Template {
 $template = new Template();
 $template->filename = "template2.php";
 $template->set('pageTitle', "Template Test");
-$template->set('content', "This is a test of templating using search replace.");
+$template->set('content', "This tests  search/replace templating.");
+OR:
+$assignedVars = [
+			'pageTitle' => "Template Test",
+			'content' =>"Test of search/repl template."
+		];
 $template->display();
 */
 ?>

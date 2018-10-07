@@ -18,6 +18,7 @@
   define("PARTIALS_PATH", PRIVATE_PATH . DS . 'resources' . DS . 'views' . DS . 'templates' . DS . 'partials');
   define("CONTROLLERS_PATH", APP_PATH . DS . 'controllers');
   define("ROUTES_PATH", APP_PATH . DS . 'routes');
+  define("IMG_SRC", 'http://' . $_SERVER['SERVER_NAME'] . '/images/');
 
   // Assign the root URL to a PHP constant
   // * Do not need to include the domain
@@ -26,11 +27,11 @@
   // define("WWW_ROOT", '/**PATH_TO_WEB_ROOT/chain_gang/public');
   // define("WWW_ROOT", '');
   // * Can dynamically find everything in URL up to "/public"
+/* *** WON'T WORK from Skoglund course that had /public directory as home
   $public_end = strpos($_SERVER['SCRIPT_NAME'], '/public') + 7;
   $doc_root = substr($_SERVER['SCRIPT_NAME'], 0, $public_end);
-  echo dirname(__FILE__);
-  die();
-  define("WWW_ROOT", $doc_root);
+  define("WWW_ROOT", $doc_root);   // don't need WWW_ROOT - just give dir
+** above WON'T WORK - routing URLs thru /public/index.php so just '/dirname' */
 
   require_once('functions.php');
   require_once('status_error_functions.php');

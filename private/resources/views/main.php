@@ -84,4 +84,4 @@ echo $this->container->view->returnText();
         <!-- include('partials._javascript') -->
 
         <!-- yield('scripts') -->
-<?php include(SHARED_PATH . DS . 'public_footer.php'); ?>
+<?php include TEMPLATE_PATH . DS . 'partials' . DS . 'public_footer.php'; ?>

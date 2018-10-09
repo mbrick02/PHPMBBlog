@@ -2,6 +2,8 @@
 
   ob_start(); // turn on output buffering so build whole page and 'modify' header
 
+  use app\Models\DB;
+
 //  session_start(); // implemented session.class instead // turn on sessions if needed
 
   // Assign file paths to PHP constants
@@ -91,7 +93,7 @@
   // Originally from Skoglund OOP course as mysqli but not PDO
   // pdo('mysql:host=' . Config::get('mysql/host') . '; dbnm=' . Config::get('mysql/name'));
   // container in app.php will reference this as a global:
-  $db = DB::getINstance();
+  $db = DB::getInstance("User");
 // controller access to db is now through container
 
   $session = new Session;

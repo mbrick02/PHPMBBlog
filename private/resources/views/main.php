@@ -74,9 +74,7 @@ echo $this->container->view->returnText();
 
     <div class="container">
       <!-- include('partials._messages') -->
-
       <!-- yield('content') DEBUG:*** --><h1>content</h1>
-
       <!-- include('partials._footer') -->
 
     </div> <!-- end of .container -->

@@ -1,6 +1,6 @@
 <?php
 
-namespace app\controllers;
+namespace app\Controllers;
 
 // If we use Twig Views: use Slim\Views\Twig as View;
 

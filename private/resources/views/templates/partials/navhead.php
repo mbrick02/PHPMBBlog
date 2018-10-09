@@ -21,7 +21,7 @@
 		<!-- Collect the nav links, forms, and oth content for toggling -->
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="nav navbar-nav">
-				<li class="<?php echo ($pageUrls['curURL'] == '/') ? "\"active\"" : "\"\"";  ?>><a
+				<li class="<?php echo ($pageUrls['curURL'] == '/') ? 'active' : '';  ?>"><a
 						href="/">Home</a></li>
 				<li><a class="nav-link nav-item <?php echo ($pageUrls['curURL'] == '/about') ? "\"active\"" : "\"\"";  ?>"
 					  href="#">About</a></li>

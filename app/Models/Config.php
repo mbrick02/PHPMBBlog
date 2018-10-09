@@ -1,5 +1,7 @@
 <?php
 
+namespace app\Models;  // moved from private/classes - namesp cant use keywd private
+
 class Config {
 	public static function get($path = null) {
 		if ($path) {

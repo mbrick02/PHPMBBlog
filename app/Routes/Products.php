@@ -1,8 +1,8 @@
 <?php
-
+use app\Models\Product as Product;
 // get all products
 $app->get('/api/products', function(){
-  $products = DB::getInstance()->getAll("products");
+  $products = Product::getInstance("products")->getAll();
 
   if(!$products->count()) {
   	echo 'No products';

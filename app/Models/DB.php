@@ -1,6 +1,14 @@
 <?php
+
+namespace app\Models;
+use PDO;
+
 class DB {
-	private static $_instance = null;
+	static protected $_instance = null;
+
+	static protected $table = "";
+	static protected $columns = [];
+	public $errors = [];
 
 	private $_pdo,
 		$_query,
@@ -26,11 +34,12 @@ class DB {
 	  }
   }
 
-  public static function getInstance() {
-  	if(!isset(self::$_instance)) {
-  		self::$_instance = new DB();
+  public static function getInstance($table) {
+  	if(!isset(static::$_instance) || ($table != static::$table)) {
+  		static::$_instance = new static;  // new subclass via static binding
+			static::$table = $table;
 	  }
-	  return self::$_instance;
+	  return static::$_instance;
   }
 
   public function query($sql, $params = array()) {
@@ -56,7 +65,7 @@ class DB {
 		return $this;
   }
 
-  public function action($action, $table, $where = array()) {
+  public function action($action, $where = array()) {
   	if(count($where) == 3) {
 			$operators = array('=', '>', '<', '>=', '<=');
 	  	$field = $where[0];
@@ -64,7 +73,7 @@ class DB {
 	  	$value = $where[2];
 
 	  	if(in_array($operator, $operators)) {
-	  		$sql = "{$action} FROM {$table} WHERE {$field} {$operator} ?";
+	  		$sql = "{$action} FROM {static::table} WHERE {$field} {$operator} ?";
 
 	  		if(!$this->query($sql, array($value))->error()) {
 	  			return $this;
@@ -94,7 +103,7 @@ class DB {
 		 	$fld_param_fld_ary = array_combine($aryParams, $aryFlds);
 
 			 // INSERT INTO table (key, key) VALUES ('value', 'value') use PDO
-			 $sql = "INSERT INTO " . static::$tbName ." (";
+			 $sql = "INSERT INTO " . static::$table ." (";
 			 // $sql .= 'username', 'password', 'first_name', 'last_name';
 			 $sql .= $strFlds;
 			 $sql .= ") VALUES (";
@@ -122,21 +131,21 @@ class DB {
 
 	// *****************end CREATE
 
-  public function get($table, $where) {
-  	return $this->action('SELECT *', $table, $where);
+  public function get($where) {
+  	return $this->action('SELECT *', $where);
   }
 
 // ?*? untested 9/22/18
-	public function getFieldsStr($table, $fieldsStr, $where) {
-  	return $this->action("SELECT {$fieldsStr}", $table, $where);
+	public function getFieldsStr( $fieldsStr, $where) {
+  	return $this->action("SELECT {$fieldsStr}", $where);
   }
 
-  public function getAll($table) {
-  	return $this->query('SELECT * FROM ' . $table);
+  public function getAll() {
+  	return $this->query('SELECT * FROM ' . static::$table);
   }
 
-  public function delete($table, $where) {
-  	return $this->action('DELETE', $table, $where);
+  public function delete($where) {
+  	return $this->action('DELETE', $where);
   }
 
   public function results() {

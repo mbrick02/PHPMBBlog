@@ -2,7 +2,7 @@
 
 // pass in entire $container to make it available to all 'child'/extended controllers
 
-namespace app\controllers;
+namespace App\Controllers;
 
 class Controller {
 	protected $container;

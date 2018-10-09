@@ -11,4 +11,4 @@ spl_autoload_register('route_autoload'); */
 
 $app->get('/', 'HomeController:index');
 
-require_once('routes/products.php');
+require_once('Routes/Products.php');

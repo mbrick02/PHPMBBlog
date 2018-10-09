@@ -14,9 +14,7 @@
 
     <link rel="stylesheet" media="all" href="{stylesheet}" />
   </head>
-
   <body>
-
     <header>
       <h1>
         <a href="{urlForIndex}">

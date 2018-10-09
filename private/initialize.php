@@ -20,7 +20,9 @@
   define("PARTIALS_PATH", PRIVATE_PATH . DS . 'resources' . DS . 'views' . DS . 'templates' . DS . 'partials');
   define("CONTROLLERS_PATH", APP_PATH . DS . 'controllers');
   define("ROUTES_PATH", APP_PATH . DS . 'routes');
-  define("IMG_SRC", 'http://' . $_SERVER['SERVER_NAME'] . '/images/');
+  $servPort =(($_SERVER['SERVER_PORT'] != '80') ? ':' . $_SERVER['SERVER_PORT'] : '') ;
+  $servPrefix = isset($_SERVER['HTTPS']) ? 'https://' : 'http://'; // php 7 $_SERVER['HTTPS'] ?? 'http://';
+  define("IMG_SRC", $servPrefix . $_SERVER['SERVER_NAME'] . $servPort . '/images/');
 
   // Assign the root URL to a PHP constant
   // * Do not need to include the domain

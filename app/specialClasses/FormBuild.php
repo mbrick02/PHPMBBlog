@@ -38,7 +38,7 @@ class FormBuild {
     // DEL: $autoCompl = isset($assiVars['autocomplete']) ? " autocomplete=\"" . $assiVars['autocomplete'] . "\"";
     $output = $this->retTag("form", $assiVars);
     // DEL: "<form action=\"$assiVars['action']\" ";
-    // DEL: $output .= "method=\"$assiVars['post']\" . $autoCompl . ">\n";
+    // DEL: $output .= "method=\"$assiVars['method']\" . $autoCompl . ">\n";
 
     $token = Token::generate();
     $inputFldVars = [

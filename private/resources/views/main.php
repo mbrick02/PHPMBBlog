@@ -8,6 +8,12 @@
 // 'container->' interpolated by parent/base __get() when getting view vals
 $this->container->view->filename = DS . 'partials' . DS . 'public_header.php';
 // header has: page_title, urlForIndex, urlForMBBloglogo, stylesheet
+/* 'view' is Template instance usage:		$template->filename = "template2.php";
+$template->set('pageTitle', "Template Test");
+$template->set('content', "This is a test of templating using search replace.");
+OR:
+$assignedVars = [ 'pageTitle' => "Template Test", content' =>"Test of search/repl template."  ];
+$template->display();		or $template->returnText(); ***** */
 $this->container->view->set('page_title', "Template Test");
 $this->container->view->set('urlForIndex', "/");
 $this->container->view->set('urlForMBBlogLogo', IMG_SRC . "mbBlogLogo.jpg");
@@ -15,19 +21,7 @@ $this->container->view->set('stylesheet', getBaseUrl() . '/stylesheets/public.cs
 // or $assignedVars = [ 'field1' => 'field1val', 'field2' => 'field2val'];
 echo $this->container->view->returnText();
 
-		/* 'view' is currently a Template instance usage:
-		$template = new Template();
-		$template->filename = "template2.php";
-		$template->set('pageTitle', "Template Test");
-		$template->set('content', "This is a test of templating using search replace.");
-		OR:
-		$assignedVars = [
-					'pageTitle' => "Template Test",
-					'content' =>"Test of search/repl template."
-				];
-		$template->display();
-		or $template->returnText();
-		*/
+
 
     include TEMPLATE_PATH . DS . 'partials' . DS . 'navhead.php';
 ?>
@@ -74,7 +68,7 @@ echo $this->container->view->returnText();
 
     <div class="container">
       <!-- include('partials._messages') -->
-      <!-- yield('content') DEBUG:*** --><h1>content</h1>
+      <!-- yield('content') DEBUG:*** --><?php echo $g_templateVars['submitTitle']; ?>
       <!-- include('partials._footer') -->
 
     </div> <!-- end of .container -->

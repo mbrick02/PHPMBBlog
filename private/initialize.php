@@ -98,5 +98,10 @@
   $db = DB::getInstance("User");
 // controller access to db is now through container
 
+  $g_templateVars = [
+      'submitTitle' => "",
+
+  ];
+
   $session = new Session;
 ?>

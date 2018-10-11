@@ -18,5 +18,5 @@
 </html>
 
 <?php
-  if (isset($this->container->db)) { $this->container->db->disconnect(); }
+  // auto closes: if (isset($this->container->db)) { $this->container->db->disconnect(); }
 ?>

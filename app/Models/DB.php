@@ -87,6 +87,7 @@ class DB {
 	public function create($aryFlds="") {
 			 global $db;  // container->db should refernce this
 
+// **** NEED TO MAKE THIS BASED ON static::$columns ****
 			 if (!is_array($aryFlds)){  // default for user table
 			 	$aryFlds = array('username', 'password', 'first_name', 'last_name');
 			 }
@@ -121,7 +122,7 @@ class DB {
 			 $sth = $db->exec_qry($sql, $field_val_ary);  // statement handler
 
 			 if ($sth) {
-			 	$this->id = $db->pdo->lastInsertId();
+			 	$this->column['id'] = $db->pdo->lastInsertId();
 			 	return true;
 			 } else {
 			 	return false;

@@ -14,8 +14,7 @@ public function __construct(View $view)  // was just passing in view -- now pass
 }
 ****** */
 
-	public function index($request, $response)
-	{
+	public function index($request, $response) {
 		// IF USING TWIG:
     // return $this->container->view->render($response, 'home.twig');
     // return $this->view->render($response, 'home.twig');

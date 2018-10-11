@@ -99,8 +99,7 @@
 // controller access to db is now through container
 
   $g_templateVars = [
-      'submitTitle' => "",
-
+      'submitTitle' => "Test 10-10-18",  // for template substitue like form_bottom
   ];
 
   $session = new Session;

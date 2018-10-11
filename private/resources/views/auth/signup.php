@@ -1,4 +1,6 @@
 // based on a twig form -- REMVE all "{% %}"
+// ** Use FormBuilder class ********** to remake this
+// noValue - attribs that have no val e.g. 'required' ?>
 {% xxx extends 'templates/xxapp.twigxxmain.php' -> main.php %}
 
 {% block content %}

@@ -1,12 +1,17 @@
 <?php
+/* ***NOTE all post route controllers must do token check:
+if(Token::check($_POST['token'])) {
+  echo 'Process order';
+}
+*/
 
-// pass in entire $container to make it available to all 'child'/extended controllers
 
 namespace App\Controllers;
 
 class Controller {
 	protected $container;
 
+// pass in entire $container make available to 'child'/extended controllers
   public function __construct($container) {
 		/* ** DEBUG: var_dump($container);
 		echo "<br />"; */

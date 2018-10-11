@@ -11,4 +11,10 @@ spl_autoload_register('route_autoload'); */
 
 $app->get('/', 'HomeController:index');
 
+/* ***NOTE all post route controllers must do token check:
+if(Token::check($_POST['token'])) {
+  echo 'Process order';
+}
+*/
+
 require_once('Routes/Products.php');

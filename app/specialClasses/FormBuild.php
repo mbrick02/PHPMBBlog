@@ -18,13 +18,8 @@ class FormBuild {
 <!-- form fields ***** -->
 <div class="form-group">  <label for="email">Email</label>
   <input type="email" name="email" id="email" placeholder="u@dom.com" class="form-control">
-</div>
-<div class="form-group">  <label for="name">Name</label>
-  <input type="text" name="name" id="name" class="form-control">
-</div>
-<div class="form-group">  <label for="password">Password</label>
-  <input type="password" name="password" id="password" class="form-control">
-</div>
+<div class="form-group">  <label for="name">Name</label><input type="text"...>
+<div class="form-group">  <label for="password">Password</label>  <input type="password" name="password"...>
 "\n" for newline (Linux & Mac -- Win takes it okay)
 */
   public function formTopDecl($assiVars = []) {
@@ -88,16 +83,16 @@ class FormBuild {
   }
 
   public function retInpDiv($assiVars = []) {
-    // Inputs: $assiVars['lblFor'] (and lbl, type, name, id, and class)
+    // Inputs: $assiVars['labelFor'] (and labl, type, name, id, and class)
 
     $output = "<div class=\"form-group\"> \n";
-    $output .= "<label for=\"{$assiVars['lblFor']}\">{$assiVars['lbl']}</label>\n";
+    $output .= "<label for=\"{$assiVars['labelFor']}\">" . ucfirst($assiVars['label']}) . "</label>\n";
 
     $inpFldVars = [];
 
     // set input field attribs - ignore label vars
     foreach ($variable as $key => $value) {
-      if (($key != 'lblFor') && ($key != 'lbl')) {
+      if (($key != 'labelFor') && ($key != 'label')) {
         $inpFldVars[$key] = $assiVars[$key];
       }
     }
@@ -109,13 +104,28 @@ class FormBuild {
 
   } // DEBUG**: else { "returnTxtField with no assignedVars"}
 
+  public function retSimpTxtInpDiv($fldNameNLabel = []) {
+/*   inputs: $fldNameNLabel['name'], (option ['label'])
+*/
+    $name = $fldNameNLabel['name'];
+    $txtFldVars = [
+      'type' => 'text',
+      'name' => $name,
+      'labelFor' => $name;
+      'id' => $name;
+    ]
+    $txtFldVars['label'] = isset($fldNameNLabel['label'])) ? $fldNameNLabel['label'] : ucfirst($name);
+    // or PHP7 ?? null coalescing
+    $output = $this->retInpDiv($txtFldVars);
+  }
+
   public function retTxtAreaDiv($assiVars = []) {
     $output = "<div class=\"form-group\"> \n";
     $output .= $this->retClosedTag("textarea", $assiVars) . "\n";
     $output .= "</div>";
   }
 
-  public function retTypeDiv($type, $assiVars = []) {
+  public function retInpTypeDiv($type, $assiVars = []) {  // type name and id are all same
     $typeVars = $assiVars;
     $typeVars['type'] = $type;
     $typeVars['name'] = $type;

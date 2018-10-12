@@ -5,7 +5,8 @@
 // 'container->' interpolated by parent/base __get() when getting view vals
 global $g_templateVars;
 
-$this->container->view->filename = TEMPLATE_PATH . DS . 'partials' . DS . 'public_header.php';
+// $container->view->filename = TEMPLATE_PATH . DS . 'partials' . DS . 'public_header.php';
+$container->view->filename = 'partials' . DS . 'public_header.php';
 // header has: page_title, urlForIndex, urlForMBBloglogo, stylesheet
 /* 'view' is Template instance usage:		$template->filename = "template2.php";
 $template->set('pageTitle', "Template Test");
@@ -13,12 +14,13 @@ $template->set('content', "This is a test of templating using search replace.");
 OR:
 $assignedVars = [ 'pageTitle' => "Template Test", content' =>"Test of search/repl template."  ];
 $template->display();		or $template->returnText(); ***** */
-$this->container->view->set('page_title', "Template Test");
-$this->container->view->set('urlForIndex', "/");
-$this->container->view->set('urlForMBBlogLogo', IMG_SRC . "mbBlogLogo.jpg");
-$this->container->view->set('stylesheet', getBaseUrl() . '/stylesheets/public.css');
+// values for header,  like example below, set in calling Controller but CAN be set here
+// $container->view->set('page_title', "Template Test"); // in controller fixed header val set here
+$container->view->set('urlForIndex', "/");
+$container->view->set('urlForMBBlogLogo', IMG_SRC . "mbBlogLogo.jpg");
+$container->view->set('stylesheet', getBaseUrl() . '/stylesheets/public.css');
 // or $assignedVars = [ 'field1' => 'field1val', 'field2' => 'field2val'];
-echo $this->container->view->returnText();
+echo $container->view->returnText();
 
 
 
@@ -27,7 +29,8 @@ echo $this->container->view->returnText();
 <!-- ************** NAV HEAD TRIAL 10/6/18 ******************** -->
 
 			<ul class="nav navbar-nav navbar-right">
-				@if(Session::has('cart'))
+        <?php echo "<h1>". $cartExists . "</h1>"; ?>
+				@if(Session::has('cart')) xxUse instead>
 				<li>
 				<a href="{{ route('product.shoppingCart') }}">
 					<i class="fa fa-shopping-cart" aria-hidden="true"></i> Shopping Cart
@@ -36,7 +39,7 @@ echo $this->container->view->returnText();
                 	  </span>
                 </a>
                 </li>
-                @endif
+        @endif
                 <li><div class="dropdown">
 					<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -45,6 +48,7 @@ echo $this->container->view->returnText();
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 	@if(Auth::check())
                 		<a class="dropdown-item {{ Request::is(Route::has('profile')) ? "active" : "" }}" href="/profile/{{ Auth::user()->id }}">
+                    <?php echo "<h1>". $routeHasProfile . "</h1>"; ?>
                 		User Profile (update)</a>
                 		<div class="dropdown-divider"></div>
                 		<a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
@@ -63,11 +67,9 @@ echo $this->container->view->returnText();
 
 
 <!-- ************  END NAV HEAD TRIAL 10/16/18 ******************** -->
-    <!-- create this: ?php include(SHARED_PATH . squt --> call Navhead.php <!-- squt) ? > -->
-
     <div class="container">
       <!-- include('partials._messages') -->
-      <!-- yield('content') DEBUG:*** --><?php echo $g_templateVars['submitTitle']; ?>
+      <!-- yield('content') DEBUG:*** --><?php echo $content; ?>
       <!-- include('partials._footer') -->
 
     </div> <!-- end of .container -->

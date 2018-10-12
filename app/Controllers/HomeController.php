@@ -21,14 +21,6 @@ public function __construct(View $view)  // was just passing in view -- now pass
 
 
 		$this->container->view->set('content', "This is a test of templating using search replace.");
-		// echo "<h1>This is a test page</h1>";
-		$pageUrls = [
-					'products' => $this->container->get('router')->pathFor('products'),
-					'curURL' => $request->getUri()->getPath(), // current URL
-					// 'logout' => $this->container->get('router')->pathFor('logout'),
-					// 'login' => $this->container->get('router')->pathFor('login'),
-					// 'signin' =>$this->container->get('router')->pathFor('signin'),
-				];
 
 		$htmlSections = [
 					'content' =>"<p>Test of search/repl template.</p>",
@@ -39,9 +31,23 @@ public function __construct(View $view)  // was just passing in view -- now pass
 // $app->get('/hello/:arg1', function ($name) use ($app) {  echo "Hello $name";})->name('hello');
 
 //Generate a URL for the named route: $url = $app->urlFor('products', array('arg1' => 'value'));
+		$templateVars = [
+			'cartExists' => 'The cart exists var',
+			'routeHasProfile' => 'Route has profile var',
+			'container' => $this->container,
+			'pageUrls' => [
+						'products' => $this->container->get('router')->pathFor('products'),
+						'curURL' => $request->getUri()->getPath(),
+					],
+			'content' => 'Index Content',
+		];
 
-
-		include VIEWS_PATH . DS . 'main.php';
+		// public_header var -- fixed vals set in main.php
+		$this->container->view->set('page_title', "Index");
+		
+		$maintemplate = TEMPLATE_PATH . DS . 'main.php';
+		$this->container->view->renderWithVariables($maintemplate, $templateVars); // , $optiondefltprint=true
+		// old method: include VIEWS_PATH . DS . 'main.php';
 
   }
 }

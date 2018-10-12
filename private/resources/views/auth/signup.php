@@ -12,47 +12,44 @@ $formAtrrib = [
 	'action' = DS . 'partials' . DS . 'public_header.php';
 	'method' => 'post',
 ];
-$formContent = $form->formTopDecl();
-{% block content %}
-<!-- create form -->
-<!-- form top NOW IN  partials/form_top ******* -->
+$formContent = $form->formTopDecl($formAtrrib);
 
-	<div class="row">
-		<div class="col-md-6 col-md-offset-3">
-			<div class="">
-				<div class="panel-heading">Sign up</div>
-				<div class="panel-body">
-<!-- end form top ****** -->
+$fldAttribs = ['name' => 'username',];  // form field attributes
+$formContent .= retSimpTxtInpDiv($fldAttribs);
+$fldAttribs = []; // clear field attributes assoc array
 
-<!-- form declaration ******* -->
-<form action="{{ path_for('****auth.signup')}}" method="post" autocomplete="off">
-   {{ csrf_field() }}
-  <!-- end form declation ******* -->
+$fldAttribs = ['placeholder' => "u@dom.com",]; // form field attributes
+$formContent .= retInpTypeDiv("email", $fldAttribs);
+$fldAttribs = []; // clear field attributes assoc array
 
-  <!-- form fields ***** -->
-	<div class="form-group">
-	  <label for="email">Email</label>
-    <input type="email" name="email" id="email" placeholder="u@dom.com" class="form-control">
-  </div>
-	<div class="form-group">
-	  <label for="name">Name</label>
-    <input type="text" name="name" id="name" class="form-control">
-  </div>
-	<div class="form-group">
-	  <label for="password">Password</label>
-    <input type="password" name="password" id="password" class="form-control">
-  </div>
-<!-- end form fields ****** -->
+$fldAttribs = [
+	'name' => 'fname',
+	'label' => 'First Name',
+];  // form field attributes
+$formContent .= retSimpTxtInpDiv($fldAttribs);
+$fldAttribs = []; // clear field attributes assoc array
 
-<!-- end form NOW IN  partials/form_bottom**** -->
-  <!-- form button **** -->
-  <button type="submit" class="btn btn-default">Sign Up</button>
-  <!-- end form button **** -->
+$fldAttribs = [
+	'name' => 'lname',
+	'label' => 'Last Name',
+];  // form field attributes
+$formContent .= retSimpTxtInpDiv($fldAttribs);
+$fldAttribs = []; // clear field attributes assoc array
 
-</form>
-</div>
-			</div>
-		</div>
-	</div>
-<!-- END of end form **** -->
-{% endblock %}
+$formContent .= retInpTypeDiv("password", $fldAttribs);
+$fldAttribs = []; // clear field attributes assoc array
+
+$fldAttribs = [
+	'type' => 'password',
+	'name' => 'confirm_password',
+	'id' => 'confirm_password',
+	'name' => 'confirm_password',
+	'label' => 'Confirm Password',
+	'labelFor' => 'Confirm Password',
+];  // form field attributes
+$formContent .= retInpDiv("confirm_password", $fldAttribs);
+$fldAttribs = []; // clear field attributes assoc array
+
+$formContent .= $form->endForm("Create User");
+echo $formContent; // DEBUG** TEST
+// $g_templateVars['form_content'] = $formContent;

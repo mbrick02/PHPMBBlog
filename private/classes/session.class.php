@@ -17,7 +17,7 @@ class Session {
 
   // Codecourse PHP OOP Login CSRF (p12/23)  session/token ***
   public static function exists($name) {
-    return (isset($_SESSION['$name'])) ? true : false;)
+    return (isset($_SESSION['$name']) ? true : false);
   }
 
   public static function put($name, $value){

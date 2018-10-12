@@ -35,8 +35,8 @@ class Template {
   	}
   }
 
-  function returnText($filename = "main.php", $assignedVars = []) {
-		$fullpath = $this->filePath($filename);
+  function returnText($assignedVars = []) { // must set $this->filename = file before use
+		$fullpath = $this->filePath($this->filename);
   	if(file_exists($fullpath)) {
   		$output = file_get_contents($fullpath);
 			if (!empty($assignedVars)) {
@@ -48,7 +48,8 @@ class Template {
   		}
   		return $output;
   	} else {
-  		return "*** Missing template error showing file: {$filename} ****";
+			// DEBUG**: return $fullpath;
+  		return "*** Missing template error showing file: {$this->filename} ****";
   	}
   }
 
@@ -59,10 +60,8 @@ class Template {
     if(file_exists($filePath)){
         // Extract the variables to a local namespace
         extract($variables);
-
         // Start output buffering
         ob_start();
-
         // Include the template file
         include $filePath;
 
@@ -73,8 +72,7 @@ class Template {
         print $output;
     }
     return $output;
-
-}
+	}
 }
 
 /* usage:

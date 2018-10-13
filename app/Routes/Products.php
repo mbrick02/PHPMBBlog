@@ -1,7 +1,7 @@
 <?php
 use app\Models\Product as Product;
 // get all products
-$app->get('/api/products', function(){
+$app->get('/api/products', function(){  // change to: 'ProductController:index'
   $products = Product::getInstance("products")->getAll();
 
   if(!$products->count()) {

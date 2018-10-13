@@ -1,22 +1,18 @@
 <?php
+// '/products' and other urls use named url with urlFor()
+//Create a named route: (->name() or setName()?) in Routes/Products.php
+// $app->get('/hello/:arg1', function ($name) use ($app) {  echo "Hello $name";})->name('hello');
+
 namespace app\Controllers;
 // If we use Twig Views: use Slim\Views\Twig as View;
-//Gen named route URL: $url = $app->urlFor('products', array('arg1' => 'value')); // ?arg1=
 
 class HomeController extends Controller {
 	protected $view;  // declare for use in constructor
-/*  **** MOVED this to base class Constructor to simplify:
-public function __construct(View $view)  // was just view -- now whole container
-{	$this->view = $view;}****** */
 
 	public function index($request, $response) {
-		// IF USING TWIG:
-    // return $this->container->view->render($response, 'home.twig');
-    // return $this->view->render($response, 'home.twig');
 
 		$this->container->view->set('content', "This is a test of templating using search replace.");
 		// $htmlSections = [	'doubtUse' =>"Doubt this will be useful",];
-
 
 		$templateVars = [
 			'cartExists' => 'The cart exists var',
@@ -34,7 +30,7 @@ public function __construct(View $view)  // was just view -- now whole container
 
 		$maintemplate = TEMPLATE_PATH . DS . 'main.php';
 		$this->container->view->renderWithVariables($maintemplate, $templateVars); // , $optiondefltprint=true
-		// old NON-render global method: include VIEWS_PATH . DS . 'main.php';
+		// old method: include VIEWS_PATH . DS . 'main.php';
 
   }
 }

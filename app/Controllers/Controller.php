@@ -1,10 +1,6 @@
 <?php
 /* ***NOTE all post route controllers must do token check:
-if(Token::check($_POST['token'])) {
-  echo 'Process order';
-}
-*/
-
+if(Token::check($_POST['token'])) {echo 'Process order';} */
 
 namespace App\Controllers;
 

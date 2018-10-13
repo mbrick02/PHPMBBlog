@@ -2,10 +2,10 @@
 use app\Models\User as User;
 // get all products
 $app->get('/user/create', function(){
-  $user = User::getInstance();
+  $user = User::getInstance("users");
 
   if(!$user->count()) {
-irst()->username;
+    // $user->first()->username;
   }
 
   // DEBUG: echo json_encode($products->results()) . '<br />';

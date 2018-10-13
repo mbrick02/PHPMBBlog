@@ -17,8 +17,8 @@ class User extends DB {
   ];
 
 // ?? Do we need to check form $columns->$keys == $args->$keys ???
-	private function __construct($args=[]) {
-    foreach ($columns as $key => $value) {
+	protected function __construct($args=[]) {
+    foreach (static::$columns as $key => $value) {
       if($key == 'id') { continue; } // form should not have id
       if($key == 'privilege_id') {
         $columns[$key] = 2;  // user (2) privs -- other privs set elsewhere

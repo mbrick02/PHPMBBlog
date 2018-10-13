@@ -4,7 +4,7 @@ namespace app\Controllers;
 //Gen named route URL: $url = $app->urlFor('products', array('arg1' => 'value')); // ?arg1=
 
 class HomeController extends Controller {
-	protected $view;  // declare for use in constructor
+	// protected $view;  // declare for use in constructor
 /*  **** MOVED this to base class Constructor to simplify:
 public function __construct(View $view)  // was just view -- now whole container
 {	$this->view = $view;}****** */
@@ -19,7 +19,7 @@ public function __construct(View $view)  // was just view -- now whole container
 
 
 		$templateVars = [
-			'cartExists' => 'The cart exists var',
+			'cartExists' => 'The cart exists HomeController var',
 			'routeHasProfile' => 'Route has profile var',
 			'container' => $this->container,
 			'pageUrls' => [

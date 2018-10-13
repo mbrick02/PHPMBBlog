@@ -1,6 +1,7 @@
 <?php
 /* ***NOTE all post route controllers must do token check:
 if(Token::check($_POST['token'])) {echo 'Process order';} */
+// ALSO: load ALL controllers into bootstrap/app.php:container (array)
 
 namespace App\Controllers;
 

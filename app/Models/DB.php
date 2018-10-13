@@ -16,7 +16,7 @@ class DB {
 		$_results,
 		$_count = 0;
 
-	private function __construct() {
+	protected function __construct() {
 		$hostNdb = 'mysql:host=' . Config::get('mysql/host') . ';dbname=' . Config::get('mysql/db');
 		$dbuser = Config::get('mysql/username');
 		$dbpw = Config::get('mysql/password');

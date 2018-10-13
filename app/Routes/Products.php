@@ -1,7 +1,9 @@
 <?php
-use app\Models\Product as Product;
+use app\Models\Product as Product;  // may NOT need this now (in ProdController)
 // get all products
-$app->get('/api/products', function(){  // change to: 'ProductController:index'
+$app->get('/api/products', 'ProductController:index')->setName('products');
+/*
+function(){  // change to: 'ProductController:index'
   $products = Product::getInstance("products")->getAll();
 
   if(!$products->count()) {
@@ -17,8 +19,8 @@ $app->get('/api/products', function(){  // change to: 'ProductController:index'
   // DEBUG: echo json_encode($products->results()) . '<br />';
 
   echo "<br /> Hey, thanks for looking at products!";
-})->setName('products');
-
+}
+*/
 // GET by ID
 $app->get('/api/products/{id}', function($request) {
 	$id = $request->getAttribute('id');

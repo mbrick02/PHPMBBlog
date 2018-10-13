@@ -39,22 +39,23 @@ $container['view'] = function($container) {
 }; // *** end container['view'] = function (){}
 
 
-$controllers = array(); // "HomeController", 'AuthController'
+$controllers = array("HomeController", "AuthController", "ProductController");
 $appController = "";
-foreach ($contollers as $controller) {
-  $container[$controller] = function ($container) {
-    // pass in $container to use in controller
-    $appController = "app\Controllers\" . $controller;
-  	return new $appController($container);
-   };
+
+foreach ($controllers as $controller) {
+    $container[$controller] = function ($container) use ($controller, $appController) {
+      // pass in $container to use in controller
+      $appController = "app\\Controllers\\" . $controller;
+    	return new $appController($container);
+    };
 }
 // DEBUG**: end $controllers array for  controller names
-
-/* this works but trying to make programatic
+/* making below programatic above on array of controller names
 // $container['HomeController'] = function ($container) {
   // pass in $container to use in controller
 //  return new app\Controllers\HomeController($container);
 // };  *** end DEBUG** $container of controller */
+
 
 // db
 $container['db'] = function () {

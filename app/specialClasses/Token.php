@@ -1,4 +1,6 @@
 <?php
+use app\Models\Config as Config;
+
 class Token {
   // PHP Tools -OOP Login/Register class/Token.php
 	public static function generate() {
@@ -11,7 +13,7 @@ class Token {
 		$tokenName = Config::get('session/token_name');
 
 		if(Session::exists($tokenName) && $token === Session::get($tokenName)) {
-		Session::delete($tokenName):
+		Session::delete($tokenName);
 		return true;
 	}
 

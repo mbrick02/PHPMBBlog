@@ -4,12 +4,12 @@
 // ** Use FormBuilder class ********** to remake this
 // noValue - attribs that have no val e.g. 'required'
 // orig: { % xxx extends 'templates/xxapp.twigxxmain.php' -> main.php % }
-use app\specialClasses;
+use app\specialClasses\FormBuild as FormBuild;
 
 $form = new FormBuild;
 
 $formAtrrib = [
-	'action' = DS . 'partials' . DS . 'public_header.php';
+	'action' => DS . 'partials' . DS . 'public_header.php',
 	'method' => 'post',
 ];
 $formContent = $form->formTopDecl($formAtrrib);
@@ -50,6 +50,6 @@ $fldAttribs = [
 $formContent .= retInpDiv("confirm_password", $fldAttribs);
 $fldAttribs = []; // clear field attributes assoc array
 
-$formContent .= $form->endForm("Create User");
+$formContent .= $form->endForm(['submitTitle' =>'Create User']);
 echo $formContent; // DEBUG** TEST
 // $g_templateVars['form_content'] = $formContent;

@@ -1,22 +1,20 @@
 <?php
-
 namespace app\specialClasses;
+// include PRIVATE_PATH . DS . "classes" . DS . "token.class.php";
+require_once APP_PATH . DS . 'specialClasses' . DS . "Token.php";
+use Token as Token;
 
 class FormBuild {
-  // protected $protectedVar;
 /*  Example of form: ********************
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
     <div class="">
-      <div class="panel-heading">Sign up</div>
-      <div class="panel-body">
+      <div class="panel-heading">Sign up</div><div class="panel-body">
 <!-- end form top ****** -->
-
 <!-- form declaration ******* -->
 <form action="{{ path_for('****auth.signup')}}" method="post" autocomplete="off">
  {{ csrf_field() }}
-<!-- form fields ***** -->
-<div class="form-group">  <label for="email">Email</label>
+<!-- form fields ***** --> <div class="form-group">  <label for="email">Email</label>
   <input type="email" name="email" id="email" placeholder="u@dom.com" class="form-control">
 <div class="form-group">  <label for="name">Name</label><input type="text"...>
 <div class="form-group">  <label for="password">Password</label>  <input type="password" name="password"...>
@@ -63,7 +61,7 @@ class FormBuild {
 
     $output .= $class;
 
-    if isset($assiVars['noValue']) {
+    if (isset($assiVars['noValue'])) {
       $output .= " " . $assiVars['noValue'];
     }
 
@@ -86,7 +84,7 @@ class FormBuild {
     // Inputs: $assiVars['labelFor'] (and labl, type, name, id, and class)
 
     $output = "<div class=\"form-group\"> \n";
-    $output .= "<label for=\"{$assiVars['labelFor']}\">" . ucfirst($assiVars['label']}) . "</label>\n";
+    $output .= "<label for=\"{$assiVars['labelFor']}\">" . ucfirst($assiVars['label']) . "</label>\n";
 
     $inpFldVars = [];
 
@@ -111,10 +109,10 @@ class FormBuild {
     $txtFldVars = [
       'type' => 'text',
       'name' => $name,
-      'labelFor' => $name;
-      'id' => $name;
-    ]
-    $txtFldVars['label'] = isset($fldNameNLabel['label'])) ? $fldNameNLabel['label'] : ucfirst($name);
+      'labelFor' => $name,
+      'id' => $name,
+    ];
+    $txtFldVars['label'] = isset($fldNameNLabel['label']) ? $fldNameNLabel['label'] : ucfirst($name);
     // or PHP7 ?? null coalescing
     $output = $this->retInpDiv($txtFldVars);
   }
@@ -136,8 +134,9 @@ class FormBuild {
     $output .= "</div>";
   }
 
-  public function endForm ($submitTitle) {
-    global $g_templateVars['submitTitle'] = $submitTitle;
+  public function endForm ($submitTitleAry = []) {
+    extract($submitTitleAry);
+    $submitTitle = $submitTitleAry['submitTitle'];
 
     include TEMPLATE_PATH . DS . 'partials' . DS . 'form_bottom.php';
   }

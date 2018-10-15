@@ -2,7 +2,6 @@
 /* ***NOTE all post route controllers must do token check:
 if(Token::check($_POST['token'])) {echo 'Process order';} */
 // ALSO: load ALL controllers into bootstrap/app.php:container (array)
-
 namespace App\Controllers;
 
 class Controller {
@@ -25,10 +24,8 @@ class Controller {
 					// e.g HomeConroller->view instead HomeController->container->view
         }
   }
-/*  can't be easily used like __get()
-	public function __set($property, $value) {  // can be used to create shortcut calls to property values
-	    // ***WARNING if overused, these shortcuts can be confusing
-			// ** DEBUG:
+/*  Not using because __set can't be easily used like __get()
+	public function __set($property, $value) {  // CANT make shortcut req of prop vals
 			echo "What is this property";
 			if ($this->container->{$property}) {
 	        // $this->container->{$property} = $value;
@@ -37,5 +34,11 @@ class Controller {
         }
   }
 ****	  */
+	public function sessionExists($sessionAttrib) {
+		global $session;
+		if ($session->exists($sessionAttrib)){
+			return true;
+		} else { return false; }
+	}
 
 }

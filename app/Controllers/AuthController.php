@@ -22,7 +22,7 @@ class AuthController extends Controller {
 
     // give vals to main.php template vars
 		$templateVars = [
-			'cartExists' => 'The cart exists var',
+			'cartExists' => $this->sessionExists('cart') ? 'Shows a cart' : 'No Cart',
 			'routeHasProfile' => 'Route has profile var',
 			'container' => $this->container,
 			'pageUrls' => [

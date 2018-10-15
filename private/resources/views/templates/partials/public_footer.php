@@ -11,7 +11,7 @@
   <?php } else { ?>
 
     <footer class="footnote">
-      <p><?php echo "&copy " . date("Y") . "Michael Brickler" ; ?></p>
+      <p><?php echo "&copy " . date("Y") . " Michael Brickler" ; ?></p>
     </footer>
   <?php } ?>
   </body>

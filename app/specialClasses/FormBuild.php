@@ -3,8 +3,6 @@ namespace app\specialClasses;
 // include PRIVATE_PATH . DS . "classes" . DS . "token.class.php";
 require_once APP_PATH . DS . 'specialClasses' . DS . "Token.php";
 use Token as Token;
-
-class FormBuild {
 /*  Example of form: ********************
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
@@ -20,18 +18,20 @@ class FormBuild {
 <div class="form-group">  <label for="password">Password</label>  <input type="password" name="password"...>
 "\n" for newline (Linux & Mac -- Win takes it okay)
 */
-  public function formTopDecl($assiVars = []) {
+class FormBuild {
+  public function formTopDecl($assiVars = [], $panelHeading) {
     /* ****  Inputs:  $assiVars['action'] & ['csrf_field']
-    Examp:
-    <form action="{{ path_for('****auth.signup')}}"
-        method="post" autocomplete="off">
+    Examp:<form action="{{ path_for('****auth.signup')}}" method="post" autocomplete="off">
        {{ csrf_field() }}
     **************** */
-    // note space before autocomlete -- if ignored, no space at end of str
+    // note space before autocomlete but no space at end of str
     // DEL: $autoCompl = isset($assiVars['autocomplete']) ? " autocomplete=\"" . $assiVars['autocomplete'] . "\"";
-    $output = $this->retTag("form", $assiVars);
-    // DEL: "<form action=\"$assiVars['action']\" ";
-    // DEL: $output .= "method=\"$assiVars['method']\" . $autoCompl . ">\n";
+    $output = $this->retTag("div", ['class' => 'row']);
+    $output .= $this->retTag("div", ['class' => 'col-md-6 col-md-offset-3']);
+    $output .= $this->retTag("div");
+    $output .= $this->retClosedTag("div", ['class' => 'panel-heading'], $panelHeading);
+    $output .= $this->retTag("div", ['class' => 'panel-body']);
+    $output .= $this->retTag("form", $assiVars);
 
     $token = Token::generate();
     $inputFldVars = [
@@ -40,13 +40,14 @@ class FormBuild {
             'value' => $token,
           ];
 
-    // exampl: <input type="hidden" name="token"
-    //        "value="<?php echo Token::generate(); ? > ">
-    $inputFld = $this->retInputFld($inputFldVars);
+    // examp: <input type="hidden" name="token" "value="<?php echo Token::generate();>">
+    $output .= $this->retInpFld($inputFldVars);
+
+    return $output;
   }
 
   public function retTag($tagType, $assiVars = []) {
-    $class = "form-control";
+
     $output = "<". $tagType;
     foreach ($assiVars as $key => $value) {
       // noValue - attribs that have no val e.g. 'required'
@@ -55,9 +56,10 @@ class FormBuild {
       $output .= " " . $key . "=\"{$value}\"";
     }
 
-    if (isset($assiVars['class'])) {
-      $class = $class . " " . $assiVars['class'];
-    }
+    $class = " class =\"";
+
+    $class .= isset($assiVars['class']) ? $assiVars['class'] . " " : "";
+    $class .= "form-control" .  "\"";
 
     $output .= $class;
 
@@ -65,12 +67,29 @@ class FormBuild {
       $output .= " " . $assiVars['noValue'];
     }
 
-    $output .= ">";
+    $output .= ">\n";
+
+    return $output;
   }
 
-  public function retClosedTag($tagType, $assiVars = []) {
-    $output = $this->retTag($tagType, $assiVars) . "\n";
-    $output .= "</" . $tagType . ">\n";
+  public function endTag($tagType) {
+    return "</" . $tagType . ">\n";
+  }
+
+  public function endTags($aryTags){
+    $output = "";
+    foreach ($aryTags as $tag) {
+      $output .= $this->endTag($tag);
+    }
+    return $output;
+  }
+
+  public function retClosedTag($tagType, $assiVars = [], $tagContent="") {
+    $output = $this->retTag($tagType, $assiVars);
+    $output .= $tagContent;
+    $output .= $this->endTag($tagType);
+
+    return $output;
   }
 
   public function retInpFld($assiVars = []) {
@@ -81,17 +100,20 @@ class FormBuild {
   }
 
   public function retInpDiv($assiVars = []) {
+    if (is_null($assiVars) || (!is_array($assiVars))) { // || !array_key_exists('labelFor', $assiVars))
+      var_dump($assiVars);
+      die();
+    }
     // Inputs: $assiVars['labelFor'] (and labl, type, name, id, and class)
-
     $output = "<div class=\"form-group\"> \n";
     $output .= "<label for=\"{$assiVars['labelFor']}\">" . ucfirst($assiVars['label']) . "</label>\n";
 
     $inpFldVars = [];
 
     // set input field attribs - ignore label vars
-    foreach ($variable as $key => $value) {
+    foreach ($assiVars as $key => $value) {
       if (($key != 'labelFor') && ($key != 'label')) {
-        $inpFldVars[$key] = $assiVars[$key];
+        $inpFldVars[$key] = $value;
       }
     }
 
@@ -110,17 +132,22 @@ class FormBuild {
       'type' => 'text',
       'name' => $name,
       'labelFor' => $name,
+      'label' => $name,
       'id' => $name,
     ];
     $txtFldVars['label'] = isset($fldNameNLabel['label']) ? $fldNameNLabel['label'] : ucfirst($name);
     // or PHP7 ?? null coalescing
     $output = $this->retInpDiv($txtFldVars);
+
+    return $output;
   }
 
   public function retTxtAreaDiv($assiVars = []) {
     $output = "<div class=\"form-group\"> \n";
     $output .= $this->retClosedTag("textarea", $assiVars) . "\n";
     $output .= "</div>";
+
+    return $output;
   }
 
   public function retInpTypeDiv($type, $assiVars = []) {  // type name and id are all same
@@ -128,16 +155,30 @@ class FormBuild {
     $typeVars['type'] = $type;
     $typeVars['name'] = $type;
     $typeVars['id'] = $type;
+    $typeVars['label'] = $type;
+    $typeVars['labelFor'] = $type;
 
-    $output = "<div class=\"form-group\"> \n";
-    $output .= $this->retInpFld($typeVars) . "\n";
-    $output .= "</div>";
+    return $this->retInpDiv($typeVars); //  . "\n"
   }
 
   public function endForm ($submitTitleAry = []) {
     extract($submitTitleAry);
     $submitTitle = $submitTitleAry['submitTitle'];
 
-    include TEMPLATE_PATH . DS . 'partials' . DS . 'form_bottom.php';
+    $buttonAttribs = [
+      'type' => 'submit',
+      'class' => 'btn btn-default'
+    ];
+
+    $output = $this->retClosedTag("button", $buttonAttribs, $submitTitle);
+
+    $endTags = array('form', 'div', 'div', 'div', 'div');
+
+    $output .= $this->endTags($endTags);
+    return $output;
+
+/*  <button type="submit" class="btn btn-default"><?php echo $submitTitle ?></button>
+</form></div></div></div></div>   ***********************/
+    // DEL (old ver): include TEMPLATE_PATH . DS . 'partials' . DS . 'form_bottom.php';
   }
 }

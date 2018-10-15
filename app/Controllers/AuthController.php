@@ -18,8 +18,8 @@ class AuthController extends Controller {
     $formVars = [
       'userformvars' => '',
     ];
-    $formContent = $this->container->view->renderWithVariables($userForm, $formVars);
-    
+    $formContent = $this->container->view->renderWithVariables($userForm, $formVars, false);
+
     // give vals to main.php template vars
 		$templateVars = [
 			'cartExists' => 'The cart exists var',

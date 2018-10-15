@@ -1,42 +1,46 @@
 <?php
-
-// based on a twig form -- REMVE all "{% %}"
-// ** Use FormBuilder class ********** to remake this
-// noValue - attribs that have no val e.g. 'required'
-// orig: { % xxx extends 'templates/xxapp.twigxxmain.php' -> main.php % }
 use app\specialClasses\FormBuild as FormBuild;
+/* <div class="row">  <div class="col-md-6 col-md-offset-3">
+    <div class=""><div class="panel-heading">Sign up</div><div class="panel-body">
+<!-- end form top ****** -->
+<form action="{{ path_for('****auth.signup')}}" method="post" autocomplete="off">{{ csrf_field() }}
+<!-- form fields ***** --> <div class="form-group">  <label for="email">Email</label>
+  <input type="email" name="email" id="email" placeholder="u@dom.com" class="form-control">
+<div class="form-group">  <label for="name">Name</label><input type="text"...>
+<div class="form-group">  <label for="password">Password</label> */
+
 
 $form = new FormBuild;
 
 $formAtrrib = [
-	'action' => DS . 'partials' . DS . 'public_header.php',
+	'action' => '/user/create',
 	'method' => 'post',
 ];
-$formContent = $form->formTopDecl($formAtrrib);
+$formContent = $form->formTopDecl($formAtrrib, "Sign up");
 
 $fldAttribs = ['name' => 'username',];  // form field attributes
-$formContent .= retSimpTxtInpDiv($fldAttribs);
+$formContent .= $form->retSimpTxtInpDiv($fldAttribs);
 $fldAttribs = []; // clear field attributes assoc array
 
 $fldAttribs = ['placeholder' => "u@dom.com",]; // form field attributes
-$formContent .= retInpTypeDiv("email", $fldAttribs);
+$formContent .= $form->retInpTypeDiv("email", $fldAttribs);
 $fldAttribs = []; // clear field attributes assoc array
 
 $fldAttribs = [
 	'name' => 'fname',
 	'label' => 'First Name',
 ];  // form field attributes
-$formContent .= retSimpTxtInpDiv($fldAttribs);
+$formContent .= $form->retSimpTxtInpDiv($fldAttribs);
 $fldAttribs = []; // clear field attributes assoc array
 
 $fldAttribs = [
 	'name' => 'lname',
 	'label' => 'Last Name',
 ];  // form field attributes
-$formContent .= retSimpTxtInpDiv($fldAttribs);
+$formContent .= $form->retSimpTxtInpDiv($fldAttribs);
 $fldAttribs = []; // clear field attributes assoc array
 
-$formContent .= retInpTypeDiv("password", $fldAttribs);
+$formContent .= $form->retInpTypeDiv("password", $fldAttribs);
 $fldAttribs = []; // clear field attributes assoc array
 
 $fldAttribs = [
@@ -47,7 +51,8 @@ $fldAttribs = [
 	'label' => 'Confirm Password',
 	'labelFor' => 'Confirm Password',
 ];  // form field attributes
-$formContent .= retInpDiv("confirm_password", $fldAttribs);
+
+$formContent .= $form->retInpDiv($fldAttribs);
 $fldAttribs = []; // clear field attributes assoc array
 
 $formContent .= $form->endForm(['submitTitle' =>'Create User']);

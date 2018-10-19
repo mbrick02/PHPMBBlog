@@ -98,7 +98,5 @@
   $db = DB::getInstance("User");
 // controller access to db is now through container
 
-  // $g_templateVars = ['submitTitle' => "Test 10-10-18", ]; // old templ substit in form_bottom
-
   $session = new Session;
 ?>

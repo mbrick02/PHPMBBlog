@@ -29,7 +29,7 @@ function getBaseUrl()
     $protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"],0,5))=='https://'?'https://':'http://';
 
     // return: http://localhost/myproject/
-    return $protocol.$hostName.$pathInfo['dirname']."/";
+    return $protocol.$hostName.$pathInfo['dirname']; // ."/"
 }
 
 function u($string="") {

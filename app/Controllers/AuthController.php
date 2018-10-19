@@ -14,11 +14,14 @@ class AuthController extends Controller {
       // $user->first()->username;
     }
     $userForm = VIEWS_PATH . DS . 'auth' . DS . 'signup.php';
-
-    $formVars = [
-      'userformvars' => '',
-    ];
+    $formVars = [ 'userformvars' => '',];
     $formContent = $this->container->view->renderWithVariables($userForm, $formVars, false);
+
+    $rightColDoc = TEMPLATE_PATH . DS . 'partials' . DS . 'rightCol.php';
+    $rightColVars = [ 'rightColVars' => '',
+                      'userInfoRight' => 'right side info passed in for user',
+                    ];
+    $rightCol = $this->container->view->renderWithVariables($rightColDoc, $rightColVars, false);
 
     // give vals to main.php template vars
 		$templateVars = [
@@ -30,6 +33,7 @@ class AuthController extends Controller {
 						'curURL' => $request->getUri()->getPath(),
 					],
 			'content' => $formContent,
+      'rightCol' => $rightCol,
 		];
 
 		// set() ONLY works on public_header vars -- all fixed vals set in main.php

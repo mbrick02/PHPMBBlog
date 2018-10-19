@@ -9,7 +9,6 @@ use app\specialClasses\FormBuild as FormBuild;
 <div class="form-group">  <label for="name">Name</label><input type="text"...>
 <div class="form-group">  <label for="password">Password</label> */
 
-
 $form = new FormBuild;
 
 $formAtrrib = [
@@ -56,5 +55,4 @@ $formContent .= $form->retInpDiv($fldAttribs);
 $fldAttribs = []; // clear field attributes assoc array
 
 $formContent .= $form->endForm(['submitTitle' =>'Create User']);
-echo $formContent; // DEBUG** TEST
-// $g_templateVars['form_content'] = $formContent;
+echo $formContent;

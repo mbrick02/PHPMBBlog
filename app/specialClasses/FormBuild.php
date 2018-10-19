@@ -26,10 +26,8 @@ class FormBuild {
     **************** */
     // note space before autocomlete but no space at end of str
     // DEL: $autoCompl = isset($assiVars['autocomplete']) ? " autocomplete=\"" . $assiVars['autocomplete'] . "\"";
-    $output = $this->retTag("div", ['class' => 'row']);
-    $output .= $this->retTag("div", ['class' => 'col-md-6 col-md-offset-3']);
-    $output .= $this->retTag("div");
-    $output .= $this->retClosedTag("div", ['class' => 'panel-heading'], $panelHeading);
+    $output = $this->retTag("div", ['class' => 'col-md-6 col-md-offset-1 float-left']);
+    $output .= $this->retClosedTag("div", ['class' => 'panel-heading'], "<h2>" . $panelHeading . "</h2>");
     $output .= $this->retTag("div", ['class' => 'panel-body']);
     $output .= $this->retTag("form", $assiVars);
 
@@ -58,8 +56,7 @@ class FormBuild {
 
     $class = " class =\"";
 
-    $class .= isset($assiVars['class']) ? $assiVars['class'] . " " : "";
-    $class .= "form-control" .  "\"";
+    $class .= isset($assiVars['class']) ? $assiVars['class'] . "\"" : "\"";
 
     $output .= $class;
 
@@ -95,7 +92,14 @@ class FormBuild {
   public function retInpFld($assiVars = []) {
     // inputs = $assiVars['type'] (options: 'name', 'value', etc)
     // examp: <input type="hidden" name="token" value="<?php echo Token::generate(); ">
-    $output = $this->retTag("input", $assiVars);
+    $inpVars = $assiVars;
+    if (!isset($inpVars['class'])) {
+      $inpVars['class'] = "form-control";
+    } elseif (!in_str($inpVars['class'], 'form-control')) {
+      $inpVars['class'] .= " form-control";
+    }
+
+    $output = $this->retTag("input", $inpVars);
     return $output;
   }
 
@@ -106,7 +110,7 @@ class FormBuild {
     }
     // Inputs: $assiVars['labelFor'] (and labl, type, name, id, and class)
     $output = "<div class=\"form-group\"> \n";
-    $output .= "<label for=\"{$assiVars['labelFor']}\">" . ucfirst($assiVars['label']) . "</label>\n";
+    $output .= "<label for=\"{$assiVars['labelFor']}\">" . ucfirst($assiVars['label']) . ":</label>\n";
 
     $inpFldVars = [];
 
@@ -118,7 +122,7 @@ class FormBuild {
     }
 
     $output .= $this->retInpFld($inpFldVars);
-    $output .= "</div>";
+    $output .= "</div>\n";
 
     return $output;
 
@@ -172,7 +176,7 @@ class FormBuild {
 
     $output = $this->retClosedTag("button", $buttonAttribs, $submitTitle);
 
-    $endTags = array('form', 'div', 'div', 'div', 'div');
+    $endTags = array('form', 'div', 'div');
 
     $output .= $this->endTags($endTags);
     return $output;

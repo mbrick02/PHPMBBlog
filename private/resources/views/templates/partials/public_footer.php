@@ -9,10 +9,12 @@
     </div>
 
   <?php } else { ?>
+    <div class="row">
+      <footer class="col-sm-6 col-md-8 footnote">
+        <p><?php echo "&copy " . date("Y") . " Michael Brickler" ; ?></p>
+      </footer>
+    </div><!-- end row -->
 
-    <footer class="footnote">
-      <p><?php echo "&copy " . date("Y") . " Michael Brickler" ; ?></p>
-    </footer>
   <?php } ?>
   </body>
 </html>

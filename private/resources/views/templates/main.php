@@ -3,7 +3,7 @@
 // also look at resources/views/templates/app.twig in PHP Slim framework Authentication 6/29
 // header has: page_title, urlForIndex, urlForMBBloglogo
 // 'container->' interpolated by parent/base __get() when getting view vals
-global $g_templateVars;
+// DEL non longer  uses: global $g_templateVars;
 
 // $container->view->filename = TEMPLATE_PATH . DS . 'partials' . DS . 'public_header.php';
 $container->view->filename = 'partials' . DS . 'public_header.php';
@@ -18,7 +18,7 @@ $template->display();		or $template->returnText(); ***** */
 // $container->view->set('page_title', "Template Test"); // in controller fixed header val set here
 $container->view->set('urlForIndex', "/");
 $container->view->set('urlForMBBlogLogo', IMG_SRC . "mbBlogLogo.jpg");
-$container->view->set('stylesheet', getBaseUrl() . '/stylesheets/public.css');
+$container->view->set('stylesheet', getBaseUrl() . 'stylesheets/public.css');
 // or $assignedVars = [ 'field1' => 'field1val', 'field2' => 'field2val'];
 echo $container->view->returnText();
 
@@ -67,10 +67,10 @@ echo $container->view->returnText();
 
 
 <!-- ************  END NAV HEAD TRIAL 10/16/18 ******************** -->
-    <div class="container">
+    <div class="row container">
       <!-- include('partials._messages') -->
-      <!-- yield('content') DEBUG:*** --><?php echo $content; ?>
-      <!-- include('partials._footer') -->
+      <?php echo $content; ?>
+      <?php echo $rightCol; ?>
 
     </div> <!-- end of .container -->
 

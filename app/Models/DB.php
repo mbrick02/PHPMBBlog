@@ -34,10 +34,11 @@ class DB {
 	  }
   }
 
-  public static function getInstance($table) {
-  	if(!isset(static::$_instance) || ($table != static::$table)) {
+  public static function getInstance($args = [], $table = "") {  // PHP OOP Login/R 7/23
+  	if(!isset(static::$_instance)) {
   		static::$_instance = new static;  // new subclass via static binding
-			static::$table = $table;
+			// || ($table != "" && $table != static::$table)  // ?allow for table change?
+			// static::$table = $table; // this should be set in child Model
 	  }
 	  return static::$_instance;
   }
@@ -83,20 +84,26 @@ class DB {
   	return false;
   }
 
+	protected function validate() {
+    $this->errors = [];
+
+    // Add custom validations
+
+    return $this->errors;
+  }
+
 	// *************NOT TESTED 9/27/18******Create
-	public function create($aryFlds="") {
-			 global $db;  // container->db should refernce this
+	public function create() {
 
-// **** NEED TO MAKE THIS BASED ON static::$columns ****
-			 if (!is_array($aryFlds)){  // default for user table
-			 	$aryFlds = array('username', 'password', 'first_name', 'last_name');
-			 }
-
-		 	$strFlds = implode(", ", $aryFlds);
-		 	$aryParams = $aryFlds;
+		 	$strFlds = implode(", ", static::$columns);
+		 	$aryParams = static::$columns;
 		 	foreach ($aryParams as &$value) {
 		 		$value = ':'.$value;
 		 	}
+			var_dump($aryParams)
+			echo "\n From DB.php create";
+			die(); // DEBUG** 10/21/18
+
 		 	unset($value);
 		 	$strParams = implode(", ", $aryParams);
 

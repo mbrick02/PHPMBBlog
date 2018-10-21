@@ -45,7 +45,7 @@ class AuthController extends Controller {
 
   public function postSignup($request, $response){
     // determine and capture errors: e.g. email is_blank, has_presence, has_length
-    $validation = ?validate($request, [
+    $validation = ?validate($request, [  // NOTE: Valication handled in Controller i
       'email' => v::noWhitespace()->notEmpty(),
       'name' => v::notEmpty(),
       'password' => v::noWhitespace()->notEmpty(),
@@ -56,6 +56,7 @@ class AuthController extends Controller {
       }
 
       // DEBUG**: var_dump($request->getParams()); // [Submit] ..auth/signup.twig = user form data
+      // ??????10/21/18 params????????? pass to __construct or getInstance()
       $user = User::create([
         'email'  => $request->getParam('email'),
         'name'  => $request->getParam('name')->alpha(),

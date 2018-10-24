@@ -20,7 +20,6 @@ class User extends DB {
 
 // ?? Do we need to check form $columns->$keys == $args->$keys ???
   protected static function initializeModel($args) {
-
     foreach (static::$columns as $key => $value) {
       if($key == 'id') { continue; } // form should not have id
       if($key == 'privilege_id') {
@@ -31,15 +30,15 @@ class User extends DB {
         static::$columns[$key] = $args[$key];
       } // DEBUG**: else { echo $key . " field not on form."; die(); }
     }
+    parent::initializeModel($args);
   }
 
-/* currently not necessary: DB/Parent handles calling initializeModel()
-	protected function __construct($args=[]) {
-    static::intializeModel($args);
+/* should NOT need
+  public static function getInstance($args = [], $table = "", $db = null) {
+    static::initializeModel($args);
+    parent::getInstance();
+  }   *********************     */
 
-    parent::__construct(); // connect to db (w/users table)
-  }
-*/
   public function fullname() {
     return static::$columns['fname'] . " " . static::$columns['lname'];
   }

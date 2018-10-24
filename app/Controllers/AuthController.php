@@ -41,11 +41,18 @@ class AuthController extends Controller {
     confirm_password, created_at, updated_at,    */
     $allPostVars = $request->getParsedBody();
     //Single POST parameter: $postParam = $allPostVars['postParam'];
-    // DEBUG** 10/22/18: var_dump($allPostVars);
-    // DEBUG** 10/22/18: echo "<br /> <h2>AuthController:postSignup SallPostVars</h2><hr /><br />";
-    // DEBUG** 10/22/18: die();
+    // DEBUG** 10/22/18:
+    var_dump($allPostVars);
+    // DEBUG** 10/22/18:
+    echo "<br /> <h2>AuthController:postSignup SallPostVars</h2><hr /><br />";
+    // DEBUG** 10/22/18:
+    die();
 
     $user = User::getInstance($allPostVars);
+    // ::query("SELECT * FROM users");
+      // ['results' => self::$_results, 'count' => self::$_count,]; OR false
+    var_dump($user);
+    die();
     // determine and capture errors: e.g. email is_blank, has_presence, has_length
     if ($user->create(array_keys($allPostVars))) {
       echo "Ready to create user " . $user->fullname;

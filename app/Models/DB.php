@@ -3,7 +3,7 @@
 namespace app\Models;
 use PDO;
 
-class DB {
+abstract class DB {
 	static protected $_instance = null;
 	static protected $_pdo;
 
@@ -11,7 +11,7 @@ class DB {
 	static protected $columns = [];
 	public $errors = [];
 
-	private $_query,
+	static protected $_query,
 		$_error = false,
 		$_results,
 		$_count = 0;
@@ -22,10 +22,8 @@ class DB {
 		$dbpw = Config::get('mysql/password');
 
 		try {
-			// PDO('mysql:host=x;dbname=y', 'usernam', 'pw');
-			// $this->_pdo = new PDO('mysql:host=' .
-			//  ... Config::get('mysql/host') . ';dbname=' .
-			// ... Config::get('mysql/db'),
+			// PDO('mysql:host=x;dbname=y', 'usernam', 'pw');$this->_pdo = new PDO('mysql:host='.
+			// ... Config::get('mysql/host') . ';dbname=' .// ... Config::get('mysql/db'),
 			// ...Config::get('mysql/username'), Config::get('mysql/password'));
 			static::$_pdo = new PDO($hostNdb, $dbuser, $dbpw);
 
@@ -51,6 +49,14 @@ class DB {
 		if(!isset(static::$_instance)) { // test for singleton (on instance of parent w/DB)
   		static::$_instance = new static;  // new subclass via static binding
 	  }
+
+		// var_dump($args);
+		// echo "<br />called by: " . get_called_class();
+		// echo static::$table;
+		// die();
+		static::initializeModel($args);
+		// var_dump(static::$_instance::$_pdo);
+		// die();
 		return static::$_instance;
   }
 
@@ -58,25 +64,35 @@ class DB {
 		return static::$table;
 	}
 
-  public static function query($sql, $params = array()) {
-  	$this->_error = false;
+	protected static function initializeModel($args) {
+		// most child classes should have this
+	}
 
-  	if($this->_query = self::$_pdo->prepare($sql)) {
+  public static function query($sql, $params = array()) {
+  	self::$_error = false;
+
+  	if(self::$_query = self::$_pdo->prepare($sql)) {
   		if(count($params)) {
   			foreach($params as $param) {
   				$this->_query->bindValue($param, static::$columns[$param]);
   			}
   		}
 
-		  if($this->_query->execute()) {
-				$this->_results = $this->_query->fetchAll(PDO::FETCH_OBJ);
-		  	$this->_count = $this->_query->rowCount();
+		  if(self::$_query->execute()) {
+				self::$_results = self::$_query->fetchAll(PDO::FETCH_OBJ);
+		  	self::$_count = self::$_query->rowCount();
 			} else {
-				$this->_error = true;
+				self::$_error = true;
 			}
   	}
 
-		return $this;
+		if (self::$_error == true){
+			return false;
+		}
+
+		return ['results' => self::$_results,
+						'count' => self::$_count,
+						];
   }
 
   public function action($action, $where = array()) {

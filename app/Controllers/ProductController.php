@@ -12,13 +12,13 @@ use app\specialClasses\FormBuild as FormBuild;
 class ProductController extends Controller {
 
 	public function index($request, $response) {
-		$product = Product::getInstance();
-		$products = $product->getAll(Product::getTable());
+		// $product = Product::getInstance();
+		$products = Product::getAll();
 
-		$productContent = "\n";
+		$productContent = "";
 		$productContent .= FormBuild::retTag("div", ['class' => 'col-md-6 col-md-offset-1 float-left']);
 
-		if(!$products['rowCount']) {
+		if(!isset($products['rowCount'])) {
 			$productContent .= '\n<h2>No products</h2>';
 		} else {
 			// controllers/products@show)

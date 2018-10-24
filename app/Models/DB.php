@@ -7,7 +7,7 @@ class DB {
 	static protected $_instance = null;
 	static protected $_pdo;
 
-	static protected $table = "";
+	static protected $table;
 	static protected $columns = [];
 	public $errors = [];
 
@@ -32,13 +32,7 @@ class DB {
 	  } catch(PDOException $e) {
 	  	die($e->getMessage());
 	  }
-		static::initializeModel($args);
   }
-
-	protected static function initializeModel($args) {
-		// use this in child DB models (e.g. User or Products) to set column vals
-		// Called in getInstance() -- every child of DB class needs this method w/unique col
-	}
 
 	public static function tableExists($table) {
 		$query = "SELECT 1 FROM ? LIMIT 1;";
@@ -49,12 +43,14 @@ class DB {
 		return $false;
 	}
 
-  public static function getInstance($args = [], $table = "") {  // PHP OOP Login/R 7/23
-		if(!isset(static::$_instance)) {
+  public static function getInstance($args = [], $table = "", $db = null) {  // PHP OOP Login/R 7/23
+		if(null != $db){
+			static::$_pdo = $db::$_pdo;  // if ever need to set to global $db::$_pdo
+		}
+
+		if(!isset(static::$_instance)) { // test for singleton (on instance of parent w/DB)
   		static::$_instance = new static;  // new subclass via static binding
 	  }
-
-		static::initializeModel($args);
 		return static::$_instance;
   }
 
@@ -162,11 +158,9 @@ class DB {
   	return $this->action("SELECT {$fieldsStr}", $where);
   }
 
-  public static function getAll($table) {
-		/*
-			 output are query records AND $results['rowCount'] OR $results['error']
-		*/
-		$sql = 'SELECT * FROM ' . $table;
+  public static function getAll() {
+		/* output are query records AND $results['rowCount'] OR $results['error'] */
+		$sql = 'SELECT * FROM ' . static::$table;// $table;
 		$query = self::$_pdo->prepare($sql);
 		if($query->execute()) {
 			$results['records'] = $query->fetchAll(PDO::FETCH_OBJ);

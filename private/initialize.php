@@ -95,8 +95,7 @@
   // Originally from Skoglund OOP course as mysqli but not PDO
   // pdo('mysql:host=' . Config::get('mysql/host') . '; dbnm=' . Config::get('mysql/name'));
   // container in app.php will reference this as a global:
-  $db = DB::getInstance();
-// controller access to db is now through container
+  $db = DB::getInstance();  // Note: controller access to db is now through container
 
   $session = new Session;
 ?>

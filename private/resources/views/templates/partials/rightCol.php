@@ -12,8 +12,8 @@ use app\specialClasses\FormBuild as FormBuild;
 
 $rihtPanel = new FormBuild;
 
-$rightCol = $rihtPanel->retTag("div", ['class' => '\float-right']);
-$rightCol .= $rihtPanel->retClosedTag("div", ['class' => 'navbar-nav ml-auto'], "<h3>" . $userInfoRight . "</h3>");
+$rightCol = $rihtPanel->retTag("div", ['class' => 'float-right my-lg-0']);
+$rightCol .= $rihtPanel->retClosedTag("div", ['class' => 'my-lg-0'], "<h3>" . $userInfoRight . "</h3>");
 
 $endTags = array('div', 'div');
 

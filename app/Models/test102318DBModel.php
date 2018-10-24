@@ -2,36 +2,17 @@
 
 namespace app\Models;
 use PDO;
+// use DBConnect as DBConn;
 
-class DB {
-	static protected $_instance = null;
-	static protected $_pdo;
+class DBModel {
+	static protected $_db = null;
 
 	static protected $table = "";
 	static protected $columns = [];
 	public $errors = [];
 
-	private $_query,
-		$_error = false,
-		$_results,
-		$_count = 0;
-
 	private function __construct($args = []) {
-		$hostNdb = 'mysql:host=' . Config::get('mysql/host') . ';dbname=' . Config::get('mysql/db');
-		$dbuser = Config::get('mysql/username');
-		$dbpw = Config::get('mysql/password');
-
-		try {
-			// PDO('mysql:host=x;dbname=y', 'usernam', 'pw');
-			// $this->_pdo = new PDO('mysql:host=' .
-			//  ... Config::get('mysql/host') . ';dbname=' .
-			// ... Config::get('mysql/db'),
-			// ...Config::get('mysql/username'), Config::get('mysql/password'));
-			static::$_pdo = new PDO($hostNdb, $dbuser, $dbpw);
-
-	  } catch(PDOException $e) {
-	  	die($e->getMessage());
-	  }
+		static::$_db = DBConnect::getInstance();
 		static::initializeModel($args);
   }
 
@@ -50,56 +31,12 @@ class DB {
 	}
 
   public static function getInstance($args = [], $table = "") {  // PHP OOP Login/R 7/23
-		if(!isset(static::$_instance)) {
-  		static::$_instance = new static;  // new subclass via static binding
-	  }
-
-		static::initializeModel($args);
-		return static::$_instance;
-  }
+			// ***probably DONT need since Singleton is in DBConnect
+	}
 
 	public static function getTable() {
 		return static::$table;
 	}
-
-  public static function query($sql, $params = array()) {
-  	$this->_error = false;
-
-  	if($this->_query = self::$_pdo->prepare($sql)) {
-  		if(count($params)) {
-  			foreach($params as $param) {
-  				$this->_query->bindValue($param, static::$columns[$param]);
-  			}
-  		}
-
-		  if($this->_query->execute()) {
-				$this->_results = $this->_query->fetchAll(PDO::FETCH_OBJ);
-		  	$this->_count = $this->_query->rowCount();
-			} else {
-				$this->_error = true;
-			}
-  	}
-
-		return $this;
-  }
-
-  public function action($action, $where = array()) {
-  	if(count($where) == 3) {
-			$operators = array('=', '>', '<', '>=', '<=');
-	  	$field = $where[0];
-	  	$operator = $where[1];
-	  	$value = $where[2];  // TODO: turn value into parameter assoc array: $where[2][$key]
-
-	  	if(in_array($operator, $operators)) {
-	  		$sql = "{$action} FROM {static::table} WHERE {$field} {$operator} :{$field}";
-
-	  		if(!$this->query($sql, array($value))->error()) {
-	  			return $this;
-	  		}
-  		}
-		} // end if(count($where) == 3)
-  	return false;
-  }
 
 	protected function validate() {
     $this->errors = [];
@@ -162,27 +99,12 @@ class DB {
   	return $this->action("SELECT {$fieldsStr}", $where);
   }
 
-  public static function getAll($table) {
-		/*
-			 output are query records AND $results['rowCount'] OR $results['error']
-		*/
-		$sql = 'SELECT * FROM ' . $table;
-		$query = self::$_pdo->prepare($sql);
-		if($query->execute()) {
-			$results['records'] = $query->fetchAll(PDO::FETCH_OBJ);
-			$results['rowCount'] = $query->rowCount();
-		} else {
-			$results['error'] = true;
-		}
-		return $results;
-  }
-
   public function delete($where) {
   	return $this->action('DELETE', $where);
   }
 
   public function results() {
-  	return self::_results;
+  	return $this->_results;
   }
 
 	public function first() {

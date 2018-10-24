@@ -6,62 +6,59 @@ use app\Models\User as User;
 // $app->get('/hello/:arg1', function ($name) use ($app) {  echo "Hello $name";})->name('hello'); // ?arg1=
 // /users and other named urls use url with urlFor()
 class AuthController extends Controller {
+  // protected static $container;
 
   public function getSignup($request, $response) {
-    $user = User::getInstance("users");
+    $user = User::getInstance();
 
     if(!$user->count()) {
       // $user->first()->username;
     }
     $userForm = VIEWS_PATH . DS . 'auth' . DS . 'signup.php';
     $formVars = [ 'userformvars' => '',];
-    $formContent = $this->container->view->renderWithVariables($userForm, $formVars, false);
-
+    $formContent = static::$container->view->renderWithVariables($userForm, $formVars, false);
+/* rightCol handled by parent(Controller.php)
     $rightColDoc = TEMPLATE_PATH . DS . 'partials' . DS . 'rightCol.php';
     $rightColVars = [ 'rightColVars' => '',
                       'userInfoRight' => 'right side info passed in for user',
                     ];
     $rightCol = $this->container->view->renderWithVariables($rightColDoc, $rightColVars, false);
-
+*/
     // give vals to main.php template vars
-		$templateVars = [
-			'cartExists' => $this->sessionExists('cart') ? 'Shows a cart' : 'No Cart',
-			'routeHasProfile' => 'Route has profile var',
-			'container' => $this->container,
-			'pageUrls' => [
-						'products' => $this->container->get('router')->pathFor('products'),
-						'curURL' => $request->getUri()->getPath(),
-					],
-			'content' => $formContent,
-      'rightCol' => $rightCol,
-		];
+		static::$templateVars['content'] = $formContent;
 
 		// set() ONLY works on public_header vars -- all fixed vals set in main.php
     // $this->container->view->set('content', "This is a test of templating using search replace.");
-		$this->container->view->set('page_title', "Authenticate");
+		static::$container->view->set('page_title', "Authenticate");
 		$maintemplate = TEMPLATE_PATH . DS . 'main.php';
-		$this->container->view->renderWithVariables($maintemplate, $templateVars); // , $optiondefltprint=true
+		static::$container->view->renderWithVariables($maintemplate, static::$templateVars); // , $optiondefltprint=true
   }
 
   public function postSignup($request, $response){
+    global $session;
+    // ??????10/21/18 params????????? pass to __construct or getInstance()
+    /*  id, privilege_id,username,email,fname,lname, password,
+    confirm_password, created_at, updated_at,    */
+    $allPostVars = $request->getParsedBody();
+    //Single POST parameter: $postParam = $allPostVars['postParam'];
+    // DEBUG** 10/22/18: var_dump($allPostVars);
+    // DEBUG** 10/22/18: echo "<br /> <h2>AuthController:postSignup SallPostVars</h2><hr /><br />";
+    // DEBUG** 10/22/18: die();
+
+    $user = User::getInstance($allPostVars);
     // determine and capture errors: e.g. email is_blank, has_presence, has_length
-    $validation = ?validate($request, [  // NOTE: Valication handled in Controller i
-      'email' => v::noWhitespace()->notEmpty(),
-      'name' => v::notEmpty(),
-      'password' => v::noWhitespace()->notEmpty(),
-      ]);
+    if ($user->create(array_keys($allPostVars))) {
+      echo "Ready to create user " . $user->fullname;
+    } else {
+      $session->message($session->display_errors($user->errors));
+      // DEBUG** 10/22/18: var_dump($user->errors);
+      // DEBUG** 10/22/18: echo "<br /> <h2>AuthController:postSignup !user-create</h2><hr /><br />";
+      // DEBUG** 10/22/18: var_dump($user);
+      // DEBUG** 10/22/18: die();
+      return $response->withRedirect($this->router->pathFor('user.create'));
+    }
 
-      if ($validation->failed()) {
-      return $response->withRedirect($this->router->pathFor('auth.signup'));
-      }
 
-      // DEBUG**: var_dump($request->getParams()); // [Submit] ..auth/signup.twig = user form data
-      // ??????10/21/18 params????????? pass to __construct or getInstance()
-      $user = User::create([
-        'email'  => $request->getParam('email'),
-        'name'  => $request->getParam('name')->alpha(),
-        'password'  => password_hash($request->getParam('password'), PASSWORD_DEFAULT),
-      ]);
 
       // to home w/built-in router func
       return $response->withRedirect($this->router->pathFor('home'));

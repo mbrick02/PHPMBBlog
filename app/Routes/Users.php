@@ -1,6 +1,8 @@
 <?php
 use app\Models\User as User;
-// get all products
-$app->get('/user/create', 'AuthController:getSignup')->setName('user.create');
 
-$app->post('/user/create', 'AuthController:postSignup');
+$app->group('/user', function() use ($app){
+  $app->get('/create', 'AuthController:getSignup')->setName('user.create');
+
+  $app->post('/create', 'AuthController:postSignup');
+});

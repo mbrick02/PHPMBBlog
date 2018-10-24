@@ -14,10 +14,13 @@ class User extends DB {
     'lname'=> "",
     'password'=> "",
     'confirm_password'=> "",
+    'created_at'=> "",
+    'updated_at'=> "",
   ];
 
 // ?? Do we need to check form $columns->$keys == $args->$keys ???
-	protected function __construct($args=[]) {
+  protected static function initializeModel($args) {
+
     foreach (static::$columns as $key => $value) {
       if($key == 'id') { continue; } // form should not have id
       if($key == 'privilege_id') {
@@ -28,8 +31,17 @@ class User extends DB {
         static::$columns[$key] = $args[$key];
       } // DEBUG**: else { echo $key . " field not on form."; die(); }
     }
+  }
+
+/* currently not necessary: DB/Parent handles calling initializeModel()
+	protected function __construct($args=[]) {
+    static::intializeModel($args);
 
     parent::__construct(); // connect to db (w/users table)
+  }
+*/
+  public function fullname() {
+    return static::$columns['fname'] . " " . static::$columns['lname'];
   }
 
   protected function validate() {

@@ -5,21 +5,41 @@ if(Token::check($_POST['token'])) {echo 'Process order';} */
 namespace App\Controllers;
 
 class Controller {
-	protected $container;
+	protected static $container;
+
+	static $rightColDoc;
+	static $rightColVars = [ 'rightColVars' => '',
+										'userInfoRight' => 'right side info passed in for user', ];
+	static $rightCol;
+
+	// give vals to main.php template vars
+	static $templateVars;
 
 // pass in entire $container make available to 'child'/extended controllers
   public function __construct($container) {
-		/* ** DEBUG: var_dump($container);
-		echo "<br />"; */
-		$this->container = $container;
-		// container defined in bootstrap/app.php
+		static::$container = $container; // container defined in bootstrap/app.php
+		static::$rightColDoc = TEMPLATE_PATH . DS . 'partials' . DS . 'rightCol.php';
+		static::$rightCol = static::$container->view->renderWithVariables(static::$rightColDoc, static::$rightColVars, false);
+
+		static::$templateVars = [
+			'cartExists' => $this->sessionExists('cart') ? 'Shows a cart' : 'No Cart',
+			'routeHasProfile' => 'Route has profile var',
+			'container' => static::$container,
+			'pageUrls' => [
+						'products' => static::$container->get('router')->pathFor('products'),
+						'curURL' => static::$container->request->getUri()->getPath(),
+					],
+			'content' => "",  // set by child
+			'rightCol' => static::$rightCol,
+		];
    }
+
 /* using __get() in this way does not seem to work in php 7.1.22 */
   public function __get($property) {  // can be used to create shortcut calls to property values
 	    // ***WARNING if overused, these shortcuts can be confusing
 			// ** DEBUG: var_dump($property);
-			if ($this->container->{$property}) {
-	        return $this->container->{$property};
+			if (static::$container->{$property}) {
+	        return static::$container->{$property};
 					// if prop in container, get w/out specifying container
 					// e.g HomeConroller->view instead HomeController->container->view
         }

@@ -2,7 +2,7 @@
 
   ob_start(); // turn on output buffering so build whole page and 'modify' header
 
-  use app\Models\DB;
+  use app\Models\DB as DB;
 
 //  session_start(); // implemented session.class instead // turn on sessions if needed
 
@@ -38,7 +38,7 @@
 ** above WON'T WORK - routing URLs thru /public/index.php so just '/dirname' */
 
   require_once('functions.php');
-  require_once('status_error_functions.php');
+  // Moved to private/classes/session.class.php: require_once('status_error_functions.php');
   require_once('db_credentials.php');
   require_once('database_functions.php');
   require_once('validation_functions.php');
@@ -95,7 +95,7 @@
   // Originally from Skoglund OOP course as mysqli but not PDO
   // pdo('mysql:host=' . Config::get('mysql/host') . '; dbnm=' . Config::get('mysql/name'));
   // container in app.php will reference this as a global:
-  $db = DB::getInstance("User");
+  $db = DB::getInstance();
 // controller access to db is now through container
 
   $session = new Session;

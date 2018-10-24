@@ -1,5 +1,5 @@
 <?php
-
+/* 10/22/18 THIS SHOULD ALL BE IN session.class.php
 function require_login() {
   global $session;
   if(!$session->is_logged_in()) {
@@ -32,5 +32,5 @@ function display_session_message() {
     return '<div id="message">' . h($msg) . '</div>';
   }
 }
-
+should all be in session class */
 ?>

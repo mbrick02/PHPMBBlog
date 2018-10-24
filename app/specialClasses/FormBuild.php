@@ -26,10 +26,10 @@ class FormBuild {
     **************** */
     // note space before autocomlete but no space at end of str
     // DEL: $autoCompl = isset($assiVars['autocomplete']) ? " autocomplete=\"" . $assiVars['autocomplete'] . "\"";
-    $output = $this->retTag("div", ['class' => 'col-md-6 col-md-offset-1 float-left']);
-    $output .= $this->retClosedTag("div", ['class' => 'panel-heading'], "<h2>" . $panelHeading . "</h2>");
-    $output .= $this->retTag("div", ['class' => 'panel-body']);
-    $output .= $this->retTag("form", $assiVars);
+    $output = self::retTag("div", ['class' => 'col-md-6 col-md-offset-1 float-left']);
+    $output .= self::retClosedTag("div", ['class' => 'panel-heading'], "<h2>" . $panelHeading . "</h2>");
+    $output .= self::retTag("div", ['class' => 'panel-body']);
+    $output .= self::retTag("form", $assiVars);
 
     $token = Token::generate();
     $inputFldVars = [
@@ -44,7 +44,7 @@ class FormBuild {
     return $output;
   }
 
-  public function retTag($tagType, $assiVars = []) {
+  public static function retTag($tagType, $assiVars = []) {
 
     $output = "<". $tagType;
     foreach ($assiVars as $key => $value) {
@@ -69,22 +69,22 @@ class FormBuild {
     return $output;
   }
 
-  public function endTag($tagType) {
+  public static function endTag($tagType) {
     return "</" . $tagType . ">\n";
   }
 
-  public function endTags($aryTags){
+  public static function endTags($aryTags){
     $output = "";
     foreach ($aryTags as $tag) {
-      $output .= $this->endTag($tag);
+      $output .= self::endTag($tag);
     }
     return $output;
   }
 
-  public function retClosedTag($tagType, $assiVars = [], $tagContent="") {
-    $output = $this->retTag($tagType, $assiVars);
+  public static function retClosedTag($tagType, $assiVars = [], $tagContent="") {
+    $output = self::retTag($tagType, $assiVars);
     $output .= $tagContent;
-    $output .= $this->endTag($tagType);
+    $output .= self::endTag($tagType);
 
     return $output;
   }
@@ -99,7 +99,7 @@ class FormBuild {
       $inpVars['class'] .= " form-control";
     }
 
-    $output = $this->retTag("input", $inpVars);
+    $output = self::retTag("input", $inpVars);
     return $output;
   }
 

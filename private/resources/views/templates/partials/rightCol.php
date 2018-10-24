@@ -9,14 +9,11 @@ use app\specialClasses\FormBuild as FormBuild;
   <input type="email" name="email" id="email" placeholder="u@dom.com" class="form-control">
 <div class="form-group">  <label for="name">Name</label><input type="text"...>
 <div class="form-group">  <label for="password">Password</label> */
-
-$rihtPanel = new FormBuild;
-
-$rightCol = $rihtPanel->retTag("div", ['class' => 'float-right my-lg-0']);
-$rightCol .= $rihtPanel->retClosedTag("div", ['class' => 'my-lg-0'], "<h3>" . $userInfoRight . "</h3>");
+$rightCol = FormBuild::retTag("div", ['class' => 'float-right my-lg-0']);
+$rightCol .= FormBuild::retClosedTag("div", ['class' => 'my-lg-0'], "<h3>" . $userInfoRight . "</h3>");
 
 $endTags = array('div', 'div');
 
-$rightCol .= $rihtPanel->endTags($endTags);
+$rightCol .=  FormBuild::endTags($endTags);
 
 echo $rightCol;

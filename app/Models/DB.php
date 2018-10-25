@@ -12,8 +12,8 @@ abstract class DB {
 	public $errors = [];
 
 	static protected $_query,
-		$_error = false,
-		$_results,
+		$_error = false;
+	private	$_results,
 		$_count = 0;
 
 	private function __construct($args = []) {
@@ -26,7 +26,6 @@ abstract class DB {
 			// ... Config::get('mysql/host') . ';dbname=' .// ... Config::get('mysql/db'),
 			// ...Config::get('mysql/username'), Config::get('mysql/password'));
 			static::$_pdo = new PDO($hostNdb, $dbuser, $dbpw);
-
 	  } catch(PDOException $e) {
 	  	die($e->getMessage());
 	  }
@@ -50,13 +49,16 @@ abstract class DB {
   		static::$_instance = new static;  // new subclass via static binding
 	  }
 
-		// var_dump($args);
-		// echo "<br />called by: " . get_called_class();
-		// echo static::$table;
-		// die();
 		static::initializeModel($args);
-		// var_dump(static::$_instance::$_pdo);
-		// die();
+		if (!empty($args)) { // DEBUG ** 10/25
+			var_dump($args);
+			echo "<br />called by: " . get_called_class() . "<br>";
+			echo "Table: " .static::$table . "<br>Instance: ";
+			var_dump(static::$_instance); // ::$_pdo
+			// die();
+			die();
+		}
+
 		return static::$_instance;
   }
 

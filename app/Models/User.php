@@ -18,17 +18,33 @@ class User extends DB {
     'updated_at'=> "",
   ];
 
+  public $setCols;
+
 // ?? Do we need to check form $columns->$keys == $args->$keys ???
   protected static function initializeModel($args) {
-    foreach (static::$columns as $key => $value) {
+    foreach (static::$columns as $key => &$value) {
       if($key == 'id') { continue; } // form should not have id
       if($key == 'privilege_id') {
         static::$columns[$key] = 2;  // user (2) privs -- other privs set elsewhere
         continue;
       }
       if (isset($args[$key])){
-        static::$columns[$key] = $args[$key];
+        $value = $args[$key];
       } // DEBUG**: else { echo $key . " field not on form."; die(); }
+      static::$_instance::$columns = static::$columns;
+    // can't have $this in static  $this->$setCols = static::$columns;
+      if (!empty($args) && ($key != 'id') && ($key != 'privilege_id')) { // DEBUG ** 10/25
+        var_dump($args);
+        echo "<br>columns:<br>";
+        var_dump(static::$columns);
+        echo "<br />In initialize, called by: " . get_called_class() . "<br>";
+        echo "Table: " . static::$table . "<br>";
+        echo isset($args[$key]) ? "args key set" : "args key NOT set";
+        echo "<br>column: {$key},  Value: {$value}, Args[{$key}]: $args[$key]<br>Instance: ";
+        var_dump(static::$_instance); // ::$_pdo
+        // die();
+        die();
+      }
     }
     parent::initializeModel($args);
   }

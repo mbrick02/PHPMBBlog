@@ -34,18 +34,15 @@ class User extends DB {
 
     // DEBUG 10/26/18 **** if  !empty ... != 'id'
       if (!empty($args) && ($key != 'id') && ($key != 'privilege_id')) { // DEBUG ** 10/25
-        // var_dump($args);
-        // echo "<br>columns:<br>";
-        // var_dump(static::$columns);
-        // echo "<br>";
-        // var_dump(static::$_instance::$columns);
-        // echo "<br />In initialize, called by: " . get_called_class() . "<br>";
-        // echo "Table: " . static::$table . "<br>";
-        // echo isset($args[$key]) ? "args key set" : "args key NOT set";
-        // echo "<br>column: {$key},  Value: {$value}, Args[{$key}]: $args[$key]<br>Instance: ";
-        // var_dump(static::$_instance); // ::$_pdo
-        // // die();
+        var_dump($args);
+        echo "<br>columns:<br>";
+        var_dump(static::$columns);
+        echo "<br />In initialize, called by: " . get_called_class() . "<br>";
+        echo "Table: " . static::$table . "<br>";
+        echo isset($args[$key]) ? "args key set" : "args key NOT set";
+        echo "<br>column: {$key},  Value: {$value}, Args[{$key}]: ". ($args['user'][$key] ?? "not set") ."<br>Instance: ";
         // die();
+        die();
       }
     }
     parent::initializeModel($args);

@@ -41,7 +41,7 @@ class AuthController extends Controller {
     confirm_password, created_at, updated_at,    */
     $allPostVars = $request->getParsedBody();
     //Single POST parameter: $postParam = $allPostVars['postParam'];
-    // DEBUG** 10/22/18: var_dump($allPostVars);
+    // DEBUG** 10/26/18 test $_POST['admin']: var_dump($allPostVars);
     // DEBUG** 10/22/18: echo "<br /> <h2>AuthController:postSignup SallPostVars</h2><hr /><br />";
     // DEBUG** 10/22/18: die();
 

@@ -16,7 +16,7 @@ abstract class DB {
 		$_count = 0;
 
 	private function __construct($args = []) {
-		// *** below NOW handled by PDOConn
+		// *** PDO DB setup handled by PDOConn
 		// $hostNdb = 'mysql:host=' . Config::get('mysql/host') . ';dbname=' . Config::get('mysql/db');
 		// $dbuser = Config::get('mysql/username');
 		// $dbpw = Config::get('mysql/password');
@@ -30,6 +30,10 @@ abstract class DB {
 	  // 	die($e->getMessage());
 	  // }
   }
+
+	public static function set_PDO($pdo){
+		static::$_pdo = $pdo;
+	}
 
 	public static function tableExists($table) {
 		$query = "SELECT 1 FROM ? LIMIT 1;";
@@ -179,6 +183,7 @@ abstract class DB {
   public static function getAll() {
 		/* output are query records AND $results['rowCount'] OR $results['error'] */
 		$sql = 'SELECT * FROM ' . static::$table;// $table;
+
 		$query = self::$_pdo->prepare($sql);
 		if($query->execute()) {
 			$results['records'] = $query->fetchAll(PDO::FETCH_OBJ);
@@ -188,6 +193,32 @@ abstract class DB {
 		}
 		return $results;
   }
+
+	/* *************Skoglund VERSIONS TO BE TRANSLATED to PDO
+
+	static public function find_all() {
+	$sql = "SELECT * FROM " . static::$table_name;
+	return static::find_by_sql($sql);
+}
+
+static public function count_all() {
+	$sql = "SELECT COUNT(*) FROM " . static::$table_name;
+	$result_set = self::$database->query($sql);
+	$row = $result_set->fetch_array();
+	return array_shift($row);
+}
+
+static public function find_by_id($id) {
+	$sql = "SELECT * FROM " . static::$table_name . " ";
+	$sql .= "WHERE id='" . self::$database->escape_string($id) . "'";
+	$obj_array = static::find_by_sql($sql);
+	if(!empty($obj_array)) {
+		return array_shift($obj_array);
+	} else {
+		return false;
+	}
+}
+	****************************** */
 
   public function delete($where) {
   	return $this->action('DELETE', $where);

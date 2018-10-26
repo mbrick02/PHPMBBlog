@@ -3,28 +3,35 @@
 namespace app\Models;
 use PDO;
 
-class PDOConn {
-	static protected $_pdo;
+class PDOConn extends PDO {
 
-	private function __construct() {
+	public function __construct($options = []) {
   		$hostNdb = 'mysql:host=' . Config::get('mysql/host') . ';dbname=' . Config::get('mysql/db');
   		$dbuser = Config::get('mysql/username');
   		$dbpw = Config::get('mysql/password');
 
+			$default_options = [
+					PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+					PDO::ATTR_EMULATE_PREPARES => false,
+					PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+			];
+			$options = array_replace($default_options, $options);
   		try {
   			// PDO('mysql:host=x;dbname=y', 'usernam', 'pw');$this->_pdo = new PDO('mysql:host='.
   			// ... Config::get('mysql/host') . ';dbname=' .// ... Config::get('mysql/db'),
   			// ...Config::get('mysql/username'), Config::get('mysql/password'));
-  			static::$_pdo = new PDO($hostNdb, $dbuser, $dbpw);
+  			parent::__construct($hostNdb, $dbuser, $dbpw, $options);
   	  } catch(PDOException $e) {
   	  	die($e->getMessage());
   	  }
     }
 
-    public static function getInstance() {  // PHP OOP Login/R 7/23
-      if(!isset(static::$_pdo)) { // test for singleton (on instance of parent w/DB)
-        static::$_pdo = new static;  // new subclass via static binding
-      }
-      return static::$_pdo;
-    }
-  }
+		public function run($sql, $args = NULL) {
+			if (!$args){
+					 return $this->query($sql);
+			}
+			$stmt = $this->prepare($sql);
+			$stmt->execute($args);
+			return $stmt;
+		}
+	}

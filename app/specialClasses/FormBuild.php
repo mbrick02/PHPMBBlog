@@ -19,6 +19,17 @@ use Token as Token;
 "\n" for newline (Linux & Mac -- Win takes it okay)
 */
 class FormBuild {
+  private static $_nameAry = "";
+
+  private function __construct($nameAry = "") {
+    static::$_nameAry = $nameAry; // reset to empty
+  }
+
+public static function instantiate($nameAry) {
+    $object = new static($nameAry);
+    return $object;
+  }
+
   public function formTopDecl($assiVars = [], $panelHeading) {
     /* ****  Inputs:  $assiVars['action'] & ['csrf_field']
     Examp:<form action="{{ path_for('****auth.signup')}}" method="post" autocomplete="off">
@@ -47,10 +58,13 @@ class FormBuild {
   public static function retTag($tagType, $assiVars = []) {
 
     $output = "<". $tagType;
-    foreach ($assiVars as $key => $value) {
+    foreach ($assiVars as $key => &$value) {
       // noValue - attribs that have no val e.g. 'required'
       if ($key == 'noValue') { continue; }
       if ($key == 'class') { continue; }
+      if ($key == 'name' && (!empty(static::$_nameAry))) {
+        $value = static::$_nameAry . "['{$value}']";
+      }
       $output .= " " . $key . "=\"{$value}\"";
     }
 

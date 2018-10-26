@@ -3,6 +3,7 @@
   ob_start(); // turn on output buffering so build whole page and 'modify' header
 
   use app\Models\PDOConn as PDOConn;
+  use app\Models\DB as DB;
 
 //  session_start(); // implemented session.class instead // turn on sessions if needed
 
@@ -92,7 +93,7 @@
 //      spl_autoload_register(function($class) {	require_once 'classes/' . $class . '.php'; });
 // pdo('mysql:host=' . Config::get('mysql/host') . '; dbnm=' . Config::get('mysql/name'));
   // container in app.php will reference this as a global:
-  $db = PDOConn::getInstance();  // Note: controller access to db is now through container
-
+  $db = new PDOConn;  // Note: controller access to db is now through container
+  DB::set_PDO($db);
   $session = new Session;
 ?>

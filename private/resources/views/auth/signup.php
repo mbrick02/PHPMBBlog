@@ -9,7 +9,7 @@ use app\specialClasses\FormBuild as FormBuild;
 <div class="form-group">  <label for="name">Name</label><input type="text"...>
 <div class="form-group">  <label for="password">Password</label> */
 
-$form = new FormBuild;
+$form = FormBuild::instantiate('user'); // 'user' sets up: $args = $_POST['user'];
 
 $formAtrrib = [
 	'action' => '/user/create',
@@ -46,7 +46,6 @@ $fldAttribs = [
 	'type' => 'password',
 	'name' => 'confirm_password',
 	'id' => 'confirm_password',
-	'name' => 'confirm_password',
 	'label' => 'Confirm Password',
 	'labelFor' => 'Confirm Password',
 ];  // form field attributes

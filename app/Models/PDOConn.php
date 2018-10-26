@@ -3,10 +3,10 @@
 namespace app\Models;
 use PDO;
 
-class GetPDO.php {
+class PDOConn {
 	static protected $_pdo;
 
-	private function __construct($args = []) {
+	private function __construct() {
   		$hostNdb = 'mysql:host=' . Config::get('mysql/host') . ';dbname=' . Config::get('mysql/db');
   		$dbuser = Config::get('mysql/username');
   		$dbpw = Config::get('mysql/password');
@@ -21,7 +21,7 @@ class GetPDO.php {
   	  }
     }
 
-    public static function getInstance($args = [], $table = "", $db = null) {  // PHP OOP Login/R 7/23
+    public static function getInstance() {  // PHP OOP Login/R 7/23
       if(!isset(static::$_pdo)) { // test for singleton (on instance of parent w/DB)
         static::$_pdo = new static;  // new subclass via static binding
       }

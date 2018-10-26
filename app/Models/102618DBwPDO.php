@@ -4,11 +4,12 @@ namespace app\Models;
 use PDO;
 
 abstract class DB {
-	static protected $_pdo = null;
+	static protected $_instance = null;
+	static protected $_pdo;
+
 	static protected $table;
 	static protected $columns = [];
 	public $errors = [];
-	public $fields = []; // for instance columns
 
 	static protected $_query,
 		$_error = false;
@@ -16,33 +17,36 @@ abstract class DB {
 		$_count = 0;
 
 	private function __construct($args = []) {
-		// *** below NOW handled by PDOConn
-		// $hostNdb = 'mysql:host=' . Config::get('mysql/host') . ';dbname=' . Config::get('mysql/db');
-		// $dbuser = Config::get('mysql/username');
-		// $dbpw = Config::get('mysql/password');
-		//
-		// try {
-		// 	// PDO('mysql:host=x;dbname=y', 'usernam', 'pw');$this->_pdo = new PDO('mysql:host='.
-		// 	// ... Config::get('mysql/host') . ';dbname=' .// ... Config::get('mysql/db'),
-		// 	// ...Config::get('mysql/username'), Config::get('mysql/password'));
-		// 	static::$_pdo = new PDO($hostNdb, $dbuser, $dbpw);
-	  // } catch(PDOException $e) {
-	  // 	die($e->getMessage());
-	  // }
+		$hostNdb = 'mysql:host=' . Config::get('mysql/host') . ';dbname=' . Config::get('mysql/db');
+		$dbuser = Config::get('mysql/username');
+		$dbpw = Config::get('mysql/password');
+
+		try {
+			// PDO('mysql:host=x;dbname=y', 'usernam', 'pw');$this->_pdo = new PDO('mysql:host='.
+			// ... Config::get('mysql/host') . ';dbname=' .// ... Config::get('mysql/db'),
+			// ...Config::get('mysql/username'), Config::get('mysql/password'));
+			static::$_pdo = new PDO($hostNdb, $dbuser, $dbpw);
+	  } catch(PDOException $e) {
+	  	die($e->getMessage());
+	  }
   }
 
 	public static function tableExists($table) {
 		$query = "SELECT 1 FROM ? LIMIT 1;";
 
-		if(!static::query($sql, array($table))->error()) {
+		if(!$this->query($sql, array($table))->error()) {
 			return true;
 		}
 		return $false;
 	}
 
-  public static function getInstance($args = [], $table = "") {  // PHP OOP Login/R 7/23
-		if(!isset(static::$_pdo)) { // test for singleton (on instance of parent w/DB)
-  		static::$_pdo = PDOConn::getInstance();  // new subclass via static binding
+  public static function getInstance($args = [], $table = "", $db = null) {  // PHP OOP Login/R 7/23
+		if(null != $db){
+			static::$_pdo = $db::$_pdo;  // if ever need to set to global $db::$_pdo
+		}
+
+		if(!isset(static::$_instance)) { // test for singleton (on instance of parent w/DB)
+  		static::$_instance = new static;  // new subclass via static binding
 	  }
 
 		static::initializeModel($args);
@@ -55,11 +59,8 @@ abstract class DB {
 			// die();
 		}
 
-		$dbObject = new static;
-		$dbObject->fields = static::$columns; // essentially pass to instance
-		// DEBUG ???return static or columns or ????
-		return $dbObject->validate(); // return $dbObject w/->errors[?]
-		// return $dbobject;
+		return static::$columns;
+		// static::$_instance;
   }
 
 	public static function getTable() {
@@ -134,7 +135,7 @@ abstract class DB {
 				echo "\n From DB.php create";
 				die(); // DEBUG** 10/21/18
 
-			 	unset($value); // clear for future use
+			 	unset($value);
 			 	$strParams = implode(", ", $aryParams);
 
 			 	// combine so $fld_param_fld_ary[':fieldx'] = 'fieldx'

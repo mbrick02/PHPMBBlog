@@ -14,6 +14,7 @@ class AuthController extends Controller {
     if(!$user->count()) {
       // $user->first()->username;
     }
+    // ***10/27 pass in nameAry 'user' to signup and use in initialize($nameAryVar)
     $userForm = VIEWS_PATH . DS . 'auth' . DS . 'signup.php';
     $formVars = [ 'userformvars' => '',];
     $formContent = static::$container->view->renderWithVariables($userForm, $formVars, false);
@@ -48,18 +49,23 @@ class AuthController extends Controller {
     $user = User::getInstance($allPostVars);
     // ::query("SELECT * FROM users");
       // ['results' => self::$_results, 'count' => self::$_count,]; OR false
-    var_dump($user);
-    die();
+    if ($user->errors){
+      // keep current vals in form
+
+      // set session message to errors (?if NOT already done in validate)
+      $session->message($session->display_errors($user->errors));
+
+      // redirect back to for
+      return $response->withRedirect($this->router->pathFor('user.create'));
+      // DEBUG** var_dump($user->errors);
+      // DEBUG** die();
+    }
     // determine and capture errors: e.g. email is_blank, has_presence, has_length
     if ($user->create(array_keys($allPostVars))) {
       echo "Ready to create user " . $user->fullname;
     } else {
-      $session->message($session->display_errors($user->errors));
-      // DEBUG** 10/22/18: var_dump($user->errors);
-      // DEBUG** 10/22/18: echo "<br /> <h2>AuthController:postSignup !user-create</h2><hr /><br />";
-      // DEBUG** 10/22/18: var_dump($user);
-      // DEBUG** 10/22/18: die();
-      return $response->withRedirect($this->router->pathFor('user.create'));
+
+
     }
 
 

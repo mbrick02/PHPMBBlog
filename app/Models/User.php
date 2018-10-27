@@ -21,29 +21,35 @@ class User extends DB {
 
 // ?? Do we need to check form $columns->$keys == $args->$keys ???
   protected static function initializeModel($args) {
+    $formAry = rtrim(static::$table, "s"); // "user"; // ?always table name minus ending 's'
     foreach (static::$columns as $key => &$value) {
       if($key == 'id') { continue; } // form should not have id
       if($key == 'privilege_id') {
         static::$columns[$key] = 2;  // user (2) privs -- other privs set elsewhere
         continue;
       }
-      if (isset($args[$key])){
-        $value = $args[$key];
+      if (isset($args[$formAry][$key])){
+        $value = $args[$formAry][$key]; // ***10/28 $args[$argsNameAry][$key]
       } // DEBUG**: else { echo $key . " field not on form."; die(); }
     // can't have $this in static  $this->$setCols = static::$columns;
 
     // DEBUG 10/26/18 **** if  !empty ... != 'id'
-      if (!empty($args) && ($key != 'id') && ($key != 'privilege_id')) { // DEBUG ** 10/25
-        var_dump($args);
-        echo "<br>columns:<br>";
-        var_dump(static::$columns);
-        echo "<br />In initialize, called by: " . get_called_class() . "<br>";
-        echo "Table: " . static::$table . "<br>";
-        echo isset($args[$key]) ? "args key set" : "args key NOT set";
-        echo "<br>column: {$key},  Value: {$value}, Args[{$key}]: ". ($args['user'][$key] ?? "not set") ."<br>Instance: ";
-        // die();
-        die();
-      }
+      // if (!empty($args) && ($key != 'id') && ($key != 'privilege_id')) { // DEBUG ** 10/25
+      //   var_dump($args);
+      //   echo "<br>args:<br>";
+      //   var_dump($args['user']['username']);
+      //   echo "<br>value: " . $value . "  | args[formAry][key]: " . $args[$formAry][$key];
+      //   echo "<br><br>***********<br>args0$key:<br>";
+      //   var_dump($args['user']);
+      //   echo "<br>columns:<br>";
+      //   var_dump(static::$columns);
+      //   echo "<br />In initialize, called by: " . get_called_class() . "<br>";
+      //   echo "Table: " . static::$table . "<br>";
+      //   echo isset($args[$key]) ? "args key set" : "args key NOT set";
+      //   echo "<br>column: {$key},  Value: {$value}, Args['user'][{$key}]: "
+      //       . ($args['user'][$key] ?? "not set") . "<br>Instance: ";
+      //   die();
+      // }
     }
     parent::initializeModel($args);
   }

@@ -63,7 +63,7 @@ public static function instantiate($nameAry) {
       if ($key == 'noValue') { continue; }
       if ($key == 'class') { continue; }
       if ($key == 'name' && (!empty(static::$_nameAry))) {
-        $value = static::$_nameAry . "['{$value}']";
+        $value = static::$_nameAry . "[{$value}]";
       }
       $output .= " " . $key . "=\"{$value}\"";
     }

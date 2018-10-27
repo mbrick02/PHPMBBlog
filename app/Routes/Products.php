@@ -43,7 +43,7 @@ $app->get('/api/products/{id}', function($request) {
   echo "<br /> Thanks for looking at a product!";
 });
 
-// post data and create a new record in the db
+// **REDO old ver from course - post data and create a new record in the db
 $app->post('/api/products', function($request) {
   $my_name = $_POST['my_name'];
   echo "hello " . $my_name . "<br />";

@@ -39,8 +39,11 @@
   // }
 
   // or $assignedVars = [ 'field1' => 'field1val', 'field2' => 'field2val'];
-  $output = $container->view->returnText();
+//  $output = $container->view->returnText();
   // DEBUG 10/29 **************************
+  $headerTemplate = TEMPLATE_PATH . DS . 'partials' . DS . 'public_header.php';
+  static::$container->view->renderWithVariables($headerTemplate);
+// MORE DEBUG 10/29 ***************
   if (!empty($msgHeader)) {
     // echo "In main.php -- container->view template assigned vars: <br>";
     // var_dump($container->view->assignedVars);

@@ -1,15 +1,12 @@
 <?php
 
 class Session {
-
   private $user_id;
   public $username;
   private $last_login;
-
   // public const MAX_LOGIN_AGE = 60*60*24; // v7.1 NOT 7.0 1 day
   const MAX_LOGIN_AGE = 60*60*24; // 1 day
   // define('MAX_LOGIN_AGE', 60*60*24);
-
   public function __construct() {
     session_start();
     $this->check_stored_login();
@@ -17,7 +14,7 @@ class Session {
 
   // Codecourse PHP OOP Login CSRF (p12/23)  session/token ***
   public static function exists($name) {
-    return (isset($_SESSION['$name']) ? true : false);
+    return (isset($_SESSION[$name]) ? true : false);
   }
 
   public static function put($name, $value){
@@ -80,7 +77,8 @@ class Session {
     }
   }
 
-  public function message($msg="") {
+  public static function message($msg="") {
+    // SECURITY NOTE: can NOT have user content in message -- h($msg) for any user content
     if(!empty($msg)) {
       // Then this is a "set" message
       $_SESSION['message'] = $msg;
@@ -91,8 +89,27 @@ class Session {
     }
   }
 
-  public function clear_message() {
+  public static function errMsg($errmsg=[]) {
+    /*  Get/Set $_SESSION['errors']
+    input: array of errorm messages OR
+      output: array of error messages */
+    // SECURITY NOTE: can NOT have user content in message -- h($msg) for any user content
+    if(!empty($errmsg)) {
+      // Then this is a "set" message
+      $_SESSION['errors'] = $errmsg;
+      return true;
+    } else {
+      // Then this is a "get" message
+      return $_SESSION['errors'] ?? '';
+    }
+  }
+
+  public static function clear_message() {
     unset($_SESSION['message']);
+  }
+
+  public static function clear_errors() {
+    unset($_SESSION['errors']);
   }
 
   public function display_errors($errors=array()) {
@@ -107,16 +124,30 @@ class Session {
       $output .= "</ul>";
       $output .= "</div>";
     }
+    static::clear_errors();
     return $output;
   }
 
   public function display_session_message() {
-    global $session;
-    $msg = $session->message();
-    if(isset($msg) && $msg != '') {
-      $session->clear_message();
-      return '<div id="message">' . h($msg) . '</div>';
-    }
+    // SECURITY NOTE: can NOT have user content in message -- h($msg) for any user content
+    $msg = static::message();
+    $output = "";
+
+    if(isset($msg) && ($msg != '')) {
+      if (is_array($msg)){
+        $output .= "Concerns:";
+        $output .= "<ul>";
+        foreach($msg as $item) {
+          $output .= "<li>" . h($error) . "</li>";
+        }
+        $output .= "</ul>";
+      } else {
+        $output .= $msg;
+      }
+
+      static::clear_message();
+      return '<div id="message">' . $output . '</div>';
+    } // else return nothing so that
   }
 }
 ?>

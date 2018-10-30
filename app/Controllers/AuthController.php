@@ -41,24 +41,17 @@ class AuthController extends Controller {
     /*  id, privilege_id,username,email,fname,lname, password,
     confirm_password, created_at, updated_at,    */
     $allPostVars = $request->getParsedBody();
-    //Single POST parameter: $postParam = $allPostVars['postParam'];
-    // DEBUG** 10/26/18 test $_POST['admin']: var_dump($allPostVars);
-    // DEBUG** 10/22/18: echo "<br /> <h2>AuthController:postSignup SallPostVars</h2><hr /><br />";
-    // DEBUG** 10/22/18: die();
 
     $user = User::getInstance($allPostVars);
-    // ::query("SELECT * FROM users");
-      // ['results' => self::$_results, 'count' => self::$_count,]; OR false
+
     if ($user->errors){
       // keep current vals in form
 
       // set session message to errors (?if NOT already done in validate)
-      $session->message($session->display_errors($user->errors));
+      $session->errMsg($user->errors);
 
       // redirect back to for
       return $response->withRedirect($this->router->pathFor('user.create'));
-      // DEBUG** var_dump($user->errors);
-      // DEBUG** die();
     }
     // determine and capture errors: e.g. email is_blank, has_presence, has_length
     if ($user->create(array_keys($allPostVars))) {
@@ -67,8 +60,6 @@ class AuthController extends Controller {
 
 
     }
-
-
 
       // to home w/built-in router func
       return $response->withRedirect($this->router->pathFor('home'));

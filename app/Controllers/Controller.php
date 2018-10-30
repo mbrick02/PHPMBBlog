@@ -20,9 +20,10 @@ class Controller {
 		static::$container = $container; // container defined in bootstrap/app.php
 		static::$rightColDoc = TEMPLATE_PATH . DS . 'partials' . DS . 'rightCol.php';
 		static::$rightCol = static::$container->view->renderWithVariables(static::$rightColDoc, static::$rightColVars, false);
+		global $session;
 
 		static::$templateVars = [
-			'cartExists' => $this->sessionExists('cart') ? 'Shows a cart' : 'No Cart',
+			'cartExists' => $session->exists('cart') ? 'Shows a cart' : 'No Cart',
 			'routeHasProfile' => 'Route has profile var',
 			'container' => static::$container,
 			'pageUrls' => [
@@ -54,11 +55,13 @@ class Controller {
         }
   }
 ****	  */
+/* 10/29/18  this out to simplify
 	public function sessionExists($sessionAttrib) {
 		global $session;
 		if ($session->exists($sessionAttrib)){
 			return true;
 		} else { return false; }
 	}
+*/
 
 }

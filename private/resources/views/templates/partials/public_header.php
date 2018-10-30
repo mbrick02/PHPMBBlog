@@ -21,4 +21,5 @@
           <img class="mb-icon" src="{urlForMBBlogLogo}" />MB Blog
         </a>
       </h1>
+      {msgHeader}
     </header>

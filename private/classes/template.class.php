@@ -17,9 +17,14 @@ class Template {
 		return $this->templatePath . DS . $this->filename;
 	}
 
-  function display($filename = "main.php", $assignedVars = []) {
+  function display($assignedVars = [], $filename = "") {
+		if (($filename == "") && ($this->filename == "")) {
+			$this->filename = "main.php"; // set default
+		} elseif (!empty($filename)) {
+			$this->filename = $filename;
+		}
 		// args?: $assignedVars
-		$fullpath = $this->filePath($filename);
+		$fullpath = $this->filePath($this->filename);
   	if(file_exists($fullpath)) {
   		$output = file_get_contents($fullpath);
 			if (!empty($assignedVars)) {
@@ -33,12 +38,26 @@ class Template {
   	} else {
   		echo "*** Missing template error filename shows: {$this->filePath($filename)}****";
   	}
+		$this->assignedVars = []; // zero out assigned vars
   }
 
-  function returnText($assignedVars = []) { // must set $this->filename = file before use
+  function returnText($assignedVars = [], $filename = "") { // must set $this->filename = file before use
+		if (($filename == "") && ($this->filename == "")) {
+			$this->filename = "main.php"; // set default filename
+		} elseif (!empty($filename)) {
+			$this->filename = $filename;
+		}
+		// args?: $assignedVars
 		$fullpath = $this->filePath($this->filename);
   	if(file_exists($fullpath)) {
   		$output = file_get_contents($fullpath);
+// DEBUG 10/29**	 **********msgHeader***********************************NOT showing div		//
+			if (isset($assignedVars['msgHeader'])) {
+				echo "In tewmplate:returnText assignedVars: <br>";
+				var_dump($this->assignedVars);
+				die();
+			}
+
 			if (!empty($assignedVars)) {
 				$this->assignedVars = $assignedVars;
 			}
@@ -46,6 +65,8 @@ class Template {
   			$output = preg_replace('/{'.$key.'}/', $value, $output);
   			// above is: regular expression replace
   		}
+
+			$this->assignedVars = []; // zero out assigned vars
   		return $output;
   	} else {
 			// DEBUG**: return $fullpath;
@@ -58,6 +79,9 @@ class Template {
 		// <h1>< ?php echo $title; ? ></h1>
     $output = NULL;
     if(file_exists($filePath)){
+				if (empty($variables)){
+					$variables = $this->assignedVars;
+				}
         // Extract the variables to a local namespace
         extract($variables);
         // Start output buffering

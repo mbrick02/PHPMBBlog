@@ -9,10 +9,9 @@
   // $container->view->filename = (Default=TEMPLATE_PATH . DS .) 'partials' . DS . 'public_header.php';
   $container->view->filename = 'partials' . DS . 'public_header.php';
 
-  // header has: page_title, urlForIndex, urlForMBBloglogo, stylesheet
+  // header has: page_title, urlForIndex, urlForMBBloglogo, stylesheet, errorHeader
   /* 'view' is Template instance usage:		$template->filename = "template2.php";
-  $template->set('pageTitle', "Template Test");
-  $template->set('content', "This is a test of templating using search replace.");
+  $template->set('pageTitle', "Template Test"); $template->set('content', "some content.");
   OR:
   $assignedVars = [ 'pageTitle' => "Template Test", content' =>"Test of search/repl template."  ];
   $template->display();		or $template->returnText(); ***** */
@@ -20,15 +19,40 @@
   // $container->view->set('page_title', "Template Test"); // in controller fixed header val set here
   $container->view->set('urlForIndex', "/");
   $container->view->set('urlForMBBlogLogo', IMG_SRC . "mbBlogLogo.jpg");
+  // TODO: show backslash before stylesheets 10/29/18
   $container->view->set('stylesheet', getBaseUrl() . 'stylesheets/public.css');
+
+  $msgHeader = "";
+  if (Session::exists('message')){
+    $msgHeader .= $session->display_session_message();
+  } elseif (Session::exists('errors')){
+    $msgHeader .= $session->display_errors(Session::errMsg());
+  }
+
+  $container->view->set('msgHeader',  $msgHeader);
+
+// DEBUG 10/29 **
+  // if (!empty($msgHeader)) {
+  //   echo "In main.php -- container->view template assigned vars: <br>";
+  //   var_dump($container->view->assignedVars);
+  //   die();
+  // }
+
   // or $assignedVars = [ 'field1' => 'field1val', 'field2' => 'field2val'];
-  echo $container->view->returnText();
+  $output = $container->view->returnText();
+  // DEBUG 10/29 **************************
+  if (!empty($msgHeader)) {
+    // echo "In main.php -- container->view template assigned vars: <br>";
+    // var_dump($container->view->assignedVars);
+    // echo "<br>In main.php -- msgHeader var: <br>";
+    // var_dump($msgHeader);
+    // echo "<br>In main.php -- output from retrnText: <br>";
+    // var_dump($output);
+    // die();
+  }
+  echo $output;
 
   include TEMPLATE_PATH . DS . 'partials' . DS . 'navhead.php';
-
-  if ($session->exists('message')) {
-    $session->display_session_message();
-  }
 
 ?>
 <!-- ************** NAV HEAD TRIAL 10/6/18 ******************** -->

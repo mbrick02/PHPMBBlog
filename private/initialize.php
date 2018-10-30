@@ -1,15 +1,10 @@
 <?php
-
   ob_start(); // turn on output buffering so build whole page and 'modify' header
-
+//  session_start(); // implemented session.class instead // turn on sessions if needed
   use app\Models\PDOConn as PDOConn;
   use app\Models\DB as DB;
 
-//  session_start(); // implemented session.class instead // turn on sessions if needed
-
-  // Assign file paths to PHP constants
-  // __FILE__ returns the current path to this file
-  // dirname() returns the path to the parent directory
+  // Assign PHP constant file paths: __FILE__ returns cur path, dirname() path parent dir
   define("DS", DIRECTORY_SEPARATOR);
   define("PRIVATE_PATH", dirname(__FILE__));
   define("PROJECT_PATH", dirname(PRIVATE_PATH));
@@ -86,6 +81,12 @@
   }
 
   spl_autoload_register('my_autoload'); // spl = standard php library
+  // require_once('classes/session.class.php'); // ***DEBUG DIDNT WORK:
+  // DELETED 10/29/18 ABOVE LINE AND MOVED BELOW after AUTOLOAD
+  $session = new Session;
+  // $_SESSION['message'] = 'test102918';
+  // echo "Session[message]: " . $_SESSION['message'];
+  // die();
 
   require_once('../app/bootstrap/app.php');
 
@@ -93,7 +94,7 @@
 //      spl_autoload_register(function($class) {	require_once 'classes/' . $class . '.php'; });
 // pdo('mysql:host=' . Config::get('mysql/host') . '; dbnm=' . Config::get('mysql/name'));
   // container in app.php will reference this as a global:
+
   $db = new PDOConn;  // Note: controller access to db is now through container
   DB::set_PDO($db);
-  $session = new Session;
 ?>

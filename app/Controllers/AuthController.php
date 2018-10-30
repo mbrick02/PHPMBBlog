@@ -44,7 +44,7 @@ class AuthController extends Controller {
 
     $user = User::getInstance($allPostVars);
 
-    if ($user->errors){
+    if (!empty($user->errors)){
       // keep current vals in form
 
       // set session message to errors (?if NOT already done in validate)

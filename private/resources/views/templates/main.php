@@ -7,7 +7,6 @@
   // DEL non longer  uses: global $g_templateVars;
 
   // $container->view->filename = (Default=TEMPLATE_PATH . DS .) 'partials' . DS . 'public_header.php';
-  $container->view->filename = 'partials' . DS . 'public_header.php';
 
   // header has: page_title, urlForIndex, urlForMBBloglogo, stylesheet, errorHeader
   /* 'view' is Template instance usage:		$template->filename = "template2.php";
@@ -17,43 +16,9 @@
   $template->display();		or $template->returnText(); ***** */
   // values for header,  like example below, set in calling Controller but CAN be set here
   // $container->view->set('page_title', "Template Test"); // in controller fixed header val set here
-  $container->view->set('urlForIndex', "/");
-  $container->view->set('urlForMBBlogLogo', IMG_SRC . "mbBlogLogo.jpg");
-  // TODO: show backslash before stylesheets 10/29/18
-  $container->view->set('stylesheet', getBaseUrl() . 'stylesheets/public.css');
-
-  $msgHeader = "";
-  if (Session::exists('message')){
-    $msgHeader .= $session->display_session_message();
-  } elseif (Session::exists('errors')){
-    $msgHeader .= $session->display_errors(Session::errMsg());
-  }
-
-  $container->view->set('msgHeader',  $msgHeader);
-
-// DEBUG 10/29 **
-  // if (!empty($msgHeader)) {
-  //   echo "In main.php -- container->view template assigned vars: <br>";
-  //   var_dump($container->view->assignedVars);
-  //   die();
-  // }
-
   // or $assignedVars = [ 'field1' => 'field1val', 'field2' => 'field2val'];
-//  $output = $container->view->returnText();
-  // DEBUG 10/29 **************************
-  $headerTemplate = TEMPLATE_PATH . DS . 'partials' . DS . 'public_header.php';
-  static::$container->view->renderWithVariables($headerTemplate);
-// MORE DEBUG 10/29 ***************
-  if (!empty($msgHeader)) {
-    // echo "In main.php -- container->view template assigned vars: <br>";
-    // var_dump($container->view->assignedVars);
-    // echo "<br>In main.php -- msgHeader var: <br>";
-    // var_dump($msgHeader);
-    // echo "<br>In main.php -- output from retrnText: <br>";
-    // var_dump($output);
-    // die();
-  }
-  echo $output;
+
+  echo $publicHeader;
 
   include TEMPLATE_PATH . DS . 'partials' . DS . 'navhead.php';
 

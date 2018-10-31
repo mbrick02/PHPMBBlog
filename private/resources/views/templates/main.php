@@ -10,7 +10,7 @@
 
   // header has: page_title, urlForIndex, urlForMBBloglogo, stylesheet, errorHeader
   /* 'view' is Template instance usage:		$template->filename = "template2.php";
-  $template->set('pageTitle', "Template Test"); $template->set('content', "some content.");
+  $template->set('page_title', "Template Test"); $template->set('content', "some content.");
   OR:
   $assignedVars = [ 'pageTitle' => "Template Test", content' =>"Test of search/repl template."  ];
   $template->display();		or $template->returnText(); ***** */

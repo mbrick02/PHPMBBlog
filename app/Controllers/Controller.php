@@ -18,7 +18,7 @@ class Controller {
 	static $publicHeader = "";
 
 // pass in entire $container make available to 'child'/extended controllers
-  public function __construct($container) {
+  public function __construct($container, $contrVars = []) {
 		static::$container = $container; // container defined in bootstrap/app.php
 		static::$rightColDoc = TEMPLATE_PATH . DS . 'partials' . DS . 'rightCol.php';
 		static::$rightCol = static::$container->view->renderWithVariables(static::$rightColDoc, static::$rightColVars, false);
@@ -41,27 +41,12 @@ class Controller {
 
 		static::$publicHeader = $container->view->returnText();
 
-		// ********use code above or below with proper set vars************
-		// $headerTemplate = TEMPLATE_PATH . DS . 'partials' . DS . 'public_header_echo.php';
-		// $output = $container->view->renderWithVariables($headerTemplate, array(), false);
-	// MORE DEBUG 10/29 ***************
-		if (!empty($msgHeader)) {
-			// echo "In main.php -- container->view template assigned vars: <br>";
-			// var_dump($container->view->assignedVars);
-			// echo "<br>In main.php -- msgHeader var: <br>";
-			// var_dump($msgHeader);
-			// echo "<br>In main.php -- output from retrnText: <br>";
-			// var_dump($output);
-			// die();
-		}
-		// echo $output;
-		$output = "";
-
 		static::$templateVars = [
 			'cartExists' => $session->exists('cart') ? 'Shows a cart' : 'No Cart',
 			'routeHasProfile' => 'Route has profile var',
 			'container' => static::$container,
 			'publicHeader' => static::$publicHeader,
+			'page_title' => 'blog', // default
 			'pageUrls' => [
 						'products' => static::$container->get('router')->pathFor('products'),
 						'curURL' => static::$container->request->getUri()->getPath(),
@@ -69,6 +54,10 @@ class Controller {
 			'content' => "",  // set by child
 			'rightCol' => static::$rightCol,
 		];
+		if (!empty($contrVars['page_title'])) {
+			// ** Note: probably want to do an array_replace() with $contrVars[]
+			static::$templateVars['page_title'] = $contrVars['page_title']
+		}
    }
 
 /* using __get() in this way does not seem to work in php 7.1.22 */

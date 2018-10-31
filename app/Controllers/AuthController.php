@@ -27,10 +27,8 @@ class AuthController extends Controller {
 */
     // give vals to main.php template vars
 		static::$templateVars['content'] = $formContent;
+    static::$templateVars['page_title'] = "Authenticate";
 
-		// set() ONLY works on public_header vars -- all fixed vals set in main.php
-    // $this->container->view->set('content', "This is a test of templating using search replace.");
-		static::$container->view->set('page_title', "Authenticate");
 		$maintemplate = TEMPLATE_PATH . DS . 'main.php';
 		static::$container->view->renderWithVariables($maintemplate, static::$templateVars); // , $optiondefltprint=true
   }

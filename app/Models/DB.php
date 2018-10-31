@@ -8,7 +8,7 @@ abstract class DB {
 	static protected $table;
 	static protected $columns = [];
 	public $errors = [];
-	public $fields = []; // for instance columns
+	// public $fields = []; // for instance of columns ????
 
 	static protected $_query,
 		$_error = false;
@@ -44,10 +44,13 @@ abstract class DB {
 		return $false;
 	}
 
-  public static function getInstance($args = [], $table = "") {  // PHP OOP Login/R 7/23
-		if(!isset(static::$_pdo)) { // test for singleton (on instance of parent w/DB)
-  		static::$_pdo = PDOConn::getInstance();  // new subclass via static binding
-	  }
+  public static function getInstance($db, $args = [], $table = "") {  // PHP OOP Login/R 7/23
+		// DON'T USE Singleton anymore
+		// if(!isset(static::$_pdo)) { // test for singleton (on instance of parent w/DB)
+  	// 	static::$_pdo = PDOConn::getInstance();  // new subclass via static binding
+	  // }
+
+		static::$_pdo = static::set_PDO($db);  // should always be global $db
 
 		static::initializeModel($args);
 		if (!empty($args)) { // DEBUG ** 10/25
@@ -72,6 +75,33 @@ abstract class DB {
 
 	protected static function initializeModel($args) {
 		// most child classes should have this
+	}
+
+	protected static function storeFormValsSess(){
+		/* store db col/field values into session under table */
+		global $session;
+		$aryFrmVals = array();
+		foreach (static::$columns as $key => $value) {
+			if (!empty($value)) {
+				$aryFrmVals[$key] = $value;
+			}
+		}
+		$session->set(static::$table[$aryFrmVals]);
+	}
+
+	protected static function putFormValsSessCols($excludeAry = []){
+		/* retrieve session vals under table into db col/field values */
+		global $session;
+		$formValsAry = static::$table;
+		if ($session->exists($formValsAry)) {
+			foreach (static::$columns as $key => &$value) {
+				if (in_array($key, $excludeAry)) { continue; } // eg. exclude password
+				if ($session->exists($formValsAry[$key])){
+					$value = $formValsAry[$key];
+				}
+			}
+		}
+		// if (isset($this)) { $this->fields = static::$columns; }
 	}
 
   public static function query($sql, $params = array()) {

@@ -20,13 +20,15 @@ use Token as Token;
 */
 class FormBuild {
   private static $_nameAry = "";
+  private static $_useDBVals = false;
 
-  private function __construct($nameAry = "") {
+  private function __construct($nameAry = "", $useDBVals) {
     static::$_nameAry = $nameAry; // reset to empty
+    static::$_useDBVals = $useDBVals;  // fill form with any DB vals?
   }
 
-public static function instantiate($nameAry) {
-    $object = new static($nameAry);
+public static function instantiate($nameAry, $useDBVals = false) {
+    $object = new static($nameAry, $useDBVals);
     return $object;
   }
 
@@ -58,6 +60,8 @@ public static function instantiate($nameAry) {
   public static function retTag($tagType, $assiVars = []) {
 
     $output = "<". $tagType;
+    $assignVars = $assiVars;
+// ******10/31 ???SET VALS FROM DB/Form **?????$valuesAry
     foreach ($assiVars as $key => &$value) {
       // noValue - attribs that have no val e.g. 'required'
       if ($key == 'noValue') { continue; }

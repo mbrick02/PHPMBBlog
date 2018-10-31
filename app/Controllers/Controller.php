@@ -18,17 +18,26 @@ class Controller {
 	static $publicHeader = "";
 
 // pass in entire $container make available to 'child'/extended controllers
-  public function __construct($container, $contrVars = []) {
+  public function __construct($container, $args = []) { // defaults set here options in initialize
 		static::$container = $container; // container defined in bootstrap/app.php
-		static::$rightColDoc = TEMPLATE_PATH . DS . 'partials' . DS . 'rightCol.php';
-		static::$rightCol = static::$container->view->renderWithVariables(static::$rightColDoc, static::$rightColVars, false);
+   }
+
+	 protected static function buildPage($contrVars) {
 		global $session;
 
-		$container->view->filename = 'partials' . DS . 'public_header.php';
-		$container->view->set('urlForIndex', "/");
-		$container->view->set('urlForMBBlogLogo', IMG_SRC . "mbBlogLogo.jpg");
+		static::$rightColDoc = TEMPLATE_PATH . DS . 'partials' . DS . 'rightCol.php';
+		static::$rightCol = static::$container->view->renderWithVariables(static::$rightColDoc, static::$rightColVars, false);
+
+		static::$container->view->filename = 'partials' . DS . 'public_header.php';
+
+		static::$container->view->set('page_title', 'blog'); // default
+		if (isset($contrVars['page_title'])) {
+			static::$container->view->set('page_title', $contrVars['page_title']);
+		}
+		static::$container->view->set('urlForIndex', "/");
+		static::$container->view->set('urlForMBBlogLogo', IMG_SRC . "mbBlogLogo.jpg");
 		// TODO: show backslash before stylesheets 10/29/18
-		$container->view->set('stylesheet', getBaseUrl() . 'stylesheets/public.css');
+		static::$container->view->set('stylesheet', getBaseUrl() . 'stylesheets/public.css');
 
 		$msgHeader = "";
 		if ($session->exists('message')){
@@ -37,16 +46,24 @@ class Controller {
 			$msgHeader .= $session->display_errors($session->errMsg());
 		}
 
-		$container->view->set('msgHeader',  $msgHeader);
+		static::$container->view->set('msgHeader',  $msgHeader);
 
-		static::$publicHeader = $container->view->returnText();
+		static::$publicHeader = static::$container->view->returnText();
 
-		static::$templateVars = [
+		// DEBUG 10/31 **
+		// echo "<br />In Controller (parent) container->view->assignedVars: <br />";
+		// var_dump(static::$container->view->assignedVars);
+		// echo "<br />In Controller (child) contrVars: <br />";
+		// var_dump($contrVars);
+		// echo "<br />In Controller (parent) publicHeader: <br />";
+		// var_dump(static::$publicHeader);
+		// die();
+
+		static::$templateVars = [ // set default vars
 			'cartExists' => $session->exists('cart') ? 'Shows a cart' : 'No Cart',
 			'routeHasProfile' => 'Route has profile var',
 			'container' => static::$container,
 			'publicHeader' => static::$publicHeader,
-			'page_title' => 'blog', // default
 			'pageUrls' => [
 						'products' => static::$container->get('router')->pathFor('products'),
 						'curURL' => static::$container->request->getUri()->getPath(),
@@ -54,11 +71,20 @@ class Controller {
 			'content' => "",  // set by child
 			'rightCol' => static::$rightCol,
 		];
-		if (!empty($contrVars['page_title'])) {
-			// ** Note: probably want to do an array_replace() with $contrVars[]
-			static::$templateVars['page_title'] = $contrVars['page_title']
+		if (!empty($contrVars)) {
+			static::$templateVars = array_replace(static::$templateVars, $contrVars);
 		}
-   }
+		// DEBUG ** 10/31
+		// echo "<br />In Controller (parent) static-templateVars: <br />";
+		// var_dump(static::$templateVars);
+		// echo "<br />In Controller (child) contrVars: <br />";
+		// var_dump($contrVars);
+		// die();
+
+		$maintemplate = TEMPLATE_PATH . DS . 'main.php';
+		static::$container->view->renderWithVariables($maintemplate, static::$templateVars);
+						// , $optiondefltprint=true
+	}
 
 /* using __get() in this way does not seem to work in php 7.1.22 */
   public function __get($property) {  // can be used to create shortcut calls to property values
@@ -70,23 +96,4 @@ class Controller {
 					// e.g HomeConroller->view instead HomeController->container->view
         }
   }
-/*  Not using because __set can't be easily used like __get()
-	public function __set($property, $value) {  // CANT make shortcut req of prop vals
-			echo "What is this property";
-			if ($this->container->{$property}) {
-	        // $this->container->{$property} = $value;
-					// if prop in container, set w/out spec. container
-					// e.g HomeConroller->view= $val instead HomeController->container->view = $val
-        }
-  }
-****	  */
-/* 10/29/18  this out to simplify
-	public function sessionExists($sessionAttrib) {
-		global $session;
-		if ($session->exists($sessionAttrib)){
-			return true;
-		} else { return false; }
-	}
-*/
-
 }

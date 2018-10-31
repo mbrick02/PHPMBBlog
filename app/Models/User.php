@@ -70,14 +70,14 @@ class User extends DB {
 
     if(is_blank($this->fields['username'])) {
       $this->errors[] = "Username cannot be blank.";
-    } elseif (!has_length($this->fields['username'], array('min' => 8, 'max' => 255))) {
+    } elseif (!has_length($this->fields['username'], array('min' => 3, 'max' => 255))) {
       $this->errors[] = "Username must be between 8 and 255 characters.";
     }
 
     if($this->fields['password_required']) {
       if(is_blank($this->fields['password'])) {
         $this->errors[] = "Password cannot be blank.";
-      } elseif (!has_length($this->fields['password'], array('min' => 12))) {
+      } elseif (!has_length($this->fields['password'], array('min' => 8))) {
         $this->errors[] = "Password must contain 12 or more characters";
       } elseif (!preg_match('/[A-Z]/', $this->fields['password'])) {
         $this->errors[] = "Password must contain at least 1 uppercase letter";

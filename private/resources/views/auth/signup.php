@@ -11,6 +11,14 @@ use app\specialClasses\FormBuild as FormBuild;
 
 $form = FormBuild::instantiate('user'); // 'user' sets up: $args = $_POST['user'];
 
+if ($user) {
+	echo "in signup.php user: <br />";
+	var_dump($user);
+	echo "<br /> values array: "
+	var_dump($values);
+	die();
+}
+
 $formAtrrib = [
 	'action' => '/user/create',
 	'method' => 'post',
@@ -18,6 +26,7 @@ $formAtrrib = [
 $formContent = $form->formTopDecl($formAtrrib, "Sign up");
 
 $fldAttribs = ['name' => 'username',];  // form field attributes
+
 $formContent .= $form->retSimpTxtInpDiv($fldAttribs);
 $fldAttribs = []; // clear field attributes assoc array
 

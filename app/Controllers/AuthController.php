@@ -7,43 +7,49 @@ use app\Models\User as User;
 // /users and other named urls use url with urlFor()
 class AuthController extends Controller {
   // protected static $container;
+  protected static function buildPage($contrVars = []) {
+    $contrVars = array_replace($contrVars, ['page_title' => 'Authenticate',]);
+    parent::buildPage($contrVars);
+  }
 
   public function getSignup($request, $response) {
-    $user = User::getInstance();
+    global $db;
+    $user = User::getInstance($db);
 
     if(!$user->count()) {
       // $user->first()->username;
     }
     // ***10/27 pass in nameAry 'user' to signup and use in initialize($nameAryVar)
-    $userForm = VIEWS_PATH . DS . 'auth' . DS . 'signup.php';
-    $formVars = [ 'userformvars' => '',];
-    $formContent = static::$container->view->renderWithVariables($userForm, $formVars, false);
-/* rightCol handled by parent(Controller.php)
-    $rightColDoc = TEMPLATE_PATH . DS . 'partials' . DS . 'rightCol.php';
-    $rightColVars = [ 'rightColVars' => '',
-                      'userInfoRight' => 'right side info passed in for user',
-                    ];
-    $rightCol = $this->container->view->renderWithVariables($rightColDoc, $rightColVars, false);
-*/
-    // give vals to main.php template vars
-		static::$templateVars['content'] = $formContent;
-    static::$templateVars['page_title'] = "Authenticate";
+    $excludeAry = array("password", "confirm_password");
+    $user->putFormValsSessCols($excludeAry);  // retrieve form values from session reset
+    $formValsAry = static::columns;
+// DEBUG** 10/31    ***********left off here 10/31 setting up form values to go from session back into form
 
-		$maintemplate = TEMPLATE_PATH . DS . 'main.php';
-		static::$container->view->renderWithVariables($maintemplate, static::$templateVars); // , $optiondefltprint=true
+    $userForm = VIEWS_PATH . DS . 'auth' . DS . 'signup.php';
+    $formVars = [ 'user' => $user, 'value' => $formValsAry];
+    $formContent = static::$container->view->renderWithVariables($userForm, $formVars, false);
+
+    // give vals to main.php template vars
+    $optionvars = [];
+		$optionvars['content'] = $formContent;
+    $optionvars['page_title'] = "Create User";
+
+		parent::buildPage($optionvars);
   }
 
   public function postSignup($request, $response){
     global $session;
+    global $db;
     // ??????10/21/18 params????????? pass to __construct or getInstance()
     /*  id, privilege_id,username,email,fname,lname, password,
     confirm_password, created_at, updated_at,    */
     $allPostVars = $request->getParsedBody();
 
-    $user = User::getInstance($allPostVars);
+    $user = User::getInstance($db, $allPostVars);
 
     if (!empty($user->errors)){
       // keep current vals in form
+      $user->storeFormValsSess();
 
       // set session message to errors (?if NOT already done in validate)
       $session->errMsg($user->errors);

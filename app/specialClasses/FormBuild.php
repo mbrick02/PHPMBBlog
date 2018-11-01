@@ -199,8 +199,28 @@ public static function instantiate($nameAry, $useDBVals = false) {
     $output .= $this->endTags($endTags);
     return $output;
 
-/*  <button type="submit" class="btn btn-default"><?php echo $submitTitle ?></button>
-</form></div></div></div></div>   ***********************/
+    /* examp: <button type="submit" class="btn btn-default"><?php echo $submitTitle ?></button>
+      </form></div></div></div></div>   ***********************/
     // DEL (old ver): include TEMPLATE_PATH . DS . 'partials' . DS . 'form_bottom.php';
+  }
+
+  public function mkSimpTxtInpDiv($field, $user) {
+    /*
+    // in signup.php idea is to make $formContent from
+      FormBuild::mkSimpTxtInpDiv('username', $values, $user)
+    ...$fldAttribs = ['name' => 'username',
+    //  ifValNotEmpty 'value' => $values['username']];
+                // form field attributes
+    $formContent .= $form->retSimpTxtInpDiv($fldAttribs);
+    */
+    $fldAttribs = ['name' => $field, ];
+    $values = $user->getCols();
+    // echo "DEBUG 11/1/18 - In FormBuild ?from signup.php values: <br>";
+    // var_dump($values);
+    // die();
+    if (isset($values[$field]) && (!empty($values[$field]))) {
+        $fldAttribs['value'] = $values[$field];
+    }
+    return $this->retSimpTxtInpDiv($fldAttribs);
   }
 }

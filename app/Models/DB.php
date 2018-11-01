@@ -63,9 +63,9 @@ abstract class DB {
 		}
 
 		$dbObject = new static;
-		$dbObject->fields = static::$columns; // essentially pass to instance
+		// **REMOVE 11/1 NOT fields[] only for DEBUG: $dbObject->fields = static::$columns; // essentially pass to instance
 		// DEBUG ???return static or columns or ????
-		return $dbObject->validate(); // return $dbObject w/->errors[?]
+		return $dbObject;
 		// return $dbobject;
   }
 
@@ -73,11 +73,15 @@ abstract class DB {
 		return static::$table;
 	}
 
+	public function getCols() {  // ** 11/1/18 DONT know if I'll need or ?static
+		return static::$columns;
+	}
+
 	protected static function initializeModel($args) {
 		// most child classes should have this
 	}
 
-	protected static function storeFormValsSess(){
+	public function storeFormValsSess(){
 		/* store db col/field values into session under table */
 		global $session;
 		$aryFrmVals = array();
@@ -86,10 +90,13 @@ abstract class DB {
 				$aryFrmVals[$key] = $value;
 			}
 		}
-		$session->set(static::$table[$aryFrmVals]);
+		$session->put(static::$table, $aryFrmVals); // e.g users['']
+		echo "DEBUG 11/1 storeFormValsSess static columns: <br>";
+		var_dump(static::$columns);
+		die();
 	}
 
-	protected static function putFormValsSessCols($excludeAry = []){
+	public function putFormValsSessCols($excludeAry = []){
 		/* retrieve session vals under table into db col/field values */
 		global $session;
 		$formValsAry = static::$table;
@@ -149,7 +156,7 @@ abstract class DB {
   	return false;
   }
 
-	protected function validate() {
+	public function validate() {
     $this->errors = [];
     // Add custom validations
 
@@ -158,7 +165,7 @@ abstract class DB {
 
 	// *************NOT TESTED 9/27/18******Create
 	public function create($formVals) {
-		 	if (static::validate()){
+		 	if ($his->validate()){
 				$strFlds = implode(", ", static::$columns);
 			 	$aryParams = static::$columns;
 			 	foreach ($aryParams as &$value) {

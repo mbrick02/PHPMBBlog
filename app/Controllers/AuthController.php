@@ -22,12 +22,13 @@ class AuthController extends Controller {
     // ***10/27 pass in nameAry 'user' to signup and use in initialize($nameAryVar)
     $excludeAry = array("password", "confirm_password");
     $user->putFormValsSessCols($excludeAry);  // retrieve form values from session reset
-    $formValsAry = static::columns;
+    // ?: $formValsAry = $user->getCols();  // ??!* PROBABLY DONT NEED THIS just $user
 // DEBUG** 10/31    ***********left off here 10/31 setting up form values to go from session back into form
 
     $userForm = VIEWS_PATH . DS . 'auth' . DS . 'signup.php';
-    $formVars = [ 'user' => $user, 'value' => $formValsAry];
-    $formContent = static::$container->view->renderWithVariables($userForm, $formVars, false);
+    $formVars = [ 'user' => $user]; // ?? , 'values' => $formValsAry
+    $formContent = static::$container->view->
+      renderWithVariables($userForm, $formVars, false);
 
     // give vals to main.php template vars
     $optionvars = [];
@@ -46,6 +47,11 @@ class AuthController extends Controller {
     $allPostVars = $request->getParsedBody();
 
     $user = User::getInstance($db, $allPostVars);
+
+    $user->validate();
+    // DEBUG** 11/1 trying to get values into session
+    // var_dump($user);
+    // die();
 
     if (!empty($user->errors)){
       // keep current vals in form

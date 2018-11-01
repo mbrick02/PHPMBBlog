@@ -10,14 +10,7 @@ use app\specialClasses\FormBuild as FormBuild;
 <div class="form-group">  <label for="password">Password</label> */
 
 $form = FormBuild::instantiate('user'); // 'user' sets up: $args = $_POST['user'];
-
-if ($user) {
-	echo "in signup.php user: <br />";
-	var_dump($user);
-	echo "<br /> values array: "
-	var_dump($values);
-	die();
-}
+// Note: Controller should pass in $user and $values (array)
 
 $formAtrrib = [
 	'action' => '/user/create',
@@ -25,9 +18,16 @@ $formAtrrib = [
 ];
 $formContent = $form->formTopDecl($formAtrrib, "Sign up");
 
-$fldAttribs = ['name' => 'username',];  // form field attributes
+// in signup.php idea is replace below lines to make $formContent
+//		from FormBuild::mkSimpTxtInpDiv('username', $user, $values)
+// old 11/1: $fldAttribs = ['name' => 'username',];  // form field attributes
+$formContent .= $form->mkSimpTxtInpDiv('username', $user);
+// $DEBUGUnameDiv =
+// echo "<br> username DIV: ";
+// var_dump($DEBUGUnameDiv);
+// die();
 
-$formContent .= $form->retSimpTxtInpDiv($fldAttribs);
+//$form->retSimpTxtInpDiv($fldAttribs); // FormBuild::mkSimpTxtInpDiv('username', $user, $values)
 $fldAttribs = []; // clear field attributes assoc array
 
 $fldAttribs = ['placeholder' => "u@dom.com",]; // form field attributes

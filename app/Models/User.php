@@ -45,53 +45,53 @@ class User extends DB {
     return static::$columns['fname'] . " " . static::$columns['lname'];
   }
 
-  protected function validate() {
+  public function validate() {
     $this->errors = [];
 
-    if(is_blank($this->fields['fname'])) {
+    if(is_blank(static::$columns['fname'])) {
       $this->errors[] = "First name cannot be blank.";
-    } elseif (!has_length($this->fields['fname'], array('min' => 2, 'max' => 255))) {
+    } elseif (!has_length(static::$columns['fname'], array('min' => 2, 'max' => 255))) {
       $this->errors[] = "First name must be between 2 and 255 characters.";
     }
 
-    if(is_blank($this->fields['lname'])) {
+    if(is_blank(static::$columns['lname'])) {
       $this->errors[] = "Last name cannot be blank.";
-    } elseif (!has_length($this->fields['lname'], array('min' => 2, 'max' => 255))) {
+    } elseif (!has_length(static::$columns['lname'], array('min' => 2, 'max' => 255))) {
       $this->errors[] = "Last name must be between 2 and 255 characters.";
     }
 
-    if(is_blank($this->fields['email'])) {
+    if(is_blank(static::$columns['email'])) {
       $this->errors[] = "Email cannot be blank.";
-    } elseif (!has_length($this->fields['email'], array('max' => 255))) {
+    } elseif (!has_length(static::$columns['email'], array('max' => 255))) {
       $this->errors[] = "Last name must be less than 255 characters.";
-    } elseif (!has_valid_email_format($this->fields['email'])) {
+    } elseif (!has_valid_email_format(static::$columns['email'])) {
       $this->errors[] = "Email must be a valid format.";
     }
 
-    if(is_blank($this->fields['username'])) {
+    if(is_blank(static::$columns['username'])) {
       $this->errors[] = "Username cannot be blank.";
-    } elseif (!has_length($this->fields['username'], array('min' => 3, 'max' => 255))) {
+    } elseif (!has_length(static::$columns['username'], array('min' => 3, 'max' => 255))) {
       $this->errors[] = "Username must be between 8 and 255 characters.";
     }
 
-    if($this->fields['password_required']) {
-      if(is_blank($this->fields['password'])) {
+    if(static::$columns['password_required']) {
+      if(is_blank(static::$columns['password'])) {
         $this->errors[] = "Password cannot be blank.";
-      } elseif (!has_length($this->fields['password'], array('min' => 8))) {
+      } elseif (!has_length(static::$columns['password'], array('min' => 8))) {
         $this->errors[] = "Password must contain 12 or more characters";
-      } elseif (!preg_match('/[A-Z]/', $this->fields['password'])) {
+      } elseif (!preg_match('/[A-Z]/', static::$columns['password'])) {
         $this->errors[] = "Password must contain at least 1 uppercase letter";
-      } elseif (!preg_match('/[a-z]/', $this->fields['password'])) {
+      } elseif (!preg_match('/[a-z]/', static::$columns['password'])) {
         $this->errors[] = "Password must contain at least 1 lowercase letter";
-      } elseif (!preg_match('/[0-9]/', $this->fields['password'])) {
+      } elseif (!preg_match('/[0-9]/', static::$columns['password'])) {
         $this->errors[] = "Password must contain at least 1 number";
-      } elseif (!preg_match('/[^A-Za-z0-9\s]/', $this->fields['password'])) {
+      } elseif (!preg_match('/[^A-Za-z0-9\s]/', static::$columns['password'])) {
         $this->errors[] = "Password must contain at least 1 symbol";
       }
 
-      if(is_blank($this->fields['confirm_password'])) {
+      if(is_blank(static::$columns['confirm_password'])) {
         $this->errors[] = "Confirm password cannot be blank.";
-      } elseif ($this->fields['password'] !== $this->fields['confirm_password']) {
+      } elseif (static::$columns['password'] !== static::$columns['confirm_password']) {
         $this->errors[] = "Password and confirm password must match.";
       }
     }

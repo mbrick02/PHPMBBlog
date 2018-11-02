@@ -21,9 +21,11 @@ class AuthController extends Controller {
     }
     // ***10/27 pass in nameAry 'user' to signup and use in initialize($nameAryVar)
     $excludeAry = array("password", "confirm_password");
-    $user->putFormValsSessCols($excludeAry);  // retrieve form values from session reset
-    // ?: $formValsAry = $user->getCols();  // ??!* PROBABLY DONT NEED THIS just $user
-// DEBUG** 10/31    ***********left off here 10/31 setting up form values to go from session back into form
+    $user->restoreFormValsSessCols($excludeAry);  // retrieve form values from session reset
+// DEBUG** 11/2    ***********left off here 10/31 set form vals to go from session back into form
+    // echo "In AuthController (26) after restorFormVals... static:cols: ";
+    // var_dump($user->getCols());
+    // die();
 
     $userForm = VIEWS_PATH . DS . 'auth' . DS . 'signup.php';
     $formVars = [ 'user' => $user]; // ?? , 'values' => $formValsAry
@@ -55,7 +57,7 @@ class AuthController extends Controller {
 
     if (!empty($user->errors)){
       // keep current vals in form
-      $user->storeFormValsSess();
+      $user->putFormValsSess();
 
       // set session message to errors (?if NOT already done in validate)
       $session->errMsg($user->errors);

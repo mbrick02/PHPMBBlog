@@ -17,18 +17,6 @@ abstract class DB {
 
 	private function __construct($args = []) {
 		// *** PDO DB setup handled by PDOConn
-		// $hostNdb = 'mysql:host=' . Config::get('mysql/host') . ';dbname=' . Config::get('mysql/db');
-		// $dbuser = Config::get('mysql/username');
-		// $dbpw = Config::get('mysql/password');
-		//
-		// try {
-		// 	// PDO('mysql:host=x;dbname=y', 'usernam', 'pw');$this->_pdo = new PDO('mysql:host='.
-		// 	// ... Config::get('mysql/host') . ';dbname=' .// ... Config::get('mysql/db'),
-		// 	// ...Config::get('mysql/username'), Config::get('mysql/password'));
-		// 	static::$_pdo = new PDO($hostNdb, $dbuser, $dbpw);
-	  // } catch(PDOException $e) {
-	  // 	die($e->getMessage());
-	  // }
   }
 
 	public static function set_PDO($pdo){
@@ -73,7 +61,7 @@ abstract class DB {
 		return static::$table;
 	}
 
-	public function getCols() {  // ** 11/1/18 DONT know if I'll need or ?static
+	public function getCols() {  // ** 11/1/18 Probably just for DEBUG
 		return static::$columns;
 	}
 
@@ -81,7 +69,7 @@ abstract class DB {
 		// most child classes should have this
 	}
 
-	public function storeFormValsSess(){
+	public function putFormValsSess(){
 		/* store db col/field values into session under table */
 		global $session;
 		$aryFrmVals = array();
@@ -91,24 +79,20 @@ abstract class DB {
 			}
 		}
 		$session->put(static::$table, $aryFrmVals); // e.g users['']
-		echo "DEBUG 11/1 storeFormValsSess static columns: <br>";
-		var_dump(static::$columns);
-		die();
 	}
 
-	public function putFormValsSessCols($excludeAry = []){
+	public function restoreFormValsSessCols($excludeAry = []){
 		/* retrieve session vals under table into db col/field values */
 		global $session;
 		$formValsAry = static::$table;
 		if ($session->exists($formValsAry)) {
 			foreach (static::$columns as $key => &$value) {
 				if (in_array($key, $excludeAry)) { continue; } // eg. exclude password
-				if ($session->exists($formValsAry[$key])){
-					$value = $formValsAry[$key];
+				if (isset($session->get($formValsAry)[$key])){
+					$value = $session->get($formValsAry)[$key];
 				}
 			}
 		}
-		// if (isset($this)) { $this->fields = static::$columns; }
 	}
 
   public static function query($sql, $params = array()) {

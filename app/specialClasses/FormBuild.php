@@ -157,6 +157,7 @@ public static function instantiate($nameAry, $useDBVals = false) {
       'label' => $name,
       'id' => $name,
     ];
+    $txtFldVars = array_replace($txtFldVars, $fldNameNLabel); // add poss vals like 'value' or replace 'label'
     $txtFldVars['label'] = isset($fldNameNLabel['label']) ? $fldNameNLabel['label'] : ucfirst($name);
     // or PHP7 ?? null coalescing
     $output = $this->retInpDiv($txtFldVars);
@@ -209,7 +210,7 @@ public static function instantiate($nameAry, $useDBVals = false) {
     // in signup.php idea is to make $formContent from
       FormBuild::mkSimpTxtInpDiv('username', $values, $user)
     ...$fldAttribs = ['name' => 'username',
-    //  ifValNotEmpty 'value' => $values['username']];
+    //  ifValNotEmpty 'value' => $values['username'];
                 // form field attributes
     $formContent .= $form->retSimpTxtInpDiv($fldAttribs);
     */

@@ -22,10 +22,6 @@ $formContent = $form->formTopDecl($formAtrrib, "Sign up");
 //		from FormBuild::mkSimpTxtInpDiv('username', $user, $values)
 // old 11/1: $fldAttribs = ['name' => 'username',];  // form field attributes
 $formContent .= $form->mkSimpTxtInpDiv('username', $user);
-// $DEBUGUnameDiv =
-// echo "<br> username DIV: ";
-// var_dump($DEBUGUnameDiv);
-// die();
 
 //$form->retSimpTxtInpDiv($fldAttribs); // FormBuild::mkSimpTxtInpDiv('username', $user, $values)
 $fldAttribs = []; // clear field attributes assoc array

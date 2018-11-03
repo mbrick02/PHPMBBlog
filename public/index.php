@@ -1,6 +1,8 @@
 <?php
 // bin\apache\apache2.4.23\conf\extra\httpd-vhosts.conf set to phpmbblog.org:8080
 /* *** Turn PHP error on *************/
+// phpinfo(); /// see PHP ini location and other info
+
 error_reporting( E_ALL );
 ini_set( "display_errors", 1 );
 // err not in php.ini for linux DEL for Win
@@ -8,4 +10,5 @@ ini_set( "display_errors", 1 );
 require_once('../private/initialize.php');
 
 $app->run();
+
 ?>

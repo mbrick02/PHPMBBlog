@@ -10,7 +10,7 @@ abstract class DB {
 	public $errors = [];
 	// public $fields = []; // for instance of columns ????
 
-	static protected $_query,
+	protected $_query, // static??
 		$_error = false;
 	private	$_results,
 		$_count = 0;

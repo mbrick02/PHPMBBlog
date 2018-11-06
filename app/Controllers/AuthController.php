@@ -50,26 +50,25 @@ class AuthController extends Controller {
 
     $user = User::getInstance($db, $allPostVars);
 
-    $user->validate();
-    // DEBUG** 11/1 trying to get values into session
-    // var_dump($user);
-    // die();
+    // $user->validate(); // called in DB->create
 
-    if (!empty($user->errors)){
-      // keep current vals in form
-      $user->putFormValsSess();
 
-      // set session message to errors (?if NOT already done in validate)
-      $session->errMsg($user->errors);
-
-      // redirect back to for
-      return $response->withRedirect($this->router->pathFor('user.create'));
-    }
     // determine and capture errors: e.g. email is_blank, has_presence, has_length
     if ($user->create(array_keys($allPostVars))) {
       echo "Ready to create user " . $user->fullname;
-    } else {
+    } else { // create failed probably validation error OR some DB error
+      if (!empty($user->errors)){
+        // keep current vals in form
+        $user->putFormValsSess();
 
+        // set session message to errors (?if NOT already done in validate)
+        $session->errMsg($user->errors);
+      } else {
+        $session->errMsg("Non-validation (possible DB) error with Create form");
+
+        // redirect back to form
+        return $response->withRedirect($this->router->pathFor('user.create'));
+      }
 
     }
 

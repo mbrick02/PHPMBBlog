@@ -2,12 +2,11 @@
 use app\specialClasses\FormBuild as FormBuild;
 /* <div class="row">  <div class="col-md-6 col-md-offset-3">
     <div class=""><div class="panel-heading">Sign up</div><div class="panel-body">
-<!-- end form top ****** -->
 <form action="{{ path_for('****auth.signup')}}" method="post" autocomplete="off">{{ csrf_field() }}
 <!-- form fields ***** --> <div class="form-group">  <label for="email">Email</label>
   <input type="email" name="email" id="email" placeholder="u@dom.com" class="form-control">
-<div class="form-group">  <label for="name">Name</label><input type="text"...>
-<div class="form-group">  <label for="password">Password</label> */
+<div class="form-group"><label for="name">Name</label><input type="text"...>
+<div class="form-group"><label for="password">Password</label> */
 
 $form = FormBuild::instantiate('user'); // 'user' sets up: $args = $_POST['user'];
 // Note: Controller should pass in $user and $values (array)
@@ -18,34 +17,18 @@ $formAtrrib = [
 ];
 $formContent = $form->formTopDecl($formAtrrib, "Sign up");
 
-// in signup.php idea is replace below lines to make $formContent
-//		from FormBuild::mkSimpTxtInpDiv('username', $user, $values)
-// old 11/1: $fldAttribs = ['name' => 'username',];  // form field attributes
-$formContent .= $form->mkSimpTxtInpDiv('username', $user);
+$formContent .= $form->mkSimpTxtInpValDiv(['name' => 'username'], $user);
 
-//$form->retSimpTxtInpDiv($fldAttribs); // FormBuild::mkSimpTxtInpDiv('username', $user, $values)
-$fldAttribs = []; // clear field attributes assoc array
+$fldAttribs = ['name' => 'email', 'placeholder' => "u@dom.com",]; // form field attributes
+$formContent .= $form->mkTypeInpValDiv($fldAttribs, $user);
 
-$fldAttribs = ['placeholder' => "u@dom.com",]; // form field attributes
-$formContent .= $form->retInpTypeDiv("email", $fldAttribs);
-$fldAttribs = []; // clear field attributes assoc array
+$fldAttribs = ['name' => 'fname', 'label' => 'First Name',];  // form field attributes
+$formContent .= $form->mkSimpTxtInpValDiv($fldAttribs, $user);
 
-$fldAttribs = [
-	'name' => 'fname',
-	'label' => 'First Name',
-];  // form field attributes
-$formContent .= $form->retSimpTxtInpDiv($fldAttribs);
-$fldAttribs = []; // clear field attributes assoc array
+$fldAttribs = ['name' => 'lname','label' => 'Last Name',];  // form field attributes
+$formContent .= $form->mkSimpTxtInpValDiv($fldAttribs, $user);
 
-$fldAttribs = [
-	'name' => 'lname',
-	'label' => 'Last Name',
-];  // form field attributes
-$formContent .= $form->retSimpTxtInpDiv($fldAttribs);
-$fldAttribs = []; // clear field attributes assoc array
-
-$formContent .= $form->retInpTypeDiv("password", $fldAttribs);
-$fldAttribs = []; // clear field attributes assoc array
+$formContent .= $form->retInpTypeDiv("password", $fldAttribs); // note: don't save val
 
 $fldAttribs = [
 	'type' => 'password',
@@ -55,8 +38,7 @@ $fldAttribs = [
 	'labelFor' => 'Confirm Password',
 ];  // form field attributes
 
-$formContent .= $form->retInpDiv($fldAttribs);
-$fldAttribs = []; // clear field attributes assoc array
+$formContent .= $form->retInpDiv($fldAttribs);  // note: don't save value if invalidated
 
 $formContent .= $form->endForm(['submitTitle' =>'Create User']);
 echo $formContent;

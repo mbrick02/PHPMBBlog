@@ -149,7 +149,7 @@ abstract class DB {
 
 	// *************NOT TESTED 9/27/18******Create
 	public function create($formVals) {
-		 	if ($his->validate()){
+		 	if ($this->validate()){
 				$strFlds = implode(", ", static::$columns);
 			 	$aryParams = static::$columns;
 			 	foreach ($aryParams as &$value) {
@@ -187,7 +187,7 @@ abstract class DB {
 				 	return true;
 				 }
 			}
-			return false;
+			return false; // most likely did not validate check errors
 		}  // end public create()
 
 	// *****************end CREATE

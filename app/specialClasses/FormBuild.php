@@ -205,23 +205,32 @@ public static function instantiate($nameAry, $useDBVals = false) {
     // DEL (old ver): include TEMPLATE_PATH . DS . 'partials' . DS . 'form_bottom.php';
   }
 
-  public function mkSimpTxtInpDiv($field, $user) {
+  public function mkSimpTxtInpValDiv($origfldAttr, $user) {
     /*
-    // in signup.php idea is to make $formContent from
-      FormBuild::mkSimpTxtInpDiv('username', $values, $user)
-    ...$fldAttribs = ['name' => 'username',
-    //  ifValNotEmpty 'value' => $values['username'];
-                // form field attributes
-    $formContent .= $form->retSimpTxtInpDiv($fldAttribs);
+    // create input text type w/Value check: <input type="text"...>
     */
-    $fldAttribs = ['name' => $field, ];
+    $fldAttribs = $origfldAttr; // e.g. ['name' => $field, ];
+    $field = $fldAttribs['name'];
     $values = $user->getCols();
-    // echo "DEBUG 11/1/18 - In FormBuild ?from signup.php values: <br>";
-    // var_dump($values);
-    // die();
+
     if (isset($values[$field]) && (!empty($values[$field]))) {
         $fldAttribs['value'] = $values[$field];
     }
     return $this->retSimpTxtInpDiv($fldAttribs);
+  }
+
+  public function mkTypeInpValDiv($origfldAttr, $user) {
+    /*
+    create input special type w/Value check - e.g. <input type="email" name="email" id="email"
+        placeholder="u@dom.com" value="ifNonValid" class="form-control">
+    */
+    $fldAttribs = $origfldAttr;
+    $field = $fldAttribs['name'];
+    $values = $user->getCols();
+
+    if (isset($values[$field]) && (!empty($values[$field]))) {
+        $fldAttribs['value'] = $values[$field];
+    }
+    return $this->retInpTypeDiv($field, $fldAttribs);
   }
 }

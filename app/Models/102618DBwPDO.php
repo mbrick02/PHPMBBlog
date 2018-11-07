@@ -34,7 +34,7 @@ abstract class DB {
 	public static function tableExists($table) {
 		$query = "SELECT 1 FROM ? LIMIT 1;";
 
-		if(!$this->query($sql, array($table))->error()) {
+		if(!self::query($sql, array($table))->error()) {
 			return true;
 		}
 		return $false;
@@ -77,7 +77,7 @@ abstract class DB {
   	if(self::$_query = self::$_pdo->prepare($sql)) {
   		if(count($params)) {
   			foreach($params as $param) {
-  				$this->_query->bindValue($param, static::$columns[$param]);
+  				self::_query->bindValue($param, static::$columns[$param]);
   			}
   		}
 

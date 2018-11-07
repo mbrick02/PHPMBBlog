@@ -4,7 +4,7 @@ namespace app\Models;
 
 class User extends DB {
   static protected $table = "users";
-  // Note: password is hashed
+
   static protected $columns = [
     'id' => "",
     'privilege_id' => "",
@@ -13,11 +13,14 @@ class User extends DB {
     'fname'=> "",
     'lname'=> "",
     'password_required' => true,  // default require password
-    'password'=> "",
-    'confirm_password'=> "",
+    'password' => "",
+    'confirm_password' => "",
+    'hashed_password' => "",
     'created_at'=> "",
     'updated_at'=> "",
   ];
+
+  static protected $notInDB_cols = array("password", "comfirm_password");
 
 // ?? Do we need to check form $columns->$keys == $args->$keys ???
   protected static function initializeModel($args) {
@@ -31,6 +34,11 @@ class User extends DB {
       if (isset($args[$formAry][$key])){
         $value = $args[$formAry][$key]; // ***10/28 $args[$argsNameAry][$key]
       } // DEBUG**: else { echo $key . " field not on form."; die(); }
+    }
+    if (!empty(static::$columns['password'])){
+      // $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+      // retrieve: if(password_verify($password, $hashed_password)) {
+      static::$columns['hashed_password'] = password_hash(static::$columns['password'], PASSWORD_DEFAULT, ['cost' => 12]);
     }
     parent::initializeModel($args);
   }

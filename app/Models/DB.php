@@ -7,6 +7,7 @@ abstract class DB {
 	static protected $_pdo = null;
 	static protected $table;
 	static protected $columns = [];
+	static protected $notInDB_cols = array();
 	public $errors = [];
 	// public $fields = []; // for instance of columns ????
 
@@ -41,20 +42,10 @@ abstract class DB {
 		static::$_pdo = static::set_PDO($db);  // should always be global $db
 
 		static::initializeModel($args);
-		if (!empty($args)) { // DEBUG ** 10/25
-			// var_dump($args);
-			// echo "<br />called by: " . get_called_class() . "<br>";
-			// echo "Table: " .static::$table . "<br>Instance: ";
-			// var_dump(static::$_instance); // ::$_pdo
-			// // die();
-			// die();
-		}
 
 		$dbObject = new static;
-		// **REMOVE 11/1 NOT fields[] only for DEBUG: $dbObject->fields = static::$columns; // essentially pass to instance
-		// DEBUG ???return static or columns or ????
+
 		return $dbObject;
-		// return $dbobject;
   }
 
 	public static function getTable() {
@@ -101,7 +92,7 @@ abstract class DB {
   	if(self::$_query = self::$_pdo->prepare($sql)) {
   		if(count($params)) {
   			foreach($params as $param) {
-  				$this->_query->bindValue($param, static::$columns[$param]);
+  				self::$_query->bindValue($param, static::$columns[$param]);
   			}
   		}
 
@@ -150,17 +141,17 @@ abstract class DB {
 	// *************NOT TESTED 9/27/18******Create
 	public function create($formVals) {
 		 	if ($this->validate()){
-				$strFlds = implode(", ", static::$columns);
-			 	$aryParams = static::$columns;
+				$dbTblFlds = array_diff(static::$columns, static::$notInDB_cols);
+				$strFlds = implode(", ", $dbTblFlds);
+			 	$aryParams = $dbTblFlds;
 			 	foreach ($aryParams as &$value) {
 			 		$value = ':'.$value;
 			 	}
-				var_dump($aryParams);
-				echo "\n From DB.php create";
-				die(); // DEBUG** 10/21/18
 
 			 	unset($value); // clear for future use
 			 	$strParams = implode(", ", $aryParams);
+
+				$aryFlds = array_keys($dbTblFlds);
 
 			 	// combine so $fld_param_fld_ary[':fieldx'] = 'fieldx'
 			 	$fld_param_fld_ary = array_combine($aryParams, $aryFlds);
@@ -172,9 +163,6 @@ abstract class DB {
 				 $sql .= ") VALUES (";
 				 // $sql .= ":username, :password, :first_name, :last_name" . ")";
 				 $sql .= $strParams . ")";
-
-				 echo $sql;
-				 die();
 
 				 $this->query($sql, $aryFlds);
 				 $field_val_ary = array();

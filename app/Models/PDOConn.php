@@ -32,6 +32,12 @@ class PDOConn extends PDO {
 			}
 			$stmt = $this->prepare($sql);
 			$stmt->execute($args);
+			/*  example:
+			$sth = $dbh->prepare('SELECT name, colour, calories
+			    FROM fruit
+			    WHERE calories < :calories AND colour = :colour');
+			$sth->execute(array(':calories' => $calories,
+			 									':colour' => $colour)); *** */
 			return $stmt;
 		}
 	}

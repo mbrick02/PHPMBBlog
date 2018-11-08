@@ -7,13 +7,13 @@ abstract class DB {
 	static protected $_pdo = null;
 	static protected $table;
 	static protected $columns = [];
-	static protected $notInDB_cols = array();
+	static protected $notInDBCols = array();
 	public $errors = [];
 	// public $fields = []; // for instance of columns ????
 
-	protected $_query, // static??
+	static protected $_query, // pdo stmt static??
 		$_error = false;
-	private	$_results,
+	static private	$_results,
 		$_count = 0;
 
 	private function __construct($args = []) {
@@ -39,7 +39,7 @@ abstract class DB {
   	// 	static::$_pdo = PDOConn::getInstance();  // new subclass via static binding
 	  // }
 
-		static::$_pdo = static::set_PDO($db);  // should always be global $db
+		static::set_PDO($db);  // should always be global $db
 
 		static::initializeModel($args);
 
@@ -87,18 +87,20 @@ abstract class DB {
 	}
 
   public static function query($sql, $params = array()) {
-  	self::$_error = false;
+		global $db;
+		self::$_error = false;
+		if (is_null(static::$_pdo)) static::set_PDO($db);
 
-  	if(self::$_query = self::$_pdo->prepare($sql)) {
-  		if(count($params)) {
-  			foreach($params as $param) {
-  				self::$_query->bindValue($param, static::$columns[$param]);
-  			}
-  		}
-
-		  if(self::$_query->execute()) {
-				self::$_results = self::$_query->fetchAll(PDO::FETCH_OBJ);
-		  	self::$_count = self::$_query->rowCount();
+  	if($queryStmt = static::$_pdo->prepare($sql)) {
+  		// if(count($params)) {
+  		// 	foreach($params as $param) {
+  		// 		$queryStmt->bindValue($param, static::$columns[$param]);
+  		// 	}
+  		// }
+// $sth->execute(array(':calories' => $calories, ':colour' => $colour));
+		  if($queryStmt->execute($params)) {
+				self::$_results = $queryStmt->fetchAll(PDO::FETCH_OBJ);
+		  	self::$_count = $queryStmt->rowCount();
 			} else {
 				self::$_error = true;
 			}
@@ -107,7 +109,7 @@ abstract class DB {
 		if (self::$_error == true){
 			return false;
 		}
-
+		self::$_query = $queryStmt;
 		return ['results' => self::$_results,
 						'count' => self::$_count,
 						];
@@ -123,7 +125,7 @@ abstract class DB {
 	  	if(in_array($operator, $operators)) {
 	  		$sql = "{$action} FROM {static::table} WHERE {$field} {$operator} :{$field}";
 
-	  		if(!$this->query($sql, array($value))->error()) {
+	  		if(!self::$_query($sql, array($value))->error()) {
 	  			return $this;
 	  		}
   		}
@@ -141,11 +143,14 @@ abstract class DB {
 	// *************NOT TESTED 9/27/18******Create
 	public function create($formVals) {
 		 	if ($this->validate()){
-				$dbTblFlds = array_diff(static::$columns, static::$notInDB_cols);
-				$strFlds = implode(", ", $dbTblFlds);
+				/* Use this function to remove specific arrays of keys without modifying the original array
+					function array_except($array, $keys) {return array_diff_key($array, array_flip((array) $keys));}  */
+				// take out columns like 'id' that aren't being created in db
+				$dbTblFlds = array_diff_key(static::$columns, array_flip(static::$notInDBCols), array_flip(array("id")));
+				$strFldNames = implode(", ", array_keys($dbTblFlds));
 			 	$aryParams = $dbTblFlds;
-			 	foreach ($aryParams as &$value) {
-			 		$value = ':'.$value;
+			 	foreach ($aryParams as $key => &$value) {
+			 		$value = ':'. $key;
 			 	}
 
 			 	unset($value); // clear for future use
@@ -153,25 +158,20 @@ abstract class DB {
 
 				$aryFlds = array_keys($dbTblFlds);
 
-			 	// combine so $fld_param_fld_ary[':fieldx'] = 'fieldx'
-			 	$fld_param_fld_ary = array_combine($aryParams, $aryFlds);
+			 	// xx combine so $fld_param_fld_ary[':fieldx'] = 'fieldx': DONT NEED pdo exec/bind
+			 	// $fld_param_fld_ary = array_combine($aryParams, $aryFlds);
 
 				 // INSERT INTO table (key, key) VALUES ('value', 'value') use PDO
 				 $sql = "INSERT INTO " . static::$table ." (";
 				 // $sql .= 'username', 'password', 'first_name', 'last_name';
-				 $sql .= $strFlds;
+				 $sql .= $strFldNames;
 				 $sql .= ") VALUES (";
 				 // $sql .= ":username, :password, :first_name, :last_name" . ")";
 				 $sql .= $strParams . ")";
 
-				 $this->query($sql, $aryFlds);
-				 $field_val_ary = array();
-				 foreach($fld_param_fld_ary as $key => $value) {
-				 	$field_val_ary[$key] = $this->{$value};
-				 }
-
-				 if ($this->query($sql, $field_val_ary)) {
-				 	$this->column['id'] = $this->_pdo->lastInsertId();
+// $sth->execute(array(':calories' => $calories, ':colour' => $colour));
+				 if (self::query($sql, array_combine(array_values($aryParams), array_values($dbTblFlds)))) {
+				 	self::$_column['id'] = self::$_pdo->lastInsertId();
 				 	return true;
 				 }
 			}
@@ -185,7 +185,7 @@ abstract class DB {
   }
 
 // ?*? untested 9/22/18
-	public function getFieldsStr( $fieldsStr, $where) {
+	public function getFieldsStr($fieldsStr, $where) {
   	return $this->action("SELECT {$fieldsStr}", $where);
   }
 
@@ -203,53 +203,27 @@ abstract class DB {
 		return $results;
   }
 
-	/* *************Skoglund VERSIONS TO BE TRANSLATED to PDO
-
-	static public function find_all() {
-	$sql = "SELECT * FROM " . static::$table_name;
-	return static::find_by_sql($sql);
-}
-
-static public function count_all() {
-	$sql = "SELECT COUNT(*) FROM " . static::$table_name;
-	$result_set = self::$database->query($sql);
-	$row = $result_set->fetch_array();
-	return array_shift($row);
-}
-
-static public function find_by_id($id) {
-	$sql = "SELECT * FROM " . static::$table_name . " ";
-	$sql .= "WHERE id='" . self::$database->escape_string($id) . "'";
-	$obj_array = static::find_by_sql($sql);
-	if(!empty($obj_array)) {
-		return array_shift($obj_array);
-	} else {
-		return false;
-	}
-}
-	****************************** */
-
   public function delete($where) {
   	return $this->action('DELETE', $where);
   }
 
   public function results() {
-  	return self::_results;
+  	return self::$_results;
   }
 
 	public function first() {
-		return $this->results()[0];
+		return self::$_results()[0];
 	}
 
   public function error() {
-  	return $this->_error;
+  	return self::$_error;
   }
 
   public function count() {
-  	return $this->_count;
+  	return self::$_count;
   }
 
 	public function disconnect() {
-		$this->_dbo = null;
+		self::$_dbo = null;
 	}
 }

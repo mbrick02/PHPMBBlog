@@ -20,8 +20,8 @@ class User extends DB {
     'updated_at'=> "",
   ];
 
-  static protected $notInDB_cols = array("password", "comfirm_password");
-
+  static protected $notInDBCols =
+    array("password", "confirm_password", "password_required", "created_at", "updated_at");
 // ?? Do we need to check form $columns->$keys == $args->$keys ???
   protected static function initializeModel($args) {
     $formAry = rtrim(static::$table, "s"); // "user"; // ?always table name minus ending 's'

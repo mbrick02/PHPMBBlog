@@ -8,6 +8,7 @@ abstract class DB {
 	static protected $table;
 	static protected $columns = [];
 	static protected $notInDBCols = array();
+	static protected $uniqueFlds = array();
 	public $errors = [];
 	// public $fields = []; // for instance of columns ????
 
@@ -133,14 +134,29 @@ abstract class DB {
   	return false;
   }
 
-	public function validate() {
-    $this->errors = [];
-    // Add custom validations
+	private function testUniqFldVals() {
+		$where = "";
+		foreach (static::$uniqueFlds as $field) {
+			$where = "{$field} = static::$columns[$field]";
+			$sql = "SELECT * FROM " . static::$table . " WHERE " . $where;
 
-    return $this->errors;
+			static::query($sql);
+		}
+		if (!empty($where)) {
+			RUNQueryTestForDupOfUniqFld  static::query($sql)
+			ifDupRecordErrInErrors
+		}
+	}
+
+	public function validate() {
+    // $this->errors = [];  // don't want to zero out the errors array
+    // use custom validations in child models befor calling this/parent
+
+		$this->testUniqFldVals();
+
+    // return $this->errors;  // test for errors elsewhere
   }
 
-	// *************NOT TESTED 9/27/18******Create
 	public function create($formVals) {
 		 	if ($this->validate()){
 				/* Use this function to remove specific arrays of keys without modifying the original array
@@ -171,7 +187,7 @@ abstract class DB {
 
 // $sth->execute(array(':calories' => $calories, ':colour' => $colour));
 				 if (self::query($sql, array_combine(array_values($aryParams), array_values($dbTblFlds)))) {
-				 	self::$_column['id'] = self::$_pdo->lastInsertId();
+				 	self::$column['id'] = self::$_pdo->lastInsertId();
 				 	return true;
 				 }
 			}

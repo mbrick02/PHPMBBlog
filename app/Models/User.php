@@ -20,6 +20,8 @@ class User extends DB {
     'updated_at'=> "",
   ];
 
+  static protected $uniqueFlds = array("username", "email");
+
   static protected $notInDBCols =
     array("password", "confirm_password", "password_required", "created_at", "updated_at");
 // ?? Do we need to check form $columns->$keys == $args->$keys ???
@@ -53,9 +55,14 @@ class User extends DB {
     return static::$columns['fname'] . " " . static::$columns['lname'];
   }
 
+  private function testUnique() {
+
+  }
+
   public function validate() {
     $this->errors = [];
 
+    // Note: "$ary[] =" means push onto $ary NOT reassign
     if(is_blank(static::$columns['fname'])) {
       $this->errors[] = "First name cannot be blank.";
     } elseif (!has_length(static::$columns['fname'], array('min' => 2, 'max' => 255))) {
@@ -86,7 +93,7 @@ class User extends DB {
       if(is_blank(static::$columns['password'])) {
         $this->errors[] = "Password cannot be blank.";
       } elseif (!has_length(static::$columns['password'], array('min' => 8))) {
-        $this->errors[] = "Password must contain 12 or more characters";
+        $this->errors[] = "Password must contain 8 or more characters";
       } elseif (!preg_match('/[A-Z]/', static::$columns['password'])) {
         $this->errors[] = "Password must contain at least 1 uppercase letter";
       } elseif (!preg_match('/[a-z]/', static::$columns['password'])) {
@@ -103,6 +110,8 @@ class User extends DB {
         $this->errors[] = "Password and confirm password must match.";
       }
     }
+
+    parent::validate(); // call checkUnique and other default functions
 
     return $this; // Skoglund returned: $this->errors;
   }

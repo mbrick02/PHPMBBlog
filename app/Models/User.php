@@ -59,61 +59,61 @@ class User extends DB {
 
   }
 
-  public function validate() {
-    $this->errors = [];
+  protected static function validate() {
+    self::$errors = [];
 
     // Note: "$ary[] =" means push onto $ary NOT reassign
     if(is_blank(static::$columns['fname'])) {
-      $this->errors[] = "First name cannot be blank.";
+      self::$errors[] = "First name cannot be blank.";
     } elseif (!has_length(static::$columns['fname'], array('min' => 2, 'max' => 255))) {
-      $this->errors[] = "First name must be between 2 and 255 characters.";
+      self::$errors[] = "First name must be between 2 and 255 characters.";
     }
 
     if(is_blank(static::$columns['lname'])) {
-      $this->errors[] = "Last name cannot be blank.";
+      self::$errors[] = "Last name cannot be blank.";
     } elseif (!has_length(static::$columns['lname'], array('min' => 2, 'max' => 255))) {
-      $this->errors[] = "Last name must be between 2 and 255 characters.";
+      self::$errors[] = "Last name must be between 2 and 255 characters.";
     }
 
     if(is_blank(static::$columns['email'])) {
-      $this->errors[] = "Email cannot be blank.";
+      self::$errors[] = "Email cannot be blank.";
     } elseif (!has_length(static::$columns['email'], array('max' => 255))) {
-      $this->errors[] = "Last name must be less than 255 characters.";
+      self::$errors[] = "Last name must be less than 255 characters.";
     } elseif (!has_valid_email_format(static::$columns['email'])) {
-      $this->errors[] = "Email must be a valid format.";
+      self::$errors[] = "Email must be a valid format.";
     }
 
     if(is_blank(static::$columns['username'])) {
-      $this->errors[] = "Username cannot be blank.";
+      self::$errors[] = "Username cannot be blank.";
     } elseif (!has_length(static::$columns['username'], array('min' => 3, 'max' => 255))) {
-      $this->errors[] = "Username must be between 8 and 255 characters.";
+      self::$errors[] = "Username must be between 8 and 255 characters.";
     }
 
     if(static::$columns['password_required']) {
       if(is_blank(static::$columns['password'])) {
-        $this->errors[] = "Password cannot be blank.";
+        self::$errors[] = "Password cannot be blank.";
       } elseif (!has_length(static::$columns['password'], array('min' => 8))) {
-        $this->errors[] = "Password must contain 8 or more characters";
+        self::$errors[] = "Password must contain 8 or more characters";
       } elseif (!preg_match('/[A-Z]/', static::$columns['password'])) {
-        $this->errors[] = "Password must contain at least 1 uppercase letter";
+        self::$errors[] = "Password must contain at least 1 uppercase letter";
       } elseif (!preg_match('/[a-z]/', static::$columns['password'])) {
-        $this->errors[] = "Password must contain at least 1 lowercase letter";
+        self::$errors[] = "Password must contain at least 1 lowercase letter";
       } elseif (!preg_match('/[0-9]/', static::$columns['password'])) {
-        $this->errors[] = "Password must contain at least 1 number";
+        self::$errors[] = "Password must contain at least 1 number";
       } elseif (!preg_match('/[^A-Za-z0-9\s]/', static::$columns['password'])) {
-        $this->errors[] = "Password must contain at least 1 symbol";
+        self::$errors[] = "Password must contain at least 1 symbol";
       }
 
       if(is_blank(static::$columns['confirm_password'])) {
-        $this->errors[] = "Confirm password cannot be blank.";
+        self::$errors[] = "Confirm password cannot be blank.";
       } elseif (static::$columns['password'] !== static::$columns['confirm_password']) {
-        $this->errors[] = "Password and confirm password must match.";
+        self::$errors[] = "Password and confirm password must match.";
       }
     }
 
     parent::validate(); // call checkUnique and other default functions
 
-    return $this; // Skoglund returned: $this->errors;
+    return self::$_error; // return "if errors?"
   }
 
 // id, username, email, fname, lname, password,

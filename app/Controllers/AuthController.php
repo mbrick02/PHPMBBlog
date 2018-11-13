@@ -22,10 +22,6 @@ class AuthController extends Controller {
     // ***10/27 pass in nameAry 'user' to signup and use in initialize($nameAryVar)
     $excludeAry = array("password", "confirm_password");
     $user->restoreFormValsSessCols($excludeAry);  // retrieve form values from session reset
-// DEBUG** 11/2    ***********left off here 10/31 set form vals to go from session back into form
-    // echo "In AuthController (26) after restorFormVals... static:cols: ";
-    // var_dump($user->getCols());
-    // die();
 
     $userForm = VIEWS_PATH . DS . 'auth' . DS . 'signup.php';
     $formVars = [ 'user' => $user]; // ?? , 'values' => $formValsAry
@@ -47,32 +43,22 @@ class AuthController extends Controller {
     /*  id, privilege_id,username,email,fname,lname, password,
     confirm_password, created_at, updated_at,    */
     $allPostVars = $request->getParsedBody();
-
     $user = User::getInstance($db, $allPostVars);
 
     // $user->validate(); // called in DB->create
-
-
     // determine and capture errors: e.g. email is_blank, has_presence, has_length
     if ($user->create(array_keys($allPostVars))) {
       echo "Ready to create user " . $user->fullname;
     } else { // create failed probably validation error OR some DB error
-      if (!empty($user->errors)){
-        // keep current vals in form
-        $user->putFormValsSess();
-
-        // set session message to errors (?if NOT already done in validate)
+      $user->putFormValsSess();  // store form values in session to resubmit
+      if ($user->errors()){ // validation errors display via session
         $session->errMsg($user->errors);
       } else {
         $session->errMsg("Non-validation (possible DB) error with Create form");
-
-        // redirect back to form
-        return $response->withRedirect($this->router->pathFor('user.create'));
       }
-
+      return $response->withRedirect($this->router->pathFor('user.create')); // redirect back to form
     }
-
-      // to home w/built-in router func
-      return $response->withRedirect($this->router->pathFor('home'));
+    // redirect to home w/built-in router func
+    return $response->withRedirect($this->router->pathFor('home'));
   }
 }

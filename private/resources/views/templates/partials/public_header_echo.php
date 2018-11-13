@@ -2,7 +2,7 @@
 
 <html lang="en">
   <head>
-    <title>MB Blog Page <?php echo {$page_title}; ?></title>
+    <title>MB Blog Page <?php echo $page_title; ?></title>
     <meta charset="utf-8">
     <!-- Latest bstrap compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"

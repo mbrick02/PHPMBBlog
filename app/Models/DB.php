@@ -9,11 +9,11 @@ abstract class DB {
 	static protected $columns = [];
 	static protected $notInDBCols = array();
 	static protected $uniqueFlds = array();
-	public $errors = [];
+	public $errors = []; // holds all error messages of validation or db
 	// public $fields = []; // for instance of columns ????
 
-	static protected $_query, // pdo stmt static??
-		$_error = false;
+	static protected $_query, // for pdo stmt
+		$_error = false; // flag that errors occured
 	static private	$_results,
 		$_count = 0;
 
@@ -27,8 +27,8 @@ abstract class DB {
 
 	public static function tableExists($table) {
 		$query = "SELECT 1 FROM ? LIMIT 1;";
-
-		if(!static::query($sql, array($table))->error()) {
+		static::query($sql, array($table));
+		if(!static::$_error) {
 			return true;
 		}
 		return $false;
@@ -88,18 +88,13 @@ abstract class DB {
 	}
 
   public static function query($sql, $params = array()) {
-		// returns false or $resultAry[]
+		// returns true if query has run else false
 		global $db;
 		self::$_error = false;
 		if (is_null(static::$_pdo)) static::set_PDO($db); // insure $db connect
 
   	if($queryStmt = static::$_pdo->prepare($sql)) {
-  		// if(count($params)) {
-  		// 	foreach($params as $param) {
-  		// 		$queryStmt->bindValue($param, static::$columns[$param]);
-  		// 	}
-  		// }
-// $sth->execute(array(':calories' => $calories, ':colour' => $colour));
+			// example: $sth->execute(array(':calories' => $calories, ':colour' => $colour));
 		  if($queryStmt->execute($params)) {
 				self::$_results = $queryStmt->fetchAll(PDO::FETCH_OBJ);
 		  	self::$_count = $queryStmt->rowCount();
@@ -108,18 +103,12 @@ abstract class DB {
 			}
   	}
 
-		if (self::$_error == true){
-			return false;
-		}
 		self::$_query = $queryStmt;
-		return ['results' => self::$_results,
-						'count' => self::$_count,
-						'error' => self::$_error,
-						];
+		return (!(self::$_error)); // true if no errors
   }
 
-  public function action($action, $where = array()) {
-		// returns false or $resultAry[]
+  public function action($action, $where = array()) { // format sample: (where) field(0) =(1) value(2)
+		// returns false or self::$_results
   	if(count($where) == 3) {
 			$operators = array('=', '>', '<', '>=', '<=');
 	  	$field = $where[0];
@@ -128,83 +117,81 @@ abstract class DB {
 
 	  	if(in_array($operator, $operators)) {
 	  		$sql = "{$action} FROM {static::table} WHERE {$field} {$operator} :{$field}";
-
-				$resultAry = $query($sql, array($value));
-
-				return $resultAry;
+				if (static::query($sql, array($value))) {
+						return self::$_results;
+				}
   		}
 		} // end if(count($where) == 3)
   	return false;
   }
 
-	private static function uniqFldVals() {
+	private static function uniqFldValErrs() {
 		/* called by create and edit methods to make sure uniqeFlds are unique
 			return true if unique
-			return false if one or more vals already exists (record errors)
-			*/
-		$resultArys = [];
+			return false if one or more vals already exists (record errors)  */
 		$where = "";
-		$uniqResults = true;
+		$returnErrs = [];
+
 		foreach (static::$uniqueFlds as $field) {
 			$where = "{$field} = '" . static::$columns[$field] . "'";
 			$sql = "SELECT * FROM " . static::$table . " WHERE " . $where;
 
-			$resultAry = self::query($sql);
-			// if error -- bad sql
-			if (!$resultAry['error']) {
-				if ($resultAry['count'] > 0) {
-					self::$errors[] = $field . " already exists in DB";
-					$uniqResults = false;
+			$querySuccess = self::query($sql);
+
+			if ($querySuccess) {
+				if (self::$_count > 0) {
+					$returnErrs[] = $field . " already exists in DB";
 				}
-			} else {  // error running sql
-				self::$errors[] = "DB error in test for unique: " . $field;
-				$uniqResults = false; // database error - return false anyway
+			} else {  // db error running sql
+				$returnErrs[] = "DB error in test for unique field: " . $field;
 			}
-			// DON'T really need this: $resultArys[] = $resultAry;
 		}
-		return $uniqResults;
+		return $returnErrs; // return errors (No errors == fields are unique)
 	}
 
-	protected static function validate() {
-    // $this->errors = [];  // don't want to zero out the errors array
+	protected function validate() {
+    // $this->errors = [];  // don't zero out errors in child Model
     // use custom validations in child models befor calling this/parent
-		self::uniqFldVals();
+		$uniqFldValErrors = self::uniqFldValErrs();
 
-    // return $this->errors;  // test for errors elsewhere
+		if (!empty($uniqFldValErrors)) $this->errors = array_merge($this->errors, $uniqFldValErrors);
+
+    // child Model calls parent (this) method and sets "$_error" true/false sample child end code:
+		// parent::validate(); // call checkUnique and other default functions
+		// self::$_error = !empty($this->errors); // if $this->errors not empty, there was error(s)
+		// return  empty($this->errors); // validate if no errors (else validate false)
   }
 
 	public function create($formVals) {
-		 	if ($this->validate()){
+			static::$_error = !($this->validate()); // set $_error to not validate()
+			if (!(static::$_error)){  // try to create if no errors -- || (empty($this->errors)
 				/* remove specific arrays of keys without modifying original array
 					function ary_except($ary, $keys) {return ary_diff_key($array, ary_flip((array) $keys));}  */
 				// remove cols not created (id) or in db (pw) (flip simp ary vals into keys)
 				$dbTblFlds = array_diff_key(static::$columns, array_flip(static::$notInDBCols), array_flip(array("id")));
 				$strFldNames = implode(", ", array_keys($dbTblFlds)); // turn keys into comma sep str
 			 	$aryParams = $dbTblFlds;  // set up param names for binding in dbStatement exec
-			 	foreach ($aryParams as $key => &$value) { $value = ':'. $key;	}
+			 	foreach ($aryParams as $key => &$value) { $value = ':'. $key;	}  // query field (substitute) params (e.g. :username)
 
 			 	unset($value); // clear for future use
 			 	$strParams = implode(", ", $aryParams); // turn params into comma sep str
-
 
 				 $sql = "INSERT INTO " . static::$table ." (";  // INS. INTO tbl(key, key2) VALUES('val1', 'val2')
 				 $sql .= $strFldNames; // $sql .= 'usrname', 'hash_pw', 'fname', 'lname';
 				 $sql .= ") VALUES (";
 				 $sql .= $strParams . ")"; // $sql .= ":usrname, :hash_pw, :fname, :lname" . ")";
-
 // $sth->execute(array(':calories' => $calories, ':colour' => $colour));
-				 if (self::query($sql, array_combine(array_values($aryParams), array_values($dbTblFlds)))) {
+				self::query($sql, array_combine(array_values($aryParams), array_values($dbTblFlds)));
+				if (!(self::$_error)) {  // still no error after running query
 				 	static::$column['id'] = self::$_pdo->lastInsertId();
 				 	return true;
-				 }
-			}  // end  if($this->validate()){
+				}
+			}  // end  if !(static::$_error) - if!($this->validate()){
 			return false; // most likely did not validate check errors
-		}  // end public create()
-
-	// *****************end CREATE
+	}  // end public create()
 
   public function get($where) {
-  	return $this->action('SELECT *', $where);
+  	$this->action('SELECT *', $where);
   }
 
 // ?*? untested 9/22/18
@@ -223,10 +210,11 @@ abstract class DB {
 		} else {
 			$results['error'] = true;
 		}
-		return $results;
+		return $results;  // Note: returning $results is inconsistent with ALL other queries
   }
 
-  public function delete($where) {
+  public function delete($id) {
+		$where = array("id", "=", $id);
   	return $this->action('DELETE', $where);
   }
 
@@ -239,7 +227,7 @@ abstract class DB {
 	}
 
   public function error() {
-  	return self::$_error;
+  	return static::$_error;
   }
 
   public function count() {

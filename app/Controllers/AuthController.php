@@ -7,7 +7,7 @@ use app\Models\User as User;
 // /users and other named urls use url with urlFor()
 class AuthController extends Controller {
   // protected static $container;
-  protected static function buildPage($contrVars = []) {
+  protected static function buildPage($contrVars = []) { // unused as of 11/14/18
     $contrVars = array_replace($contrVars, ['page_title' => 'Authenticate',]);
     parent::buildPage($contrVars);
   }
@@ -19,7 +19,7 @@ class AuthController extends Controller {
     if(!$user->count()) {
       // $user->first()->username;
     }
-    // ***10/27 pass in nameAry 'user' to signup and use in initialize($nameAryVar)
+    // exclude values from form restore on error or NOT validated
     $excludeAry = array("password", "confirm_password");
     $user->restoreFormValsSessCols($excludeAry);  // retrieve form values from session reset
 
@@ -51,7 +51,7 @@ class AuthController extends Controller {
       echo "Ready to create user " . $user->fullname;
     } else { // create failed probably validation error OR some DB error
       $user->putFormValsSess();  // store form values in session to resubmit
-      if ($user->errors()){ // validation errors display via session
+      if ($user->error()){ // validation errors display via session
         $session->errMsg($user->errors);
       } else {
         $session->errMsg("Non-validation (possible DB) error with Create form");

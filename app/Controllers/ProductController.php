@@ -32,11 +32,13 @@ class ProductController extends Controller {
 		static::$templateVars['content'] = $productContent;
 
 		// set() ONLY works on public_header vars -- all fixed vals set in main.php
-    // $this->container->view->set('content', "test templating w/search/repl");
-		static::$container->view->set('page_title', "Products");
+    // old: $this->container->view->set('content', "test templating w/search/repl");
+		// Old pre buildPage version: static::$container->view->set('page_title', "Products");
+		static::$templateVars['page_title'] = "Products";
 
 		$maintemplate = TEMPLATE_PATH . DS . 'main.php';
-		static::$container->view->renderWithVariables($maintemplate, static::$templateVars);
+		// old: static::$container->view->renderWithVariables($maintemplate, static::$templateVars);
           // , $optiondefltprint=true
+		static::buildPage(static::$templateVars);
   }
 }

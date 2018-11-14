@@ -59,61 +59,61 @@ class User extends DB {
 
   }
 
-  protected static function validate() {
-    self::$errors = [];
+  protected function validate() {
+    $this->errors = [];
 
     // Note: "$ary[] =" means push onto $ary NOT reassign
     if(is_blank(static::$columns['fname'])) {
-      self::$errors[] = "First name cannot be blank.";
+      $this->errors[] = "First name cannot be blank.";
     } elseif (!has_length(static::$columns['fname'], array('min' => 2, 'max' => 255))) {
-      self::$errors[] = "First name must be between 2 and 255 characters.";
+      $this->errors[] = "First name must be between 2 and 255 characters.";
     }
 
     if(is_blank(static::$columns['lname'])) {
-      self::$errors[] = "Last name cannot be blank.";
+      $this->errors[] = "Last name cannot be blank.";
     } elseif (!has_length(static::$columns['lname'], array('min' => 2, 'max' => 255))) {
-      self::$errors[] = "Last name must be between 2 and 255 characters.";
+      $this->errors[] = "Last name must be between 2 and 255 characters.";
     }
 
     if(is_blank(static::$columns['email'])) {
-      self::$errors[] = "Email cannot be blank.";
+      $this->errors[] = "Email cannot be blank.";
     } elseif (!has_length(static::$columns['email'], array('max' => 255))) {
-      self::$errors[] = "Last name must be less than 255 characters.";
+      $this->errors[] = "Last name must be less than 255 characters.";
     } elseif (!has_valid_email_format(static::$columns['email'])) {
-      self::$errors[] = "Email must be a valid format.";
+      $this->errors[] = "Email must be a valid format.";
     }
 
     if(is_blank(static::$columns['username'])) {
-      self::$errors[] = "Username cannot be blank.";
+      $this->errors[] = "Username cannot be blank.";
     } elseif (!has_length(static::$columns['username'], array('min' => 3, 'max' => 255))) {
-      self::$errors[] = "Username must be between 8 and 255 characters.";
+      $this->errors[] = "Username must be between 8 and 255 characters.";
     }
 
     if(static::$columns['password_required']) {
       if(is_blank(static::$columns['password'])) {
-        self::$errors[] = "Password cannot be blank.";
+        $this->errors[] = "Password cannot be blank.";
       } elseif (!has_length(static::$columns['password'], array('min' => 8))) {
-        self::$errors[] = "Password must contain 8 or more characters";
+        $this->errors[] = "Password must contain 8 or more characters";
       } elseif (!preg_match('/[A-Z]/', static::$columns['password'])) {
-        self::$errors[] = "Password must contain at least 1 uppercase letter";
+        $this->errors[] = "Password must contain at least 1 uppercase letter";
       } elseif (!preg_match('/[a-z]/', static::$columns['password'])) {
-        self::$errors[] = "Password must contain at least 1 lowercase letter";
+        $this->errors[] = "Password must contain at least 1 lowercase letter";
       } elseif (!preg_match('/[0-9]/', static::$columns['password'])) {
-        self::$errors[] = "Password must contain at least 1 number";
+        $this->errors[] = "Password must contain at least 1 number";
       } elseif (!preg_match('/[^A-Za-z0-9\s]/', static::$columns['password'])) {
-        self::$errors[] = "Password must contain at least 1 symbol";
+        $this->errors[] = "Password must contain at least 1 symbol";
       }
 
       if(is_blank(static::$columns['confirm_password'])) {
-        self::$errors[] = "Confirm password cannot be blank.";
+        $this->errors[] = "Confirm password cannot be blank.";
       } elseif (static::$columns['password'] !== static::$columns['confirm_password']) {
-        self::$errors[] = "Password and confirm password must match.";
+        $this->errors[] = "Password and confirm password must match.";
       }
     }
 
     parent::validate(); // call checkUnique and other default functions
-
-    return self::$_error; // return "if errors?"
+    static::$_error = !empty($this->errors); // $this->errors not empty - error(s) (also in Create() caller)
+    return  empty($this->errors); // validate if no errors (else validate false)
   }
 
 // id, username, email, fname, lname, password,

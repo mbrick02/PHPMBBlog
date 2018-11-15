@@ -50,15 +50,6 @@ class Controller {
 
 		static::$publicHeader = static::$container->view->returnText();
 
-		// DEBUG 10/31 **
-		// echo "<br />In Controller (parent) container->view->assignedVars: <br />";
-		// var_dump(static::$container->view->assignedVars);
-		// echo "<br />In Controller (child) contrVars: <br />";
-		// var_dump($contrVars);
-		// echo "<br />In Controller (parent) publicHeader: <br />";
-		// var_dump(static::$publicHeader);
-		// die();
-
 		static::$templateVars = [ // set default vars
 			'cartExists' => $session->exists('cart') ? 'Shows a cart' : 'No Cart',
 			'routeHasProfile' => 'Route has profile var',
@@ -74,12 +65,6 @@ class Controller {
 		if (!empty($contrVars)) {
 			static::$templateVars = array_replace(static::$templateVars, $contrVars);
 		}
-		// DEBUG ** 10/31
-		// echo "<br />In Controller (parent) static-templateVars: <br />";
-		// var_dump(static::$templateVars);
-		// echo "<br />In Controller (child) contrVars: <br />";
-		// var_dump($contrVars);
-		// die();
 
 		$maintemplate = TEMPLATE_PATH . DS . 'main.php';
 		static::$container->view->renderWithVariables($maintemplate, static::$templateVars);
@@ -88,8 +73,7 @@ class Controller {
 
 /* using __get() in this way does not seem to work in php 7.1.22 */
   public function __get($property) {  // can be used to create shortcut calls to property values
-	    // ***WARNING if overused, these shortcuts can be confusing
-			// ** DEBUG: var_dump($property);
+	    // ***WARNING if overused, can be confusing
 			if (static::$container->{$property}) {
 	        return static::$container->{$property};
 					// if prop in container, get w/out specifying container

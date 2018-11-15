@@ -16,9 +16,6 @@ class AuthController extends Controller {
     global $db;
     $user = User::getInstance($db);
 
-    if(!$user->count()) {
-      // $user->first()->username;
-    }
     // exclude values from form restore on error or NOT validated
     $excludeAry = array("password", "confirm_password");
     $user->restoreFormValsSessCols($excludeAry);  // retrieve form values from session reset

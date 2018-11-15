@@ -1,7 +1,5 @@
 <?php
-
-// temp holder for navigation
-// heading menu
+// called by 
 ?>
 
 <div class="blog-masthead">

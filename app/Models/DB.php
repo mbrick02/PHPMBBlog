@@ -191,11 +191,15 @@ abstract class DB {
 	}  // end public create()
 
   public function get($where) {
+		// returns results array $_results or false
+		// 	  	$field = $where[0]; $operator = $where[1]; $value = $where[2];
   	$this->action('SELECT *', $where);
   }
 
 // ?*? untested 9/22/18
 	public function getFieldsStr($fieldsStr, $where) {
+		// returns results array $_results or false
+		// 	  	$field = $where[0]; $operator = $where[1]; $value = $where[2];
   	return $this->action("SELECT {$fieldsStr}", $where);
   }
 

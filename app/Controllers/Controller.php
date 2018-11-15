@@ -50,6 +50,8 @@ class Controller {
 
 		static::$publicHeader = static::$container->view->returnText();
 
+		// update cartExists to $cartContent = $session->exists('cart') ? 'Shows a cart' : 'No Cart'
+
 		static::$templateVars = [ // set default vars
 			'cartExists' => $session->exists('cart') ? 'Shows a cart' : 'No Cart',
 			'routeHasProfile' => 'Route has profile var',

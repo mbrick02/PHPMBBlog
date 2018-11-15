@@ -55,8 +55,8 @@ class User extends DB {
     return static::$columns['fname'] . " " . static::$columns['lname'];
   }
 
-  private function testUnique() {
-
+  public static function veifyUser($username, $pw){
+    $user = findUser($username);
   }
 
   protected function validate() {

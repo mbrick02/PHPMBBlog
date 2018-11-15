@@ -1,32 +1,15 @@
 <?php
+  // called by Controller::buildPage
+  // vars set in Controller or child (eg. AuthController):
+  //    $publicHeader, $cartExists, $routeHasProfile, $content, $rightCol;
   global $session;
-  // based on views/main.blade.php of Laravel 2016 Build Blog
-  // also look at resources/views/templates/app.twig in PHP Slim framework Authentication 6/29
-  // header has: page_title, urlForIndex, urlForMBBloglogo
-  // 'container->' interpolated by parent/base __get() when getting view vals
-  // DEL non longer  uses: global $g_templateVars;
-
-  // $container->view->filename = (Default=TEMPLATE_PATH . DS .) 'partials' . DS . 'public_header.php';
-
-  // header has: page_title, urlForIndex, urlForMBBloglogo, stylesheet, errorHeader
-  /* 'view' is Template instance usage:		$template->filename = "template2.php";
-  $template->set('page_title', "Template Test"); $template->set('content', "some content.");
-  OR:
-  $assignedVars = [ 'pageTitle' => "Template Test", content' =>"Test of search/repl template."  ];
-  $template->display();		or $template->returnText(); ***** */
-  // values for header,  like example below, set in calling Controller but CAN be set here
-  // $container->view->set('page_title', "Template Test"); // in controller fixed header val set here
-  // or $assignedVars = [ 'field1' => 'field1val', 'field2' => 'field2val'];
 
   echo $publicHeader;
-
   include TEMPLATE_PATH . DS . 'partials' . DS . 'navhead.php';
-
 ?>
 <!-- ************** NAV HEAD TRIAL 10/6/18 ******************** -->
-
 			<ul class="nav navbar-nav navbar-right">
-        <?php echo "<h1>". $cartExists . "</h1>"; ?>
+        <?php echo "<h2>". $cartExists . "</h2>"; ?>
 				@if(Session::has('cart')) xxUse instead>
 				<li>
 				<a href="{{ route('product.shoppingCart') }}">

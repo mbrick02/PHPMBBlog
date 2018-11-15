@@ -1,5 +1,7 @@
 <?php
-// called by 
+// called by include in main.php
+// vars (set in ): $pageUrls['products'], $pageUrls['curURL'] == '/',  $pageUrls['curURL'] == '/about'
+
 ?>
 
 <div class="blog-masthead">

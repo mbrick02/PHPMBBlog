@@ -9,8 +9,8 @@
 ?>
 <!-- ************** NAV HEAD TRIAL 10/6/18 ******************** -->
 			<ul class="nav navbar-nav navbar-right">
-        <?php echo "<h2>". $cartExists . "</h2>"; ?>
-				@if(Session::has('cart')) xxUse instead>
+        <?php echo "<h3>". $cartExists . "</h3><br>"; ?>
+				<?php echo "<h3>" . ($session->is_logged_in() ? "Logged In" : "Not logged in") . "</h3><br>"; ?>
 				<li>
 				<a href="{{ route('product.shoppingCart') }}">
 					<i class="fa fa-shopping-cart" aria-hidden="true"></i> Shopping Cart

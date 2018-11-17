@@ -36,7 +36,6 @@ class AuthController extends Controller {
   public function postSignup($request, $response){
     global $session;
     global $db;
-    // ??????10/21/18 params????????? pass to __construct or getInstance()
     /*  id, privilege_id,username,email,fname,lname, password,
     confirm_password, created_at, updated_at,    */
     $allPostVars = $request->getParsedBody();
@@ -45,7 +44,7 @@ class AuthController extends Controller {
     // $user->validate(); // called in DB->create
     // determine and capture errors: e.g. email is_blank, has_presence, has_length
     if ($user->create(array_keys($allPostVars))) {
-      echo "Ready to create user " . $user->fullname;
+      $session->getMsg("User created for " . $user->fullname);
     } else { // create failed probably validation error OR some DB error
       $user->putFormValsSess();  // store form values in session to resubmit
       if ($user->error()){ // validation errors display via session
@@ -58,4 +57,15 @@ class AuthController extends Controller {
     // redirect to home w/built-in router func
     return $response->withRedirect($this->router->pathFor('home'));
   }
+
+  public function login($request, $response){
+    global $session;
+    global $db;
+
+    $allPostVars = $request->getParsedBody(); // login vars NOT user as in signup
+    $user = User::getInstance($db, $allPostVars); // usernameEmail (not username or email) pw
+    // username or email, look for user, if user then, password_verify($pw, $dbhash)
+
+  }
+
 }

@@ -39,6 +39,7 @@ class Session {
       session_regenerate_id();
       $this->user_id = $_SESSION['user_id'] = $user->id;
       $this->username = $_SESSION['username'] = $user->username;
+      // $this->username = $_SESSION['fullname'] = $user->fullname();
       $this->last_login = $_SESSION['last_login'] = time();
     }
     return true;
@@ -52,6 +53,7 @@ class Session {
   public function logout() {
     unset($_SESSION['user_id']);
     unset($_SESSION['username']);
+    // unset($_SESSION['fullname']);
     unset($_SESSION['last_login']);
     unset($this->user_id);
     unset($this->username);
@@ -85,8 +87,14 @@ class Session {
       return true;
     } else {
       // Then this is a "get" message
-      return $_SESSION['message'] ?? '';
+      $sessMsg = isset($_SESSION['message']) ? $_SESSION['message'] : '';
+      unset($_SESSION['message']);
+      return $sessMsg;
     }
+  }
+
+  public function getMsg($msg="") { // instance get message
+    return self::message($msg);
   }
 
   public static function errMsg($errmsg=[]) {

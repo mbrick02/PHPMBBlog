@@ -46,6 +46,8 @@ class Controller {
 			$msgHeader .= $session->display_errors($session->errMsg());
 		}
 
+		$loginForm = "probably create login form from partial";
+
 		static::$container->view->set('msgHeader',  $msgHeader);
 
 		static::$publicHeader = static::$container->view->returnText();
@@ -57,6 +59,7 @@ class Controller {
 			'routeHasProfile' => 'Route has profile var',
 			'container' => static::$container,
 			'publicHeader' => static::$publicHeader,
+			'loginForm' => $loginForm,
 			'pageUrls' => [
 						'products' => static::$container->get('router')->pathFor('products'),
 						'curURL' => static::$container->request->getUri()->getPath(),

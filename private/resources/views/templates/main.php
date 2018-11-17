@@ -3,14 +3,14 @@
   // vars set in Controller or child (eg. AuthController):
   //    $publicHeader, $cartExists, $routeHasProfile, $content, $rightCol;
   global $session;
-
+  $lgdIn = $session->is_logged_in();
   echo $publicHeader;
   include TEMPLATE_PATH . DS . 'partials' . DS . 'navhead.php';
 ?>
 <!-- ************** NAV HEAD TRIAL 10/6/18 ******************** -->
 			<ul class="nav navbar-nav navbar-right">
-        <?php echo "<h3>". $cartExists . "</h3><br>"; ?>
-				<?php echo "<h3>" . ($session->is_logged_in() ? "Logged In" : "Not logged in") . "</h3><br>"; ?>
+        <?php echo "<h4>". $cartExists . "</h4><br>"; ?>
+				<?php echo "<h4>" . ($lgdIn ? "Logged In" : "Not logged in") . "</h4><br>"; ?>
 				<li>
 				<a href="{{ route('product.shoppingCart') }}">
 					<i class="fa fa-shopping-cart" aria-hidden="true"></i> Shopping Cart
@@ -19,11 +19,12 @@
                 	  </span>
                 </a>
                 </li>
-        @endif
                 <li><div class="dropdown">
 					<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        @if(Auth::check()) {{ Auth::user()->fname }} {{ Auth::user()->lname }}  @else  Visitor  @endif
+                      <?php if($lgdIn) { ?>
+                      <?php echo "Logged in as: " . $session->username; } else {  ?>
+                      <?php   echo $loginForm; } ?>
 					</button>
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 	@if(Auth::check())

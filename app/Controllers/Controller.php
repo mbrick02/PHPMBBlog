@@ -46,7 +46,7 @@ class Controller {
 			$msgHeader .= $session->display_errors($session->errMsg());
 		}
 
-		$loginForm = "probably create login form from partial";
+		$loginForm = "login button for form partial";
 
 		static::$container->view->set('msgHeader',  $msgHeader);
 

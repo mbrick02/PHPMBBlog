@@ -10,7 +10,7 @@ abstract class DB {
 	static protected $notInDBCols = array();
 	static protected $uniqueFlds = array();
 	public $errors = []; // holds all error messages of validation or db
-	// public $fields = []; // for instance of columns ????
+	// public $fields = []; // for instance of columns ???? - should not need
 
 	static protected $_query, // for pdo stmt
 		$_error = false; // flag that errors occured

@@ -3,14 +3,16 @@
   // vars set in Controller or child (eg. AuthController):
   //    $publicHeader, $cartExists, $routeHasProfile, $content, $rightCol;
   global $session;
-  $lgdIn = $session->is_logged_in();
+  $lgdIn = $session->is_logged_in(); // **NOTE: may want all logged-in options set/used in Controller 11/20/18
   echo $publicHeader;
   include TEMPLATE_PATH . DS . 'partials' . DS . 'navhead.php';
 ?>
 <!-- ************** NAV HEAD TRIAL 10/6/18 ******************** -->
 			<ul class="nav navbar-nav navbar-right">
         <?php echo "<h4>". $cartExists . "</h4><br>"; ?>
-				<?php echo "<h4>" . ($lgdIn ? "Logged In" : "Not logged in") . "</h4><br>"; ?>
+				<?php // echo "<h4>" . ($lgdIn ? "Logged In" : "Not logged in") . "</h4><br>";
+          // move above to CONTROLLER 11/20
+        ?>
 				<li>
 				<a href="{{ route('product.shoppingCart') }}">
 					<i class="fa fa-shopping-cart" aria-hidden="true"></i> Shopping Cart
@@ -24,12 +26,12 @@
                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <?php if($lgdIn) { ?>
                       <?php echo "Logged in as: " . $session->username; } else {  ?>
-                      <?php   echo $loginForm; } ?>
+                      <?php   echo $userButton; } ?>
 					</button>
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 	@if(Auth::check())
                 		<a class="dropdown-item {{ Request::is(Route::has('profile')) ? "active" : "" }}" href="/profile/{{ Auth::user()->id }}">
-                    <?php echo "<h1>". $routeHasProfile . "</h1>"; ?>
+                    <?php echo "<h1>". $loginOrProfile . "</h1>"; ?>
                 		User Profile (update)</a>
                 		<div class="dropdown-divider"></div>
                 		<a class="dropdown-item" href="{{ route('logout') }}">Logout</a>

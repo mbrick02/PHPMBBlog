@@ -3,6 +3,7 @@
 if(Token::check($_POST['token'])) {echo 'Process order';} */
 // ALSO: load ALL controllers into bootstrap/app.php:container (array)
 namespace App\Controllers;
+use app\Models\User as User;
 
 class Controller {
 	protected static $container;
@@ -22,8 +23,28 @@ class Controller {
 		static::$container = $container; // container defined in bootstrap/app.php
    }
 
+	 protected static function userOptions($loggedIn) {
+	 	// set user menu content based on whether logged in or not
+		$userOptions = [];
+		if ($loggedIn) {
+			$userOptions = [
+				'userButton' => 'Edit Profile or logout',
+				'loginOrProfile' => 'Edit Prifile or logout',
+			];
+		} else {
+			$userOptions = [
+				'userButton' => 'login or Create User',
+				'loginOrProfile' => 'login or edit profile',
+			];
+		}
+
+		return $userOptions;
+	 }
+
 	 protected static function buildPage($contrVars) {
 		global $session;
+		$lgdIn = $session->is_logged_in();
+		$userOptions = static::userOptions($lgdIn); // base user button and form on logged in
 
 		static::$rightColDoc = TEMPLATE_PATH . DS . 'partials' . DS . 'rightCol.php';
 		static::$rightCol = static::$container->view->renderWithVariables(static::$rightColDoc, static::$rightColVars, false);
@@ -45,9 +66,6 @@ class Controller {
 		} elseif ($session->exists('errors')){
 			$msgHeader .= $session->display_errors($session->errMsg());
 		}
-
-		$loginForm = "login button for form partial";
-
 		static::$container->view->set('msgHeader',  $msgHeader);
 
 		static::$publicHeader = static::$container->view->returnText();
@@ -56,12 +74,11 @@ class Controller {
 
 		static::$templateVars = [ // set default vars
 			'cartExists' => $session->exists('cart') ? 'Shows a cart' : 'No Cart',
-			'routeHasProfile' => 'Route has profile var',
+			'userButton' => $userOptions['userButton'],
+			'loginOrProfile' => $userOptions['loginOrProfile'],
 			'container' => static::$container,
 			'publicHeader' => static::$publicHeader,
-			'loginForm' => $loginForm,
-			'pageUrls' => [
-						'products' => static::$container->get('router')->pathFor('products'),
+			'pageUrls' => [ 'products' => static::$container->get('router')->pathFor('products'),
 						'curURL' => static::$container->request->getUri()->getPath(),
 					],
 			'content' => "",  // set by child

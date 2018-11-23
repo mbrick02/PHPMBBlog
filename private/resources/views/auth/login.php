@@ -17,9 +17,11 @@ $formAtrrib = [
 ];
 $formContent = $form->formTopDecl($formAtrrib, "Login");
 
-$formContent .= $form->mkSimpTxtInpValDiv(['name' => 'usernameEmail'], $user);
+$formContent .= $form->mkSimpTxtInpValDiv([
+		'name' => 'usernameOREmail',
+		'placeholder' => "uname_or_u@dom.com"], $user);
 
-$formContent .= $form->retInpTypeDiv("password", $fldAttribs); // note: don't save val
+$formContent .= $form->retInpTypeDiv("password", []); // note: don't save val
 
 $formContent .= $form->endForm(['submitTitle' =>'Login']);
 echo $formContent;

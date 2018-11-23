@@ -21,7 +21,7 @@ class AuthController extends Controller {
     $user->restoreFormValsSessCols($excludeAry);  // retrieve form values from session reset
 
     $userForm = VIEWS_PATH . DS . 'auth' . DS . 'signup.php';
-    $formVars = [ 'user' => $user]; // ?? , 'values' => $formValsAry
+    $formVars = [ 'user' => $user];
     $formContent = static::$container->view->
       renderWithVariables($userForm, $formVars, false);
 

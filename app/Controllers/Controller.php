@@ -23,6 +23,18 @@ class Controller {
 		static::$container = $container; // container defined in bootstrap/app.php
    }
 
+	 protected static function buildLoginForm() {
+		 global $db;
+		 $linkCreatUser = "<a href=\"/user/create\" ></a>" . "<div class=\"dropdown-divider\"></div>";
+		 $loginForm = VIEWS_PATH . DS . 'auth' . DS . 'login.php';
+		 $user = User::getInstance($db);
+		 $formVars = [ 'user' => $user];
+		 $loginFormContent = static::$container->view->
+		 	renderWithVariables($loginForm, $formVars, false);
+
+			return $loginFormContent;
+	 }
+
 	 protected static function userOptions($loggedIn) {
 	 	// set user menu content based on whether logged in or not
 		$userOptions = [];
@@ -34,7 +46,7 @@ class Controller {
 		} else {
 			$userOptions = [
 				'userButton' => 'login or Create User',
-				'loginOrProfile' => 'login or edit profile',
+				'loginOrProfile' => static::buildLoginForm(),
 			];
 		}
 

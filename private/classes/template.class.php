@@ -82,15 +82,6 @@ class Template {
 				if (empty($variables)){
 					$variables = $this->assignedVars;
 				}
-				// DEBUG 10/30 TEST msgHeader
-				// if(!empty($this->assignedVars['msgHeader'])) {
-				// 	echo "<br>In renderWithVariable for {$filePath}; assignedVars: <br>";
-				// 	var_dump($this->assignedVars);
-				// 	echo "<br>In renderWithVariable for {$filePath}; vars: <br>";
-				// 	var_dump($variables);
-				// 	die();
-				// }
-
         // Extract the variables to a local namespace
         extract($variables);
         // Start output buffering

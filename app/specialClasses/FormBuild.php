@@ -180,6 +180,7 @@ public static function instantiate($nameAry, $useDBVals = false) {
     $typeVars['id'] = $type;
     $typeVars['label'] = $type;
     $typeVars['labelFor'] = $type;
+    // 11/18 currently NO NEED for $assiVars, but maybe future...
 
     return $this->retInpDiv($typeVars); //  . "\n"
   }

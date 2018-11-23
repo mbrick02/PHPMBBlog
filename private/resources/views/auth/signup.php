@@ -28,7 +28,7 @@ $formContent .= $form->mkSimpTxtInpValDiv($fldAttribs, $user);
 $fldAttribs = ['name' => 'lname','label' => 'Last Name',];  // form field attributes
 $formContent .= $form->mkSimpTxtInpValDiv($fldAttribs, $user);
 
-$formContent .= $form->retInpTypeDiv("password", $fldAttribs); // note: don't save val
+$formContent .= $form->retInpTypeDiv("password", []); // note: don't save val
 
 $fldAttribs = [
 	'type' => 'password',

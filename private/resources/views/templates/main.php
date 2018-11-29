@@ -29,16 +29,16 @@
                       <?php   echo $userButton; } ?>
 					</button>
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                	@if(Auth::check())
+                	<!-- @ if(Auth::check()) -->
                 		<a class="dropdown-item {{ Request::is(Route::has('profile')) ? "active" : "" }}" href="/profile/{{ Auth::user()->id }}">
-                    <?php echo "<h1>". $loginOrProfile . "</h1>"; ?>
-                		User Profile (update)</a>
+                    <?php echo $loginOrProfile; ?>
+                		<!-- User Profile (update) --></a>
                 		<div class="dropdown-divider"></div>
                 		<a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
-                	@else
+                	<!-- @ else -->
                 		<a class="dropdown-item" href="{{ route('signup') }}">Signup</a>
                 		<a class="dropdown-item" href="{{ route('login') }}">Signin</a>
-                	@endif
+                	<!-- @ endif -->
                     </div>
 				</div></li>
 			</ul>

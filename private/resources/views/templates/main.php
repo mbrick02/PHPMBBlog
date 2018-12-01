@@ -9,25 +9,15 @@
 ?>
 <!-- ************** NAV HEAD TRIAL 10/6/18 ******************** -->
 			<ul class="nav navbar-nav navbar-right">
-        <?php echo "<h4>". $cartExists . "</h4><br>"; ?>
+        <li><?php echo "<span class=\"glyphicon glyphicon-shopping-cart\"></span>&nbsp;". $cartExists; ?></li>
 				<?php // echo "<h4>" . ($lgdIn ? "Logged In" : "Not logged in") . "</h4><br>";
           // move above to CONTROLLER 11/20
-        ?>
-				<li>
-				<a href="{{ route('product.shoppingCart') }}">
-					<i class="fa fa-shopping-cart" aria-hidden="true"></i> Shopping Cart
-					  <span class="badge">
-                	    {{ Session::has('cart') ? Session::get('cart')->totalQty : '' }}
-                	  </span>
-                </a>
-                </li>
-                <li><div class="dropdown">
-					<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <?php if($lgdIn) { ?>
-                      <?php echo "Logged in as: " . $session->username; } else {  ?>
-                      <?php   echo $userButton; } ?>
-					</button>
+        ?><br>
+        <li><div class="dropdown">
+                <?php if($lgdIn) { ?>
+                <?php echo "Logged in as: " . $session->username; } else {  ?>
+                <?php   echo $userButton; } ?>
+
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 	<!-- @ if(Auth::check()) -->
                 		<a class="dropdown-item {{ Request::is(Route::has('profile')) ? "active" : "" }}" href="/profile/{{ Auth::user()->id }}">
@@ -39,7 +29,7 @@
                 		<a class="dropdown-item" href="{{ route('signup') }}">Signup</a>
                 		<a class="dropdown-item" href="{{ route('login') }}">Signin</a>
                 	<!-- @ endif -->
-                    </div>
+            </div>
 				</div></li>
 			</ul>
 		</div><!-- /.navbar-collapse -->

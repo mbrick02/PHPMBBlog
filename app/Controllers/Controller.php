@@ -44,8 +44,11 @@ class Controller {
 				'loginOrProfile' => 'Edit Prifile or logout',
 			];
 		} else {
+			$userButton = '<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"';
+			$userButton .= 'data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Login</button>';
+			$userButton .= ' or <a href="/user/create">Create User</a>';
 			$userOptions = [
-				'userButton' => 'login or Create User',
+				'userButton' => $userButton,
 				'loginOrProfile' => static::buildLoginForm(),
 			];
 		}
@@ -85,7 +88,7 @@ class Controller {
 		// update cartExists to $cartContent = $session->exists('cart') ? 'Shows a cart' : 'No Cart'
 
 		static::$templateVars = [ // set default vars
-			'cartExists' => $session->exists('cart') ? 'Shows a cart' : 'No Cart',
+			'cartExists' => $session->exists('cart') ? $session->get('cart')['totalQty'] : 'No Cart',
 			'userButton' => $userOptions['userButton'],
 			'loginOrProfile' => $userOptions['loginOrProfile'],
 			'container' => static::$container,

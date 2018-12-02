@@ -25,7 +25,7 @@ class Controller {
 
 	 protected static function buildLoginForm() {
 		 global $db;
-		 $linkCreatUser = "<a href=\"/user/create\" ></a>" . "<div class=\"dropdown-divider\"></div>";
+		 // $linkCreatUser = "<a href=\"/user/create\" ></a>" . "<div class=\"dropdown-divider\"></div>";
 		 $loginForm = VIEWS_PATH . DS . 'auth' . DS . 'login.php';
 		 $user = User::getInstance($db);
 		 $formVars = [ 'user' => $user];
@@ -102,6 +102,9 @@ class Controller {
 		if (!empty($contrVars)) {
 			static::$templateVars = array_replace(static::$templateVars, $contrVars);
 		}
+
+// In Laravel set:
+//	{{ Request::is(Route::has('profile')) ? "active" : "" }}" href="/profile/{{ Auth::user()->id }}
 
 		$maintemplate = TEMPLATE_PATH . DS . 'main.php';
 		static::$container->view->renderWithVariables($maintemplate, static::$templateVars);

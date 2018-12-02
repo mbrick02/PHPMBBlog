@@ -58,7 +58,10 @@ public static function instantiate($nameAry, $useDBVals = false) {
   }
 
   public static function retTag($tagType, $assiVars = []) {
-
+    /*
+      input: tag-type and assoc array of attribs and their vals
+      output: <tagtype attr1="attr1Val", attr2...>
+    */
     $output = "<". $tagType;
     $assignVars = $assiVars;
 // ******10/31 ???SET VALS FROM DB/Form **?????$valuesAry
@@ -92,6 +95,10 @@ public static function instantiate($nameAry, $useDBVals = false) {
   }
 
   public static function endTags($aryTags){
+    /*
+    input: ending tag names
+    output: </tag1></tag2....
+    */
     $output = "";
     foreach ($aryTags as $tag) {
       $output .= self::endTag($tag);
@@ -100,6 +107,10 @@ public static function instantiate($nameAry, $useDBVals = false) {
   }
 
   public static function retClosedTag($tagType, $assiVars = [], $tagContent="") {
+    /*
+    input: enclosed tag type, attrib assoc ary w/ vals, content for tag
+    output: <tag attr1="attr1Val" attr2...>tagcontent</tag>
+    */
     $output = self::retTag($tagType, $assiVars);
     $output .= $tagContent;
     $output .= self::endTag($tagType);

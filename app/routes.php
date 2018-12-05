@@ -11,6 +11,8 @@ spl_autoload_register('route_autoload'); */
 // $app->get('/hello/:arg1', function ($name) use ($app) {  echo "Hello $name";})->name('hello');
 $app->get('/', 'HomeController:index')->setName('home');
 
+$app->get('/testMB', 'HomeController:testMB');
+
 /* ***NOTE all post route controllers must do token check:
 if(Token::check($_POST['token'])) {
   echo 'Process order';

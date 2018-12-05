@@ -32,4 +32,14 @@ class HomeController extends Controller {
 
 		static::buildPage($optionvars);
   }
+
+  public function testMB($param1='')
+  {
+    $testPageFile = TEMPLATE_PATH . DS . 'testMBCodePage.html';
+    $formVars = [];
+    $testPage = static::$container->view->
+     renderWithVariables($testPageFile, $formVars, false);
+
+     return $testPage;
+  }
 }

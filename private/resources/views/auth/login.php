@@ -24,5 +24,6 @@ $formContent .= $form->mkSimpTxtInpValDiv([
 $formContent .= $form->retInpTypeDiv("password", []); // note: don't save val
 
 $formContent .= $form->endForm(['submitTitle' =>'Login']);
-$formContent = FormBuild::retClosedTag("div", ['class' => 'col-md-6 col-md-offset-1 float-left'], $formContent);
+// ** already in from ?: $formContent = FormBuild::retClosedTag("div",
+// ** already in from ?: 				['class' => 'col-md-6 col-md-offset-1 float-left'], $formContent);
 echo $formContent;

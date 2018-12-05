@@ -3,7 +3,7 @@
 
 <html lang="en">
   <head>
-    <title>MB Blog Page Create User</title>
+    <title>MB Blog Page Home</title>
     <meta charset="utf-8">
     <!-- Latest bstrap compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -41,7 +41,7 @@
 		<!-- Collect the nav links, forms, and oth content for toggling -->
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="nav navbar-nav">
-				<li class=""><a
+				<li class="active"><a
 						href="/">Home</a></li>
 				<li><a class="nav-link nav-item """
 					  href="#">About</a></li>
@@ -51,28 +51,32 @@
         <li><span class="glyphicon glyphicon-shopping-cart"></span>&nbsp;No Cart</li>
 				<br>
         <li><div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Login</button> or <a href="/user/create">Create User</a>
-					  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item"><div class ="col-md-6 col-md-offset-1 float-left">
-                <div class ="panel-heading"><h2>Login</h2></div>
-                <div class ="panel-body"><form action="/user/login" method="post" class ="">
-                  <input type="hidden" name="login[token]" value="c8f6ac6daa2925bb79ac0af30b14de9e" class ="form-control">
-                  <div class="form-group">
-                  <label for="usernameOREmail">UsernameOREmail:</label>
-                  <input type="text" name="login[usernameOREmail]" id="usernameOREmail" placeholder="uname_or_u@dom.com" class ="form-control">
-                  </div>
-                  <div class="form-group">
-                  <label for="password">Password:</label>
-                  <input type="password" name="login[password]" id="password" class ="form-control">
-                  </div>
-                  <button type="submit" class ="btn btn-default">
-                  Login</button>
-                </form></div>
-              </div></a>
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Login</button> or <a href="/user/create">Create User</a>
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item">
+                <div class ="col-md-12 float-left">
+<div class ="panel-heading">
+<h2>Login</h2></div>
+<div class ="panel-body">
+<form action="/user/login" method="" class ="">
+<input type="hidden" name="login[token]" value="0d48f2d4a5d7245d46630fa95feea0e0" class ="form-control">
+<div class="form-group">
+<label for="usernameOREmail">UsernameOREmail:</label>
+<input type="text" name="login[usernameOREmail]" id="usernameOREmail" placeholder="uname_or_u@dom.com" class ="form-control">
+</div>
+<div class="form-group">
+<label for="password">Password:</label>
+<input type="password" name="login[password]" id="password" class ="form-control">
+</div>
+<button type="submit" class ="btn btn-default">
+Login</button>
+</form>
+</div>
+</div>
+<div class="dropdown-divider"></div>
+                <div><a class="dropdown-item" href="#">Other Menu Option</a></div>
+              </a>
               <!-- User Profile (update), Login, logout, Signup/Create in Controller->$loginOrProfile -->
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Other Menu Option</a>
           </div>
 				</div></li>
 			</ul>
@@ -88,38 +92,9 @@
       <!-- include('partials._messages') -->
       <div class ="col-md-6 col-md-offset-1 float-left">
 <div class ="panel-heading">
-<h2>Sign up</h2></div>
+<h2>MB Blog</h2></div>
 <div class ="panel-body">
-<form action="/user/create" method="post" class ="">
-<input type="hidden" name="user[token]" value="00f160bb62e9981f6683f6c63c7ef960" class ="form-control">
-<div class="form-group">
-<label for="username">Username:</label>
-<input type="text" name="user[username]" id="username" class ="form-control">
-</div>
-<div class="form-group">
-<label for="email">Email:</label>
-<input name="user[email]" placeholder="u@dom.com" type="email" id="email" class ="form-control">
-</div>
-<div class="form-group">
-<label for="fname">First Name:</label>
-<input type="text" name="user[fname]" id="fname" class ="form-control">
-</div>
-<div class="form-group">
-<label for="lname">Last Name:</label>
-<input type="text" name="user[lname]" id="lname" class ="form-control">
-</div>
-<div class="form-group">
-<label for="password">Password:</label>
-<input type="password" name="user[password]" id="password" class ="form-control">
-</div>
-<div class="form-group">
-<label for="Confirm Password">Confirm Password:</label>
-<input type="password" name="user[confirm_password]" id="confirm_password" class ="form-control">
-</div>
-<button type="submit" class ="btn btn-default">
-Create User</button>
-</form>
-</div>
+Welcome to MB Blog</div>
 </div>
       <div class ="float-right my-lg-0">
 <div class ="my-lg-0">

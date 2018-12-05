@@ -14,6 +14,7 @@ $form = FormBuild::instantiate('login'); // 'user' sets up: $args = $_POST['user
 $formAtrrib = [
 	'action' => '/user/login',
 	'method' => 'post',
+	'mainDivClass' => 'col-md-12 float-left',
 ];
 $formContent = $form->formTopDecl($formAtrrib, "Login");
 
@@ -24,6 +25,6 @@ $formContent .= $form->mkSimpTxtInpValDiv([
 $formContent .= $form->retInpTypeDiv("password", []); // note: don't save val
 
 $formContent .= $form->endForm(['submitTitle' =>'Login']);
-// ** already in from ?: $formContent = FormBuild::retClosedTag("div",
-// ** already in from ?: 				['class' => 'col-md-6 col-md-offset-1 float-left'], $formContent);
+// ** already set by formTopDecl: $formContent = FormBuild::retClosedTag("div",
+// ** already set by formTopDecl: 	 ['class' => 'col-md-6 col-md-offset-1 float-left'], $formContent);
 echo $formContent;

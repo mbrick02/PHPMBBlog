@@ -33,16 +33,27 @@ public static function instantiate($nameAry, $useDBVals = false) {
   }
 
   public function formTopDecl($assiVars = [], $panelHeading) {
-    /* ****  Inputs:  $assiVars['action'] & ['csrf_field']
+    /* ****  Inputs:  form action, method ($assiVars['action'], [?'csrf_field'] etc.)
     Examp:<form action="{{ path_for('****auth.signup')}}" method="post" autocomplete="off">
        {{ csrf_field() }}
     **************** */
-    // note space before autocomlete but no space at end of str
+    // xx decided to set elsewhere: note space before autocomlete but no space at end of str
     // DEL: $autoCompl = isset($assiVars['autocomplete']) ? " autocomplete=\"" . $assiVars['autocomplete'] . "\"";
-    $output = self::retTag("div", ['class' => 'col-md-6 col-md-offset-1 float-left']);
+    $formVars = [
+      'action' => $assiVars['action'],
+      'method' => $assiVars['post'],
+    ];
+
+    if (isset($assiVars['mainDivClass'])) {
+      $mainDivClass = $assiVars['mainDivClass'];
+    } else { // default
+      $mainDivClass = 'col-md-6 col-md-offset-1 float-left';
+    }
+
+    $output = self::retTag("div", ['class' => $mainDivClass]);
     $output .= self::retClosedTag("div", ['class' => 'panel-heading'], "<h2>" . $panelHeading . "</h2>");
     $output .= self::retTag("div", ['class' => 'panel-body']);
-    $output .= self::retTag("form", $assiVars);
+    $output .= self::retTag("form", $formVars);
 
     $token = Token::generate();
     $inputFldVars = [

@@ -20,10 +20,10 @@
 
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <a class="dropdown-item">
-              <?php echo $loginOrProfile; ?></a>
+                <?php echo $loginOrProfile; ?><div class="dropdown-divider"></div>
+                <div><a class="dropdown-item" href="#">Other Menu Option</a></div>
+              </a>
               <!-- User Profile (update), Login, logout, Signup/Create in Controller->$loginOrProfile -->
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Other Menu Option</a>
           </div>
 				</div></li>
 			</ul>

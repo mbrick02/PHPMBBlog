@@ -14,7 +14,7 @@
           // move above to CONTROLLER 11/20
         ?><br>
         <li><div class="dropdown">
-                <?php if($lgdIn) { ?>
+                <?php if($lgdIn) {  // move this to controller???? ?>
                 <?php echo "Logged in as: " . $session->username; } else {  ?>
                 <?php   echo $userButton; } ?>
 

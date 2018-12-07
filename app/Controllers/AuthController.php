@@ -65,6 +65,8 @@ class AuthController extends Controller {
     $allPostVars = $request->getParsedBody(); // login vars NOT user as in signup
     $user = User::getInstance($db, $allPostVars); // usernameEmail (not username or email) pw
     // username or email, look for user, if user then, password_verify($pw, $dbhash)
+    //  do email verify 1st, but even if verified email...
+    //    if email not found, still test username
 
   }
 

@@ -41,7 +41,7 @@ public static function instantiate($nameAry, $useDBVals = false) {
     // DEL: $autoCompl = isset($assiVars['autocomplete']) ? " autocomplete=\"" . $assiVars['autocomplete'] . "\"";
     $formVars = [
       'action' => $assiVars['action'],
-      'method' => $assiVars['post'],
+      'method' => $assiVars['method'],
     ];
 
     if (isset($assiVars['mainDivClass'])) {

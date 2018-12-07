@@ -68,4 +68,24 @@ class AuthController extends Controller {
 
   }
 
+  public function getEditUser($request, $response) {
+    global $db;
+    $user = User::getInstance($db);
+
+    // exclude values from form restore on error or NOT validated
+    $excludeAry = array("password", "confirm_password"); // Note only show confirm_password if pw to change
+    $user->restoreFormValsSessCols($excludeAry);  // retrieve form values from session reset
+
+    $userForm = VIEWS_PATH . DS . 'auth' . DS . 'editUser.php';
+    $formVars = [ 'user' => $user];
+    $formContent = static::$container->view->
+      renderWithVariables($userForm, $formVars, false);
+
+    // give vals to main.php template vars
+    $optionvars = [];
+		$optionvars['content'] = $formContent;
+    $optionvars['page_title'] = "Edit User";
+
+		parent::buildPage($optionvars);
+  }
 }

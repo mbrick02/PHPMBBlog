@@ -8,7 +8,7 @@ use app\specialClasses\FormBuild as FormBuild;
 <div class="form-group"><label for="name">Name</label><input type="text"...>
 <div class="form-group"><label for="password">Password</label> */
 
-$form = FormBuild::instantiate('login'); // 'user' sets up: $args = $_POST['user'];
+$form = FormBuild::instantiate('login'); // 'login' sets up: $args = $_POST['login'];
 // Note: Controller should pass in $user and $values (array)
 
 $formAtrrib = [
@@ -20,7 +20,8 @@ $formContent = $form->formTopDecl($formAtrrib, "Login");
 
 $formContent .= $form->mkSimpTxtInpValDiv([
 		'name' => 'usernameOREmail',
-		'placeholder' => "uname_or_u@dom.com"], $user);
+		'label' => 'Username or Email',
+		'placeholder' => "uname_or_email@dom.com"], $user);
 
 $formContent .= $form->retInpTypeDiv("password", []); // note: don't save val
 

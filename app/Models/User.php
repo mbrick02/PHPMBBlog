@@ -34,7 +34,7 @@ class User extends DB {
         continue;
       }
       if (isset($args[$formAry][$key])){
-        $value = $args[$formAry][$key]; // ***10/28 $args[$argsNameAry][$key]
+        $value = $args[$formAry][$key];
       } // DEBUG**: else { echo $key . " field not on form."; die(); }
     }
     if (!empty(static::$columns['password'])){

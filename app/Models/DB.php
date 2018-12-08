@@ -63,6 +63,9 @@ abstract class DB {
 
 	public function putFormValsSess(){
 		/* store db col/field values into session under table */
+		/* ?? should this just be form values NOT ALL cols ??
+				OR will all NON-form vals be empty and skipped ??
+		*/
 		global $session;
 		$aryFrmVals = array();
 		foreach (static::$columns as $key => $value) {

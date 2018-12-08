@@ -63,7 +63,28 @@ class AuthController extends Controller {
     global $db;
 
     $allPostVars = $request->getParsedBody(); // login vars NOT user as in signup
-    $user = User::getInstance($db, $allPostVars); // usernameEmail (not username or email) pw
+    /*
+    $allPostVars returns:
+    'login' =>
+   array (size=3)
+     'token' => string '4cc29d3db4823b7cd8c07d0a55dd12b9' (length=32)
+     'usernameOREmail' => string 'x' (length=1)
+     'password' => string 'y' (length=1)
+    */
+    $unameOREmail = $allPostVars['login']['usernameOREmail'];
+
+    // determine if username or Email
+    // ??validEmail($unameOREmail);
+
+    // Need to change login[] array to user for getInstance
+    //  login to user vals: $user = User::getInstance($db, $allPostVars);
+
+    // retrieve value from usernameOREmail form field
+    // 12/8/18 this is following struc of signup() above which
+    //    uses User::initializeModel() (via DB::getInstance()), but
+    //    but signup Form assumes table user and assigns all form vals
+    //    to array user[].  Here we get array name is set to login
+
     // username or email, look for user, if user then, password_verify($pw, $dbhash)
     //  do email verify 1st, but even if verified email...
     //    if email not found, still test username

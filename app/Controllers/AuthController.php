@@ -71,10 +71,22 @@ class AuthController extends Controller {
      'usernameOREmail' => string 'x' (length=1)
      'password' => string 'y' (length=1)
     */
-    $unameOREmail = $allPostVars['login']['usernameOREmail'];
+    $unameOREmail = isset($allPostVars['login']['usernameOREmail'])? $allPostVars['login']['usernameOREmail'] : '';
 
     // determine if username or Email
     // ??validEmail($unameOREmail);
+    if (!empty($unameOREmail)) { // 1st test not empty
+      if (!has_valid_email_format($unameOREmail)) {
+        // lookup Email
+        // **** User::findEmail
+      }
+
+    } elseif (!has_length(static::$columns['email'], array('max' => 255))) {
+      $this->errors[] = "Last name must be less than 255 characters.";
+    } elseif (!has_valid_email_format(static::$columns['email'])) {
+
+
+    }
 
     // Need to change login[] array to user for getInstance
     //  login to user vals: $user = User::getInstance($db, $allPostVars);

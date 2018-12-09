@@ -25,7 +25,13 @@ class User extends DB {
   static protected $notInDBCols =
     array("password", "confirm_password", "password_required", "created_at", "updated_at");
 // ?? Do we need to check form $columns->$keys == $args->$keys ???
+
   protected static function initializeModel($args) {
+    /*
+      input: $args (1st designed to be from create form) format:
+        $args['modelobj']['colname'] (eg. $args['user']['username'])
+      return/ouput: called by getInstance which returns instance of model
+    */
     $formAry = rtrim(static::$table, "s"); // "user"; // ?always table name minus ending 's'
     foreach (static::$columns as $key => &$value) {
       if($key == 'id') { continue; } // form should not have id
@@ -55,8 +61,15 @@ class User extends DB {
     return static::$columns['fname'] . " " . static::$columns['lname'];
   }
 
-  public static function veifyUser($username, $pw){
+  public static function verifyUser($username, $pw){
     $user = findUser($username);
+
+    $ testuser = xxxxxxxxxxxxxxxxxxxx120918xxxxxxxxxxxxxxxxxxx
+    need to set tempuser values by retrieveValsFromDB()
+      test if username exists: $this->getFieldsStr("username", array("username", "=", $username))
+      ** need to instantiate $testuser
+      test if pw matches for $testuser->username:
+
   }
 
   protected function validate() {

@@ -6,11 +6,11 @@ use PDO;
 abstract class DB {
 	static protected $_pdo = null;
 	static protected $table;
-	static protected $columns = [];
+	static protected $columns = [];  // db col vals for class functions
 	static protected $notInDBCols = array();
 	static protected $uniqueFlds = array();
 	public $errors = []; // holds all error messages of validation or db
-	// public $fields = []; // for instance of columns ???? - should not need
+	public $fields = []; // column vals for instance
 
 	static protected $_query, // for pdo stmt
 		$_error = false; // flag that errors occured
@@ -39,13 +39,19 @@ abstract class DB {
 		// if(!isset(static::$_pdo)) { // test for singleton (on instance of parent w/DB)
   	// 	static::$_pdo = PDOConn::getInstance();  // new subclass via static binding
 	  // }
+		/*
+			input: $args (1st designed to be from create form) format:
+				$args['modelobj']['colname'] (eg. $args['user']['username'])
+				(used in initializeModel to set $column['field'] = 'value'
+			return/ouput: returns instance of model
+		*/
 
 		static::set_PDO($db);  // should always be global $db
 
 		static::initializeModel($args);
 
 		$dbObject = new static;
-
+		$dbObject->fields = static::$columns;
 		return $dbObject;
   }
 
@@ -59,10 +65,33 @@ abstract class DB {
 
 	protected static function initializeModel($args) {
 		// most child classes should have this
+		// but will call this parent func for any generalized cleanup
+		// (if anything will be done for all models on initialize)
+		/*
+			input: $args (1st designed to be from create form) format:
+				$args['modelobj']['colname'] (eg. $args['user']['username'])
+			return/ouput: called by getInstance which returns instance of model
+		*/
+	}
+
+	function retrieveValsFromDB() {
+		/* get values from static::$_results and put in
+		$args var for each new instance of model
+		*/
+
+		foreach (static::$_results... $key $val) {
+			if (!in_array($notInDBCols, $_results->$key)){
+				$this->fields[]
+			}
+
+		}
+
+
 	}
 
 	public function putFormValsSess(){
 		/* store db col/field values into session under table */
+		// result: Session array of $_SESSION['static_table'] with field vals
 		/* ?? should this just be form values NOT ALL cols ??
 				OR will all NON-form vals be empty and skipped ??
 		*/
@@ -110,8 +139,10 @@ abstract class DB {
 		return (!(self::$_error)); // true if no errors
   }
 
-  public function action($action, $where = array()) { // format sample: (where) field(0) =(1) value(2)
-		// returns false or self::$_results
+  public function action($action, $where = array(), $postfix = '') {
+	// $where idea: "where field(0)=(1)value(2)"; sample: array("id", "=", "2")
+	// $postfix example: " LIMIT 1"  //TODO: test for space char 1
+	// returns false or self::$_results
   	if(count($where) == 3) {
 			$operators = array('=', '>', '<', '>=', '<=');
 	  	$field = $where[0];
@@ -119,7 +150,7 @@ abstract class DB {
 	  	$value = $where[2];  // TODO: turn val into param assoc array: $where[2][$key]
 
 	  	if(in_array($operator, $operators)) {
-	  		$sql = "{$action} FROM {static::table} WHERE {$field} {$operator} :{$field}";
+	  		$sql = "{$action} FROM {static::table} WHERE {$field} {$operator} :{$field}$postfix";
 				if (static::query($sql, array($value))) {
 						return self::$_results;
 				}
@@ -202,7 +233,7 @@ abstract class DB {
 // ?*? untested 9/22/18
 	public function getFieldsStr($fieldsStr, $where) {
 		// returns results array $_results or false
-		// 	  	$field = $where[0]; $operator = $where[1]; $value = $where[2];
+		// 	  	$where = (examp "where id=2" - field=val) = array("id", "=", "2")
   	return $this->action("SELECT {$fieldsStr}", $where);
   }
 

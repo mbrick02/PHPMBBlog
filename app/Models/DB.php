@@ -75,15 +75,17 @@ abstract class DB {
 	}
 
 	function retrieveValsFromDB() {
-		/* get values from static::$_results and put in
-		$args var for each new instance of model
+		/* get values from static::$_results (ary of model obj(s))and put in
+		$args[tbl][field] (match form format) var for each new instance of model
+		note: pw in db is
 		*/
 
-		foreach (static::$_results... $key $val) {
-			if (!in_array($notInDBCols, $_results->$key)){
-				$this->fields[]
+		foreach (static::$_results as $model) {
+			foreach ($model as $key => $val) {
+				if (!in_array($key, $notInDBCols)){
+					$this->fields[$key] = $val;
+				}
 			}
-
 		}
 
 

@@ -74,21 +74,16 @@ abstract class DB {
 		*/
 	}
 
-	function retrieveValsFromDB() {
-		/* get values from static::$_results (ary of model obj(s))and put in
-		$args[tbl][field] (match form format) var for each new instance of model
-		note: pw in db is
+	function getModelValsFromDB($modelObj = array()) {
+		/*
+		set vals for single db model obj from 1st $_results[] or param $modelObj
 		*/
-
-		foreach (static::$_results as $model) {
-			foreach ($model as $key => $val) {
-				if (!in_array($key, $notInDBCols)){
-					$this->fields[$key] = $val;
-				}
+		$dbObj = empty($modelObj) ? static::$_results[0] : $modelObj;
+		foreach ($dbObj as $key => $val) {
+			if (!in_array($key, $notInDBCols)){
+				$this->fields[$key] = $val;
 			}
 		}
-
-
 	}
 
 	public function putFormValsSess(){

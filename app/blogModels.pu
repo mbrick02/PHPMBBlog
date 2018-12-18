@@ -1,0 +1,20 @@
+@startuml
+abstract class DB <<parent>>{
+  -private
+  +public
+  #protected
+  test()
+}
+DB <|-- User
+DB <|-- Product
+
+class User{
+
+}
+
+class Product{
+
+}
+
+
+@enduml

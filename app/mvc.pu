@@ -1,0 +1,6 @@
+@startuml
+View --> Controller
+Controller --> Model
+Model --> View: Notify
+View --> Model: Data Access
+@enduml

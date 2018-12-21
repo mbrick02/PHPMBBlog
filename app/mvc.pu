@@ -1,5 +1,21 @@
 @startuml
-View --> Controller
+
+skinparam titleBorderRoundCorner 15
+skinparam titleBorderThickness 2
+skinparam titleBorderColor red
+skinparam titleBackgroundColor Aqua-CadetBlue
+skinparam linetype ortho
+
+title Simple MVC\nDrawing
+/' comment
+actor View
+'/
+
+class Model{
+  +field
+  -method()
+}
+View -> Controller
 Controller --> Model
 Model --> View: Notify
 View --> Model: Data Access

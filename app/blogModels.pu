@@ -11,7 +11,10 @@ DB <|-- Product
 class User{
 
 }
-
+object user {
+  name = "Dummy"
+  id = 123
+}
 class Product{
 
 }

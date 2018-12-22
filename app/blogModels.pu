@@ -9,12 +9,45 @@ DB <|-- User
 DB <|-- Product
 
 class User{
+  ' class User extends DB {
+    {static} #table = "users";
 
+    {static} #columns = [
+      'id' => "",
+      'privilege_id' => "",
+      'username' => "",
+      'email'=> "",
+      'fname'=> "",
+      'lname'=> "",
+      'password_required' => true,  // default require password
+      'password' => "",
+      'confirm_password' => "",
+      'hashed_password' => "",
+      'created_at'=> "",
+      'updated_at'=> "",
+    ];
+
+    static protected $uniqueFlds = array("username", "email");
+
+    static protected $notInDBCols =
+      array("password", "confirm_password", "password_required", "created_at", "updated_at");
+  // ?? Do we need to check form $columns->$keys == $args->$keys ???
+  
+    protected static function initializeModel($args) {
+    }
+
+
+    public function fullname() {    }
+
+    public static function verifyUser($username, $pw){    }
+
+    protected function validate() {
+      return  empty($this->errors); // validate if no errors (else false)
+    }
+
+  }
 }
-object user {
-  name = "Dummy"
-  id = 123
-}
+
 class Product{
 
 }

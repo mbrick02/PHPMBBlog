@@ -1,31 +1,15 @@
-
-digraph g2 {
-    splines=line
-    node [color=Limegreen,fontcolor=Limegreen,shape=oval]
-    ilocus [label="iLocus"]
-    gilocus [label="giLocus"]
-    pilocus [label="piLocus"]
-    nilocus [label="niLocus"]
-    silocus [label="siLocus"]
-    cilocus [label="ciLocus"]
-    filocus [label="fiLocus"]
-    iilocus [label="iiLocus"]
-
-    node [color=Blue,fontcolor=Blue,shape=diamond]
-    containgene [label="Contains gene(s)?"]
-    proteincoding [label="Protein coding?"]
-    multiplegenes [label="Multiple genes?"]
-    geneflank [label="Flanked by genes\non both sides?"]
-
-    ilocus -> containgene
-    containgene:e -> geneflank [xlabel="No"]
-    geneflank:e -> filocus [xlabel="No"]
-    geneflank:w -> iilocus [xlabel="Yes"]
-    containgene:w -> gilocus [xlabel="Yes"]
-    gilocus -> proteincoding
-    proteincoding:e -> nilocus [xlabel="No"]
-    proteincoding:w -> pilocus [xlabel="Yes"]
-    pilocus -> multiplegenes
-    multiplegenes:e -> silocus [xlabel="No"]
-    multiplegenes:w -> cilocus [xlabel="Yes"]
-}
+digraph G {
+ size ="4,4";
+ main [shape=box]; /* this is a comment */
+ main -> parse [weight=8];
+ parse -> execute;
+ main -> init [style=dotted];
+ main -> cleanup;
+ execute -> { make_string; printf}
+ init -> make_string;
+ edge [color=red]; // so is this
+ main -> printf [style=bold,label="100 times"];
+ make_string [label="make a\nstring"];
+ node [shape=box,style=filled,color=".7 .3 1.0"];
+ execute -> compare;
+ }

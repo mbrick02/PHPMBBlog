@@ -4,53 +4,93 @@ abstract class DB <<parent>>{
   +public
   #protected
   test()
+
+  {static} #_pdo = null;
+  {static} #table;
+  {static} #columns = [];  // db col vals for class functions
+  {static} #notInDBCols = array();
+  {static} #uniqueFlds = array();
+  +errors = []; // holds all error messages of validation or db
+  +fields = []; // column vals for instance
+
+  {static} #_query, // for pdo stmt
+    $_error = false; // flag that errors occured
+  {static} private	$_results,
+  ================
+  -__construct($args = [])
+
+  {static} +set_PDO($pdo)
+
+  {static} +tableExists($table): return true;
+
+  {static} +getInstance($db, $args = [], $table):  return $dbObject;
+
+  {static} +getTable() :    return static::$table;
+
+  +getCols(): return static::$columns;
+
+  {static} #initializeModel($args)
+
+  +getModelValsFromDB($modelObj = array()) : key val
+
+  +putFormValsSess(): session->put(static::$table, $aryFrmVals)
+
+  +restoreFormValsSessCols($excludeAry = [])
+
+  {static} +query($sql, $params = array()) : results or error
+
+  +action($action, $where = array(), $postfix) : return true if unique
+
+  #validate()
+
+  +create($formVals)reate()
+
+  +get($where): return $this->action("SELECT {$fieldsStr}", $where);
+
+  {static} +getAll(): return $results;
+
+  +delete($id): return $this->action(DELETE);
+
+  +results(): return self::$_results;
+
+  +first(): return self::$_results()[0];
+
+  +error(): return static::$_error;
+
+  +count() : return self::$_count;
+
+  +disconnect()
 }
 DB <|-- User
 DB <|-- Product
 
-class User{
-  ' class User extends DB {
-    {static} #table = "users";
+class User {
+  #table = users
+  {static} #columns[
+  id, privilege_id, username, email,
+  fname, lname, password_required, password,
+  hashed_password, created_at, updated_at
+  ]
 
-    {static} #columns = [
-      'id' => "",
-      'privilege_id' => "",
-      'username' => "",
-      'email'=> "",
-      'fname'=> "",
-      'lname'=> "",
-      'password_required' => true,  // default require password
-      'password' => "",
-      'confirm_password' => "",
-      'hashed_password' => "",
-      'created_at'=> "",
-      'updated_at'=> "",
-    ];
+  {field} {static} #uniqueFlds = array("username", "email")
 
-    static protected $uniqueFlds = array("username", "email");
-
-    static protected $notInDBCols =
-      array("password", "confirm_password", "password_required", "created_at", "updated_at");
-  // ?? Do we need to check form $columns->$keys == $args->$keys ???
-  
-    protected static function initializeModel($args) {
-    }
-
-
-    public function fullname() {    }
-
-    public static function verifyUser($username, $pw){    }
-
-    protected function validate() {
-      return  empty($this->errors); // validate if no errors (else false)
-    }
-
-  }
+  {field} {static} #notInDBCols =array("password", "confirm_password", \n"password_required", "created_at", "updated_at");
+  =====================
+  {static} #initializeModel($args)
+  +fullname()
+  {static} +verifyUser($username, $pw)
+  #validate()
+  =========
+   return  empty($this->errors);
 }
 
-class Product{
+class Product {
+  #table = products
+  {static} #columns[
+  id, imagePath, product, description, price, created_at, updated_at
+  ]
+  {static} #table = "products";
 
 }
-
 
 @enduml

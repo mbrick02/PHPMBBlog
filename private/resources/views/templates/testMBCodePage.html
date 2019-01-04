@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Your page title here :)</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Shrikhand" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Devonshire" rel="stylesheet">
+  <link rel="stylesheet" href="/stylesheets/normalize.css">
+  <link rel="stylesheet" href="/stylesheets/skeleton.css">
+  <link rel="stylesheet" href="/stylesheets/drill.css">
+  <link rel="icon" type="image/png" href="images/favicon.png">
+
+</head>
+<body>
+  <header>
+    <div>
+      <span class="logo"><a href="/testMB">The Joy Of Painting</a></span>
+    </div>
+    <nav>
+      <a href="/" class="link">Home</a>
+      <a href="#" class="link">About</a>
+      <a href="#" class="link">Some Other Link</a>
+      <a href="#" class="link">Get In Touch</a>
+    </nav>
+    <div>
+      <span class="date">12th of never 1999</span>
+      <span class="member-login"><a class="button button-default" href="/">Member Login</a></span>
+    </div>
+  </header>
+  <section class="section-1">
+    <div class="container">
+      <div>
+        <h1>Learn About The Joy Of Painting</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><button type="button" name="button" class="button button-primary">Start Learning Today</button>
+      </div>
+      <div class="youtube">
+        <iframe width="672" height="378" src="https://www.youtube.com/embed/kc75VWsrnbM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
+  <section class="section-2">
+    <div class="container">
+      <h2>You Can Become A Better Painter</h2>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+      <p class="signature">Bob Ross</p>
+    </div>
+  </section>
+  <section class="section-3">
+    <div class="container">
+      <h2>What You Will Learn</h2>
+      <div class="learning-outcomes">
+        <div class="learnPics">
+          <img src="images/pic1.jpg" alt="info learn 1">
+          <h3>Brush Technique</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
+        <div class="learnPics">
+          <img src="images/pic2.jpg" alt="info learn 2">
+          <h3>Brush Technique</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
+        <div class="learnPics">
+          <img src="images/pic3.jpg" alt="info learn 3">
+          <h3>Brush Technique</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
+        <div class="learnPics">
+          <img src="images/pic4.jpg" alt="info learn 4">
+          <h3>Brush Technique</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section-4">
+    <div class="container">
+      <h2>Bob's Promise To You</h2>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+      <!-- Bobs pic would go here -->
+    </div>
+  </section>
+  <footer>
+    <div class="container">
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    </div>
+  </footer>
+
+  <style>
+    header {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      background: black;
+      color: #ccc;
+      padding: 0.3em 3em;
+    }
+
+    header div {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .logo {
+      font: 2em;
+      font-family: 'Shrikhand', cursive;
+    }
+    .logo a { color: #ccc; text-decoration: none; transition: 0.6s}
+    .logo a:hover { color: #fff; text-decoration: none; transition: 0.6s}
+
+    nav {
+      margin: 0 3em;
+      font-size: 1.1em;
+    }
+
+    nav a { padding: 0 2em; color: #ccc; text-decoration: none; }
+    nav a:hover { color: #fff; text-decoration: underline; }
+
+    .date {
+      margin-right: 3em;
+    }
+
+    .button-default {
+      background: silver;
+      transition: 0.6s;
+      top: 0.3em;
+      position: relative;
+    }
+
+    .button-default:hover {
+      background: white;
+      color: black;
+      transition: 0.6s;
+    }
+
+    .container {
+      width: 70%;
+      max-width: 1000px;
+      min-width: 400px;
+      margin: 0 auto; /* move to center */
+    }
+
+    .section-1, .section-2, .section-3, .section-4 {
+      min-height: 20em;
+    }
+
+    .section-1 {
+      background: brown; /* url("images/dark_wood.jpg"); */
+      color: #eee;
+    }
+
+    .section-1 .container {
+      padding: 2em 0 3em 0;
+      display: flex;
+      flex-direction: row;
+    }
+
+    .section-1 .container div {
+      background: green;
+      padding: 1em;
+    }
+
+    .section-2 {
+      padding-top: 2em;
+      text-align: center;
+      background: silver;
+    }
+
+    .signature {
+      font-family: 'Devonshire', cursive;
+      font-size: 4em;
+    }
+
+    .section-3 {
+
+    }
+
+    .section-3 h3 {
+      font-size: 1.4em;
+    }
+
+    .learning-outcomes {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-gap: 1em;
+    }
+
+    .learning-outcomes img {
+      width: 100%;
+      height: auto;
+    }
+
+    .section-4 {
+      padding-top: ;
+      background: purple; /* url("images/ricepaper.png") */
+      border-top: 1px silver solid;
+      text-align: center;
+    }
+
+    .section-4 div img {
+      -webkit-box-shadow: -14px 15px 5px 0px rgba(0,0,0,0.75);
+      -moz-box-shadow: -14px 15px 5px 0px rgba(0,0,0,0.75);
+      box-shadow: -14px 15px 5px 0px rgba(0,0,0,0.75);
+    }
+
+    footer {
+      background: black;
+      color: #eee;
+      text-align: center;
+      padding: 4em;
+    }
+  </style>
+</body>
+</html>

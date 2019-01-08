@@ -1,0 +1,35 @@
+graph {
+    splines=ortho;
+    {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 [width=0, shape=point, style=invis];}
+    {rank=same; 1 -- 2 -- 3 -- 4;}
+    0 -- 4;
+    node [shape=box];
+    {rank=same; "George" -- 0 -- "Nancy Beale";}
+
+    {
+      2 -- "Ernest (1864)";
+      2 -- "John (1871)";
+      2 -- "George II (1872)";
+      2 -- "Nora (1874)";
+      3 -- "Gertrude (1881)";
+      4 -- "Sylvestor (1877)"
+    }
+
+    {rank=same; "Sylvestor (1877)" -- 6 -- "Virginia Gunn"}
+    {rank=same; 7 -- 8 -- 9 -- 10;}
+    6 -- 8;
+      // ?Dont need next?
+    {rank=same; "Earl"; "Clyde";"James K."; "Russell L."; "John V."; "Eugene"; "William R."; "Louise V.";}
+    {
+      7 -- "Earl";
+      7 -- "Clyde";
+      8 -- "James K."
+      8 -- "Russell L.";
+      8 -- "John V.";
+      9 -- "Eugene";
+      10 -- "William R.";
+      10 -- "Louise V.";
+    }
+
+    {rank = same; ""}
+}

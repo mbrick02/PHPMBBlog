@@ -42,4 +42,14 @@ class HomeController extends Controller {
 
      return $testPage;
   }
+
+  public function testPHP($param1='')
+  {
+    $testPageFile = TEMPLATE_PATH . DS . 'testMBPHPPage.php';
+    $formVars = [];
+    $testPage = static::$container->view->
+     renderWithVariables($testPageFile, $formVars, false);
+
+     return $testPage;
+  }
 }

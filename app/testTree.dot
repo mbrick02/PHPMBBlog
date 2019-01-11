@@ -1,0 +1,69 @@
+digraph {
+    edge [dir=none];
+    node [
+        fillcolor="violet",fixedsize=true,shape=box,
+        style="rounded,filled",width=2.0
+    ];
+    splines=ortho;
+    // GEN -01
+    {
+        rank=same; rankdir=LR;
+        "Grandfather" [regular=0];
+        m0002 [
+            label="",shape=diamond,regular=0,height=0.25,
+            width=0.25,style="filled",
+        ];
+        "Grandmother" [regular=0];
+        {
+            rank=same; rankdir=LR;
+            "Grandfather" -> m0002 -> "Grandmother";
+        }
+    }
+    m0002 -> c0001;
+    // GEN  00
+    {
+        rank=same; rankdir=LR;
+        c0000 [
+            label="",shape=circle, regular=0, height=0.05,
+            width=0.05,style="filled"
+        ];
+        c0001 [
+            label="",shape=circle, regular=0, height=0.05,
+            width=0.05,style="filled"
+        ];
+        c0002 [
+            label="",shape=circle, regular=0, height=0.05,
+            width=0.05, style="filled"
+        ];
+        {
+            rank=same; rankdir=LR;
+            c0000 -> c0001 -> c0002;
+        }
+    }
+    {
+        rank=same; rankdir=LR;
+        "Son 1" [regular=0, fillcolor="red"];
+        "Daughter 1" [regular=0];
+        "Son 2" [regular=0];
+        m0000 [
+            label="",shape=diamond,regular=0,height=0.25,
+            width=0.25,style="filled"
+        ];
+        "Other Daughter 1" [regular=0];
+        "Other Son 1" [regular=0];
+        "Other Other Son 1" [regular=0];
+        m0001 [
+            label="",shape=diamond,regular=0,height=0.25,
+            width=0.25, style="filled"
+        ];
+        "Other Daughter 2" [regular=0];
+        {
+            rank=same; rankdir=LR;
+            "Son 2" -> m0000 -> "Other Daughter 1";
+            "Other Other Son 1" -> m0001 -> "Other Daughter 2";
+        }
+    }
+    c0000 -> "Son 1" [headport=ne];
+    c0001 -> "Daughter 1";
+    c0002 -> "Son 2":nw; // Shorthand for [headport=nw]
+}

@@ -1,18 +1,18 @@
 digraph {
-    label="How to make sure 'input' is valid";
+    label="login User";
 
     node[shape="box", style="rounded"]
-       start; end;
+       start [label="Login valid\nform uname/email"]; end[label="Check\nPassword"];
     node[shape="parallelogram", style=""]
-       message; input;
+       input[label="Return to\nLogin"];
     node[shape="diamond", style=""]
-       if_valid;
+       validU_c [label="valid user?"]; email_c [label="email valid?"];
 
-    start -> input;
-    input -> if_valid;
-    if_valid -> message[label="no"];
-    if_valid -> end[label="yes"];
-    message -> input;
+    start -> email_c;
+    email_c -> validU_c[label="no"];
+    email_c -> end[label="yes"];
+    validU_c -> end[label="yes"]
+    validU_c -> input;
 
-    {rank=same; message input}
+    {rank=same; validU_c input}
 }

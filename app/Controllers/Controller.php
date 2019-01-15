@@ -27,7 +27,7 @@ class Controller {
 		 global $db;
 		 // $linkCreatUser = "<a href=\"/user/create\" ></a>" . "<div class=\"dropdown-divider\"></div>";
 		 $loginForm = VIEWS_PATH . DS . 'auth' . DS . 'login.php';
-		 $user = User::getInstance($db);
+		 $user = User::getInstance($db); // note: based on db but NOT from -- to be poss. added
 		 $formVars = [ 'user' => $user];
 		 $loginFormContent = static::$container->view->
 		 	renderWithVariables($loginForm, $formVars, false);

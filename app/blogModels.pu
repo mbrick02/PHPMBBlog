@@ -31,7 +31,7 @@ abstract class DB <<parent>>{
 
   {static} #initializeModel($args)
 
-  +getModelValsFromDB($modelObj = array()) : key val
+  +setClassFieldsFromDB($modelObj = array()) : key val
 
   +putFormValsSess(): session->put(static::$table, $aryFrmVals)
 

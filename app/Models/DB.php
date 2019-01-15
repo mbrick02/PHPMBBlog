@@ -34,7 +34,7 @@ abstract class DB {
 		return $false;
 	}
 
-  public static function getInstance($db, $args = [], $table = "") {  // PHP OOP Login/R 7/23
+  public static function getInstance($dbArg = "", $args = [], $table = "") {  // PHP OOP Login/R 7/23
 		// DON'T USE Singleton anymore
 		// if(!isset(static::$_pdo)) { // test for singleton (on instance of parent w/DB)
   	// 	static::$_pdo = PDOConn::getInstance();  // new subclass via static binding
@@ -43,10 +43,17 @@ abstract class DB {
 			input: $args (1st designed to be from create form) format:
 				$args['modelobj']['colname'] (eg. $args['user']['username'])
 				(used in initializeModel to set $column['field'] = 'value'
-			return/ouput: returns instance of model
+				$table CURRENTLY NOT USED -- probably will be eliminated assumed to be static::$table
+			calls: initializeModel to set $arg values given
+			return/ouput: returns instance of model (new to be added or existing to view/edit)
 		*/
+		global $db;
 
-		static::set_PDO($db);  // should always be global $db
+		if ($dbArg=="") {
+			$dbArg = $db;
+		}
+
+		static::set_PDO($dbArg);  // should always be global $db
 
 		static::initializeModel($args);
 
@@ -74,7 +81,7 @@ abstract class DB {
 		*/
 	}
 
-	function getModelValsFromDB($modelObj = array()) {
+	function setClassFieldsFromDB($modelObj = array()) {
 		/*
 		set vals for single db model obj from 1st $_results[] or param $modelObj
 		*/
@@ -137,7 +144,9 @@ abstract class DB {
   }
 
   public function action($action, $where = array(), $postfix = '') {
-	// $where idea: "where field(0)=(1)value(2)"; sample: array("id", "=", "2")
+	// inputs -
+	// $action: SQL action with dbfields (example: "SELECT *" or "SELECT id, name")
+	// $where: "where field(0)=(1)value(2)"; sample: array("id", "=", "2")
 	// $postfix example: " LIMIT 1"  //TODO: test for space char 1
 	// returns false (query unsuccessful or NOT 3 where ops) or self::$_results
   	if(count($where) == 3) {

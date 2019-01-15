@@ -28,7 +28,7 @@ class User extends DB {
 
   protected static function initializeModel($args) {
     /*
-      input: $args (1st designed to be from create form) format:
+      input: $args (1st designed to be from create form - $arg from NON-forms STILL use) format:
         $args['modelobj']['colname'] (eg. $args['user']['username'])
       return/ouput: called by getInstance which returns instance of model
     */
@@ -61,14 +61,30 @@ class User extends DB {
     return static::$columns['fname'] . " " . static::$columns['lname'];
   }
 
-  public static function findUser($username) {
-    $user = action("username", array("username", "=", $username));
+  public function findUser($username) {
+    $user = get(array("username", "=", $username));
+    if ($user) {
+      $numbUsers = count($user);
+
+      $user = array_shift($user); // get single user
+      // check if more than one user (should be impossible if DB works)
+      if (count($user) > 1) {
+        static::$_error = true;
+        $this->errors[] = "CONTACT ADMIN - DB error: more than one user with this username.";
+        // Dont think I can do this with static: $this->errors = "more than 1 username";
+      }
+    }
     return $user;
   }
 
   public static function verifyUser($username, $pw){
-    $user = findUser($username);
+    $dbUser = findUser($username);
 
+    if ($dbUser) {
+      $password_verified = password_verify($pw, $user->password);
+      $user = getInstance($db)
+      $user->setClassFieldsFromDB($dbUser);
+    }
     $ testuser = xxxxxxxxxxxxxxxxxxxx120918xxxxxxxxxxxxxxxxxxx
     need to set tempuser values by retrieveValsFromDB()
       test if username exists: $this->getFieldsStr("username", array("username", "=", $username))

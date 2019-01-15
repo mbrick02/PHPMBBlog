@@ -61,6 +61,11 @@ class User extends DB {
     return static::$columns['fname'] . " " . static::$columns['lname'];
   }
 
+  public static function findUser($username) {
+    $user = action("username", array("username", "=", $username));
+    return $user;
+  }
+
   public static function verifyUser($username, $pw){
     $user = findUser($username);
 

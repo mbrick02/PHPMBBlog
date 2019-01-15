@@ -139,7 +139,7 @@ abstract class DB {
   public function action($action, $where = array(), $postfix = '') {
 	// $where idea: "where field(0)=(1)value(2)"; sample: array("id", "=", "2")
 	// $postfix example: " LIMIT 1"  //TODO: test for space char 1
-	// returns false or self::$_results
+	// returns false (query unsuccessful or NOT 3 where ops) or self::$_results
   	if(count($where) == 3) {
 			$operators = array('=', '>', '<', '>=', '<=');
 	  	$field = $where[0];

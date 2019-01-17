@@ -12,20 +12,15 @@ class HomeController extends Controller {
   }
 
 	public function index($request, $response) {
-		// IF USING TWIG:
-    // return static::$container->view->render($response, 'home.twig');
-    // return static::$container->view->render($response, 'home.twig');
+		// IF USING TWIG: return static::$container->view->render($response, 'home.twig');
 
-		// ?? id needed: global $db;
-
-
-		global $db;
+		global $db; // needed for DB/Model class instances
 
 		$user = User::getInstance($db); // ***if user is logged-in NEED to get from sess
 
 		$homeP = VIEWS_PATH . DS . 'templates' . DS . 'partials' . DS . 'home.php';
-// *** DEBUG 1/16/19 ******************
-		$formVars = [ 'user' => 'user']; // Debug 1/16/19 ?change to User.php model? $user];  // originally of signup, but ?use logged-in sess $user for profile
+
+		$formVars = [ 'user' => $user];  // originally of signup, but ?use logged-in sess $user for profile
 
     $homePanel = static::$container->view->renderWithVariables($homeP, $formVars, false);
 

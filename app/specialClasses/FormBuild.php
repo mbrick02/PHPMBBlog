@@ -122,6 +122,7 @@ public static function instantiate($nameAry, $useDBVals = false) {
     input: enclosed tag type, attrib assoc ary w/ vals, content for tag
     output: <tag attr1="attr1Val" attr2...>tagcontent</tag>
     */
+
     $output = self::retTag($tagType, $assiVars);
     $output .= $tagContent;
     $output .= self::endTag($tagType);
@@ -150,7 +151,7 @@ public static function instantiate($nameAry, $useDBVals = false) {
     //   var_dump($assiVars);
     //   die();
     // }
-    
+
     // Inputs: $assiVars['labelFor'] (and labl, type, name, id, and class)
     $output = "<div class=\"form-group\"> \n";
     $output .= "<label for=\"{$assiVars['labelFor']}\">" . ucfirst($assiVars['label']) . ":</label>\n";
@@ -231,13 +232,13 @@ public static function instantiate($nameAry, $useDBVals = false) {
     // DEL (old ver): include TEMPLATE_PATH . DS . 'partials' . DS . 'form_bottom.php';
   }
 
-  public function mkSimpTxtInpValDiv($origfldAttr, $user) {
+  public function mkSimpTxtInpValDiv($origfldAttr, $model) {
     /*
     // create input text type w/Value check: <input type="text"...>
     */
     $fldAttribs = $origfldAttr; // e.g. ['name' => $field, ];
     $field = $fldAttribs['name'];
-    $values = $user->getCols();
+    $values = $model->getCols();
 
     if (isset($values[$field]) && (!empty($values[$field]))) {
         $fldAttribs['value'] = $values[$field];
@@ -245,14 +246,14 @@ public static function instantiate($nameAry, $useDBVals = false) {
     return $this->retSimpTxtInpDiv($fldAttribs);
   }
 
-  public function mkTypeInpValDiv($origfldAttr, $user) {
+  public function mkTypeInpValDiv($origfldAttr, $model) {
     /*
     create input special type w/Value check - e.g. <input type="email" name="email" id="email"
         placeholder="u@dom.com" value="ifNonValid" class="form-control">
     */
     $fldAttribs = $origfldAttr;
     $field = $fldAttribs['name'];
-    $values = $user->getCols();
+    $values = $model->getCols();
 
     if (isset($values[$field]) && (!empty($values[$field]))) {
         $fldAttribs['value'] = $values[$field];

@@ -92,11 +92,7 @@ class Template {
         // End buffering and return its contents
         $output = ob_get_clean();
     }
-// *** DEBUG 1/16/19 PROB with HomeController->index and/or User.php::getInstance/User class
-		// echo "filepath: " . $filePath . "<br />";
-		// echo "variables: ";
-		// var_dump($variables);
-		// die();
+
     if ($print) {
         print $output;
     }

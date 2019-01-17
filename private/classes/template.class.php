@@ -52,11 +52,11 @@ class Template {
   	if(file_exists($fullpath)) {
   		$output = file_get_contents($fullpath);
 // DEBUG 10/29**	 **********msgHeader***********************************NOT showing div		//
-			if (isset($assignedVars['msgHeader'])) {
-				echo "In tewmplate:returnText assignedVars: <br>";
-				var_dump($this->assignedVars);
-				die();
-			}
+			// if (isset($assignedVars['msgHeader'])) {
+			// 	echo "In tewmplate:returnText assignedVars: <br>";
+			// 	var_dump($this->assignedVars);
+			// 	die();
+			// }
 
 			if (!empty($assignedVars)) {
 				$this->assignedVars = $assignedVars;
@@ -83,7 +83,7 @@ class Template {
 					$variables = $this->assignedVars;
 				}
         // Extract the variables to a local namespace
-        extract($variables);
+       extract($variables);
         // Start output buffering
         ob_start();
         // Include the template file
@@ -92,6 +92,11 @@ class Template {
         // End buffering and return its contents
         $output = ob_get_clean();
     }
+// *** DEBUG 1/16/19 PROB with HomeController->index and/or User.php::getInstance/User class
+		// echo "filepath: " . $filePath . "<br />";
+		// echo "variables: ";
+		// var_dump($variables);
+		// die();
     if ($print) {
         print $output;
     }

@@ -20,12 +20,16 @@ class HomeController extends Controller {
 
 
 		global $db;
+
 		$user = User::getInstance($db); // ***if user is logged-in NEED to get from sess
 
 		$homeP = VIEWS_PATH . DS . 'templates' . DS . 'partials' . DS . 'home.php';
-		$formVars = [ 'user' => $user];  // originally of signup, but ?use logged-in sess $user for profile
-		$homePanel = static::$container->view->renderWithVariables($homeP, $formVars, false);
-		// give vals to main.php template vars
+// *** DEBUG 1/16/19 ******************
+		$formVars = [ 'user' => 'user']; // Debug 1/16/19 ?change to User.php model? $user];  // originally of signup, but ?use logged-in sess $user for profile
+
+    $homePanel = static::$container->view->renderWithVariables($homeP, $formVars, false);
+
+    // give vals to main.php template vars
 		$optionvars = [];
 
 		$optionvars['content'] = $homePanel;

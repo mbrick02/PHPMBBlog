@@ -79,18 +79,22 @@ class User extends DB {
 
   public static function verifyUser($username, $pw){
     $dbUser = findUser($username);
+    $modelFlds = array();
+    $modelFlds['user'] = $dbUser;
+     // DEBUG 01/16/19
+    $debugStatement = "No user found"; // DEBUG 01/16/19
 
     if ($dbUser) {
-      $password_verified = password_verify($pw, $user->password);
-      $user = getInstance($db)
-      $user->setClassFieldsFromDB($dbUser);
+      // $user = static::getInstance(); // sets empty instance of User
+      // $user->setClassFieldsFromDB($dbUser);  // instead set fields in getInstance
+      $user = static::getInstance("", $modelFlds);
+      $debugStatement = "User found";
+       // DEBUG 01/16/19
+      $password_verified = password_verify($pw, $user->password);  // DEBUG 01/16/19
+      $debugStatement += $password_verified ? " and password verified" : " BUT password NOT right.";  // DEBUG 01/16/19
     }
-    $ testuser = xxxxxxxxxxxxxxxxxxxx120918xxxxxxxxxxxxxxxxxxx
-    need to set tempuser values by retrieveValsFromDB()
-      test if username exists: $this->getFieldsStr("username", array("username", "=", $username))
-      ** need to instantiate $testuser
-      test if pw matches for $testuser->username:
-
+    echo $debugStatement;  // DEBUG 01/16/19
+    die();  // DEBUG 01/16/19
   }
 
   protected function validate() {

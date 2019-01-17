@@ -144,10 +144,13 @@ public static function instantiate($nameAry, $useDBVals = false) {
   }
 
   public function retInpDiv($assiVars = []) {
-    if (is_null($assiVars) || (!is_array($assiVars))) { // || !array_key_exists('labelFor', $assiVars))
-      var_dump($assiVars);
-      die();
-    }
+    // Debug prob 10/2018 commented out 1/2019
+    // if (is_null($assiVars) || (!is_array($assiVars))) { // || !array_key_exists('labelFor', $assiVars))
+    //   echo "debug 2018 apparently assiVar null in retInpDiv hasnt happened yet...<br />";
+    //   var_dump($assiVars);
+    //   die();
+    // }
+    
     // Inputs: $assiVars['labelFor'] (and labl, type, name, id, and class)
     $output = "<div class=\"form-group\"> \n";
     $output .= "<label for=\"{$assiVars['labelFor']}\">" . ucfirst($assiVars['label']) . ":</label>\n";

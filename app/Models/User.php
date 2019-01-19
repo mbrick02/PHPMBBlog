@@ -62,32 +62,37 @@ class User extends DB {
   }
 
   public function findUser($username) {
-    $user = get(array("username", "=", $username));
-    if ($user) {
+    $dbUsers = self::get(array("username", "=", $username));
+    if ($dbUsers) {
       $numbUsers = count($user);
 
-      $user = array_shift($user); // get single user
+      $user = array_shift($user); // get single user from DB
       // check if more than one user (should be impossible if DB works)
       if (count($user) > 1) {
         static::$_error = true;
         $this->errors[] = "CONTACT ADMIN - DB error: more than one user with this username.";
         // Dont think I can do this with static: $this->errors = "more than 1 username";
+        return false;
+      } else { // only 1 user -- as should be
+        return $user;
       }
+    } else { // NO $dbUser result
+      return false;
     }
-    return $user;
   }
 
   public static function verifyUser($username, $pw){
-    $dbUser = findUser($username);
+    $UserInstance = User::getInstance("", []);
+    $aryUsersWUsername = $UserInstance->findUser($username);
     $modelFlds = array();
-    $modelFlds['user'] = $dbUser;
+    // ?? Not sure if this is right way to go$modelFlds['user'] = $dbUser;
      // DEBUG 01/16/19
     $debugStatement = "No user found"; // DEBUG 01/16/19
 
     if ($dbUser) {
       // $user = static::getInstance(); // sets empty instance of User
       // $user->setClassFieldsFromDB($dbUser);  // instead set fields in getInstance
-      $user = static::getInstance("", $modelFlds);
+      $user = static::getInstance("", $modelFlds); // note: getInstance($db="", $fields) -- $db empty assumes global $db
       $debugStatement = "User found";
        // DEBUG 01/16/19
       $password_verified = password_verify($pw, $user->password);  // DEBUG 01/16/19

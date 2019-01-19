@@ -1,18 +1,17 @@
 digraph {
-    label="login User";
+    label="login User/Email";
 
-    node[shape="box", style="rounded"]
-       start [label="Login valid\nform uname/email"]; end[label="Check\nPassword"];
-    node[shape="parallelogram", style=""]
-       input[label="Return to\nLogin"];
     node[shape="diamond", style=""]
-       validU_c [label="valid user?"]; email_c [label="email valid?"];
+        empty_d[label="Empty uname/email?"];
+        xvalemail_d[label="NOT valid email?"];
+        xHasLenMax255[label="NOT Max length 255"];
+    /* node[shape="box", style="rounded"]
+       end[label="Check\nPassword"];
+    node[shape="parallelogram", style=""]
+       input[label="Return to\nLogin"]; */
 
-    start -> email_c;
-    email_c -> validU_c[label="no"];
-    email_c -> end[label="yes"];
-    validU_c -> end[label="yes"]
-    validU_c -> input;
+    empty_d -> xvalemail_d[label="yes"];
+    empty_d -> xHasLenMax255[label="no"];
 
-    {rank=same; validU_c input}
+    {rank=same; empty_d xHasLenMax255}
 }

@@ -72,13 +72,16 @@ class AuthController extends Controller {
      'password' => string 'y' (length=1)
     */
     $unameOREmail = isset($allPostVars['login']['usernameOREmail'])? $allPostVars['login']['usernameOREmail'] : '';
+    $pw = isset($allPostVars['login']['password'])? $allPostVars['login']['password'] : '';
 
     // determine if username or Email
     // ??validEmail($unameOREmail);
     if (!empty($unameOREmail)) { // 1st test not empty
-      if (!has_valid_email_format($unameOREmail)) {
+      if (has_valid_email_format($unameOREmail)) {
         // lookup Email
-        // **** User::findEmail
+      } else {
+        // echo "not a valid email But is it a uname?";
+        User::verifyUser($unameOREmail, $pw);
       }
 
     } elseif (!has_length(static::$columns['email'], array('max' => 255))) {

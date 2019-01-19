@@ -79,9 +79,12 @@ class AuthController extends Controller {
     if (!empty($unameOREmail)) { // 1st test not empty
       if (has_valid_email_format($unameOREmail)) {
         // lookup Email
+        echo "Lookup email in AuthController:login";
+        die;
       } else {
-        // echo "not a valid email But is it a uname?";
-        User::verifyUser($unameOREmail, $pw);
+        $validUser = User::verifyUser($unameOREmail, $pw);
+        echo "Valid User in AuthController:login";
+        die;
       }
 
     } elseif (!has_length(static::$columns['email'], array('max' => 255))) {

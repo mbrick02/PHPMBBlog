@@ -62,7 +62,7 @@ class User extends DB {
   }
 
   public function findUser($username) {
-    $dbUsers = self::get(array("username", "=", $username));
+    $dbUsers = static::get(array("username", "=", $username));
     if ($dbUsers) {
       $numbUsers = count($user);
 
@@ -82,21 +82,23 @@ class User extends DB {
   }
 
   public static function verifyUser($username, $pw){
-    $UserInstance = User::getInstance("", []);
-    $aryUsersWUsername = $UserInstance->findUser($username);
+    $userInstance = User::getInstance("", []);
+    $aryUsersWUsername = $userInstance->findUser($username);
     $modelFlds = array();
     // ?? Not sure if this is right way to go$modelFlds['user'] = $dbUser;
      // DEBUG 01/16/19
-    $debugStatement = "No user found"; // DEBUG 01/16/19
+    $debugStatement = "No user found in User:verifyUser"; // DEBUG 01/16/19
 
-    if ($dbUser) {
-      // $user = static::getInstance(); // sets empty instance of User
-      // $user->setClassFieldsFromDB($dbUser);  // instead set fields in getInstance
-      $user = static::getInstance("", $modelFlds); // note: getInstance($db="", $fields) -- $db empty assumes global $db
+    if ($aryUsersWUsername) {
       $debugStatement = "User found";
-       // DEBUG 01/16/19
+      // DEBUG **** 1/16/19 updated 1/19/19
+      echo "in User:verifyUser after found user with Username now what?....";
+      // DEBUG 1/19 need to copy user info from $_results into instance...
+      die();
+
+      // DEBUG 01/16/19 *********************
       $password_verified = password_verify($pw, $user->password);  // DEBUG 01/16/19
-      $debugStatement += $password_verified ? " and password verified" : " BUT password NOT right.";  // DEBUG 01/16/19
+      $debugStatement += $password_verified ? " and password verified" : " BUT password NOT right.";
     }
     echo $debugStatement;  // DEBUG 01/16/19
     die();  // DEBUG 01/16/19

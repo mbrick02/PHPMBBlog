@@ -143,7 +143,7 @@ abstract class DB {
 		return (!(self::$_error)); // true if no errors
   }
 
-  public function action($action, $where = array(), $postfix = '') {
+  public static function action($action, $where = array(), $postfix = '') {
 	// inputs -
 	// $action: SQL action with dbfields (example: "SELECT *" or "SELECT id, name")
 	// $where: "where field(0)=(1)value(2)"; sample: array("id", "=", "2")
@@ -156,7 +156,8 @@ abstract class DB {
 	  	$value = $where[2];  // TODO: turn val into param assoc array: $where[2][$key]
 
 	  	if(in_array($operator, $operators)) {
-	  		$sql = "{$action} FROM {static::table} WHERE {$field} {$operator} :{$field}$postfix";
+	  		$sql = "{$action} FROM " . static::$table . " WHERE {$field} {$operator} :{$field}$postfix";
+
 				if (static::query($sql, array($value))) {
 						return self::$_results;
 				}
@@ -230,10 +231,10 @@ abstract class DB {
 			return false; // most likely did not validate check errors
 	}  // end public create()
 
-  public function get($where) {
+  public static function get($where) {
 		// returns results array $_results or false
 		// 	  	$field = $where[0]; $operator = $where[1]; $value = $where[2];
-  	$this->action('SELECT *', $where);  // returns db $_results of query
+  	static::action('SELECT *', $where);  // returns db $_results of query
   }
 
 // ?*? untested 9/22/18
@@ -245,7 +246,7 @@ abstract class DB {
 
   public static function getAll() {
 		/* output are query records AND $results['rowCount'] OR $results['error'] */
-		$sql = 'SELECT * FROM ' . static::$table;// $table;
+		$sql = 'SELECT * FROM ' . static::$table;
 
 		$query = self::$_pdo->prepare($sql);
 		if($query->execute()) {

@@ -233,7 +233,7 @@ abstract class DB {
   public function get($where) {
 		// returns results array $_results or false
 		// 	  	$field = $where[0]; $operator = $where[1]; $value = $where[2];
-  	$this->action('SELECT *', $where);
+  	$this->action('SELECT *', $where);  // returns db $_results of query
   }
 
 // ?*? untested 9/22/18

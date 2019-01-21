@@ -95,6 +95,6 @@
 // pdo('mysql:host=' . Config::get('mysql/host') . '; dbnm=' . Config::get('mysql/name'));
   // container in app.php will reference this as a global:
 
-  $db = new PDOConn;  // Note: controller access to db is now through container
+  $db = new PDOConn;  // Note: controller access to (global) db is now through container
   DB::set_PDO($db);
 ?>

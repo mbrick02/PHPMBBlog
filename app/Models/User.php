@@ -63,6 +63,10 @@ class User extends DB {
 
   public function findUser($username) {
     $dbUsers = static::get(array("username", "=", $username));
+    echo "in User:findUser() var dbUsers: ";
+    var_dump($dbUsers);
+    die();
+
     if ($dbUsers) {
       $numbUsers = count($user);
 
@@ -81,15 +85,19 @@ class User extends DB {
     }
   }
 
-  public static function verifyUser($username, $pw){
+  public static function verifyUser($unamEml, $pw){
+    /* test if user/password combo valid
+      input: $unamEml (username or email - unique user), $pw (password)
+      return: false or $user result object (?array)
+    test input as unique id of username or password */
     $userInstance = User::getInstance("", []);
-    $aryUsersWUsername = $userInstance->findUser($username);
+    $dbObjUser = $userInstance->findUser($unamEml);
     $modelFlds = array();
     // ?? Not sure if this is right way to go$modelFlds['user'] = $dbUser;
      // DEBUG 01/16/19
     $debugStatement = "No user found in User:verifyUser"; // DEBUG 01/16/19
 
-    if ($aryUsersWUsername) {
+    if ($dbObjUser) {
       $debugStatement = "User found";
       // DEBUG **** 1/16/19 updated 1/19/19
       echo "in User:verifyUser after found user with Username now what?....";

@@ -234,14 +234,14 @@ abstract class DB {
   public static function get($where) {
 		// returns results array $_results or false
 		// 	  	$field = $where[0]; $operator = $where[1]; $value = $where[2];
-  	static::action('SELECT *', $where);  // returns db $_results of query
+  	return static::action('SELECT *', $where);  // returns db $_results of query
   }
 
 // ?*? untested 9/22/18
-	public function getFieldsStr($fieldsStr, $where) {
+	public static function getFieldsStr($fieldsStr, $where) {
 		// returns results array $_results or false
 		// 	  	$where = (examp "where id=2" - field=val) = array("id", "=", "2")
-  	return $this->action("SELECT {$fieldsStr}", $where);
+  	return static::action("SELECT {$fieldsStr}", $where);
   }
 
   public static function getAll() {

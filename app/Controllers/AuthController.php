@@ -81,7 +81,7 @@ class AuthController extends Controller {
         // lookup Email
         echo "Lookup email in AuthController:login";
         die;
-      } else {
+      } else { // not an email so look for user
         $validUser = User::verifyUser($unameOREmail, $pw);
         echo "Valid User in AuthController:login";
         die;

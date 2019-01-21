@@ -61,18 +61,17 @@ class User extends DB {
     return static::$columns['fname'] . " " . static::$columns['lname'];
   }
 
-  public function findUser($username) {
+  public static function findUser($username) {
+    /* look for username in mbblog.users
+      input: $username
+      output: false or User db sql return dbo */
     $dbUsers = static::get(array("username", "=", $username));
-    echo "in User:findUser() var dbUsers: ";
-    var_dump($dbUsers);
-    die();
 
     if ($dbUsers) {
-      $numbUsers = count($user);
+      $numbUsers = self::count();
+      $user = array_shift($dbUsers); // get single user from DB
 
-      $user = array_shift($user); // get single user from DB
-      // check if more than one user (should be impossible if DB works)
-      if (count($user) > 1) {
+      if (count($user) > 1) { // check users>1 (should be impossible if DB works)
         static::$_error = true;
         $this->errors[] = "CONTACT ADMIN - DB error: more than one user with this username.";
         // Dont think I can do this with static: $this->errors = "more than 1 username";
@@ -85,28 +84,29 @@ class User extends DB {
     }
   }
 
-  public static function verifyUser($unamEml, $pw){
+  public static function verifyUser($usrnam, $pw){
     /* test if user/password combo valid
-      input: $unamEml (username or email - unique user), $pw (password)
+      input: $usrnam (username), $pw (password)
       return: false or $user result object (?array)
     test input as unique id of username or password */
     $userInstance = User::getInstance("", []);
-    $dbObjUser = $userInstance->findUser($unamEml);
+    $dbObjUser = User::findUser($usrnam);
     $modelFlds = array();
     // ?? Not sure if this is right way to go$modelFlds['user'] = $dbUser;
      // DEBUG 01/16/19
     $debugStatement = "No user found in User:verifyUser"; // DEBUG 01/16/19
 
     if ($dbObjUser) {
-      $debugStatement = "User found";
+      $debugStatement = "User found ";
+
+      // if pw verified, set values in user instance, else "User/pw not found"
+      // DEBUG 01/16/19 *********************
+      $pwStatus = password_verify($pw, $dbObjUser->hashed_password) ? "pw verified" : "pw failed";
+      $debugStatement .= $pwStatus;
       // DEBUG **** 1/16/19 updated 1/19/19
-      echo "in User:verifyUser after found user with Username now what?....";
+      echo $debugStatement; // $debugStatement;
       // DEBUG 1/19 need to copy user info from $_results into instance...
       die();
-
-      // DEBUG 01/16/19 *********************
-      $password_verified = password_verify($pw, $user->password);  // DEBUG 01/16/19
-      $debugStatement += $password_verified ? " and password verified" : " BUT password NOT right.";
     }
     // no user found -- BUT why no "mbrick02" when in db ?check findUser
     echo $debugStatement;  // DEBUG 01/16/19

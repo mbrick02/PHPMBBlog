@@ -275,7 +275,7 @@ abstract class DB {
   	return static::$_error;
   }
 
-  public function count() {
+  public static function count() {
   	return self::$_count;
   }
 

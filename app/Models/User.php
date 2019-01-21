@@ -100,6 +100,7 @@ class User extends DB {
       $password_verified = password_verify($pw, $user->password);  // DEBUG 01/16/19
       $debugStatement += $password_verified ? " and password verified" : " BUT password NOT right.";
     }
+    // no user found -- BUT why no "mbrick02" when in db ?check findUser
     echo $debugStatement;  // DEBUG 01/16/19
     die();  // DEBUG 01/16/19
   }

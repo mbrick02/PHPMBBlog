@@ -1,41 +1,37 @@
 digraph {
     label="login User/Email";
+    // splines="ortho"
     /* node[shape="parallelogram", style=""]
        ?input[label="Return to\nLogin"]; */
     node[shape="box", style="rounded"]
       backToLogin[label="go back to Login"];
+      LoggedIn[label="Log in User"];
 
-    node[shape="diamond", style=""]
-        xEmpty_d[label="NOT Empty uname/email?"];
-        emailFormat[label="valid email format?"];
-        emailFound[label="Is Email in DB?"];
-        pw[label="Password Match?"];
+    node[shape="diamond", style="filled", color="lightblue"]
+        xEmpty_d[label="NOT Empty \nuname/email?"];
+        emailFormat[label="valid \nemail format?"];
+        emailFound[label="Is Email\nin DB?"];
+        pw[label="Password\nMatch?"];
         less255Mor2[label="NOT > 255 \nOr < 2?"];
-        isDBUName[label="is this username\nin the DB?"];
+        isDBUName[label="username\nin the DB?"];
 
-
-    /***  if (!empty($unameOREmail)) { // 1st test not empty
-      if (has_valid_email_format($unameOREmail)) {
-        // lookup Email
-        echo "Lookup email in AuthController:login";
-        die;
-      } else {  // validate User
-        $validUser = User::verifyUser($unameOREmail, $pw);
-        echo "Valid User in AuthController:login";
-        die; }
-    }xxxxx elseif (!has_length(static::$columns['email'], array('max' => 255))) {
-      $this->errors[] = "Last name must be less than 255 characters.";
-    }xxxxx elseif (!has_valid_email_format(static::$columns['email'])) { ****   */
-
-    xEmpty_d -> emailFormat[label="yes"];
-    xEmpty_d -> backToLogin[label="no"];
+    xEmpty_d:s -> emailFormat:n[label="yes"];
+    xEmpty_d:w -> backToLogin[label="no"];
 
     emailFormat -> emailFound[label="yes"];
     emailFormat -> less255Mor2[label="no"];
 
-    less255Mor2 -> isDBUName[label="yes"]
+    less255Mor2:s -> isDBUName:n[label="yes"]
+    less255Mor2:e -> backToLogin[label="no"]
 
-    emailFound -> pw[label="yes"];
+    emailFound:s -> pw:n[label="yes"];
+    isDBUName:s -> pw:n[label="yes"];
+
+    emailFound:w -> backToLogin[label="no"];
+    isDBUName:e -> backToLogin[label="no"];
+    pw:w-> backToLogin[label="no"];
+    pw:e -> LoggedIn[label="yes"];
 
     {rank=same; emailFormat, less255Mor2}
+    {rank=same; pw, LoggedIn}
 }

@@ -1,37 +1,29 @@
 digraph {
-    label="login User/Email";
-    // splines="ortho"
-    /* node[shape="parallelogram", style=""]
-       ?input[label="Return to\nLogin"]; */
+    label="Post Signup";
+// splines="ortho" /* node[shape="parallelogram", style=""]; plelgrm[label="do thing"]; */
     node[shape="box", style="rounded"]
-      backToLogin[label="go back to Login"];
-      LoggedIn[label="Log in User"];
+      sessUcreated[label="(Sess. msg.)\nUser Created"];
+      uPutFormValSess[label="put Form Values\nIn Sess"];
+      sessErrUErr[label="Sess Error(s)\nIn User Validation"];
+      sessErrNonVal[label="Non-Validation\n(Possibl DB) err"];
+      retRespRedirUCreate[label="return \nUser Create Form"];
+      retRespRedirHome[label="return Home"];
+      
 
     node[shape="diamond", style="filled", color="lightblue"]
-        xEmpty_d[label="NOT Empty \nuname/email?"];
-        emailFormat[label="valid \nemail format?"];
-        emailFound[label="Is Email\nin DB?"];
-        pw[label="Password\nMatch?"];
-        less255Mor2[label="NOT > 255 \nOr < 2?"];
-        isDBUName[label="username\nin the DB?"];
+        uCreate[label="User Created?"];
+        uErr_d[label="user error?"];
 
-    xEmpty_d:s -> emailFormat:n[label="yes"];
-    xEmpty_d:w -> backToLogin[label="no"];
+    uCreate -> sessUcreated[label="yes"];
+    uCreate -> uPutFormValSess[label="no"];
+    uPutFormValSess -> uErr_d;
 
-    emailFormat -> emailFound[label="yes"];
-    emailFormat -> less255Mor2[label="no"];
+    uErr_d -> sessErrUErr[label="yes"];
+    uErr_d -> sessErrNonVal[label="no"];
 
-    less255Mor2:s -> isDBUName:n[label="yes"]
-    less255Mor2:e -> backToLogin[label="no"]
+    sessErrUErr -> retRespRedirUCreate;
+    sessErrNonVal -> retRespRedirUCreate;
 
-    emailFound:s -> pw:n[label="yes"];
-    isDBUName:s -> pw:n[label="yes"];
-
-    emailFound:w -> backToLogin[label="no"];
-    isDBUName:e -> backToLogin[label="no"];
-    pw:w-> backToLogin[label="no"];
-    pw:e -> LoggedIn[label="yes"];
-
-    {rank=same; emailFormat, less255Mor2}
-    {rank=same; pw, LoggedIn}
+    sessUcreated -> retRespRedirHome;
+/*    {rank=same; t1, t2} */
 }

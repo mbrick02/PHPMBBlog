@@ -73,8 +73,8 @@ class User extends DB {
 
       if (count($user) > 1) { // check users>1 (should be impossible if DB works)
         static::$_error = true;
-        $this->errors[] = "CONTACT ADMIN - DB error: more than one user with this username.";
-        // Dont think I can do this with static: $this->errors = "more than 1 username";
+        // $this(must be: ?static::)->errors[] = "CONTACT ADMIN - DB error: more than one user with this username.";
+        // can't use $this->errors with static/class object/value.
         return false;
       } else { // only 1 user -- as should be
         return $user;
@@ -99,18 +99,21 @@ class User extends DB {
     if ($dbObjUser) {
       $debugStatement = "User found ";
 
-      // if pw verified, set values in user instance, else "User/pw not found"
-      // DEBUG 01/16/19 *********************
-      $pwStatus = password_verify($pw, $dbObjUser->hashed_password) ? "pw verified" : "pw failed";
-      $debugStatement .= $pwStatus;
-      // DEBUG **** 1/16/19 updated 1/19/19
-      echo $debugStatement; // $debugStatement;
-      // DEBUG 1/19 need to copy user info from $_results into instance...
-      die();
+      if (password_verify($pw, $dbObjUser->hashed_password)) {
+        $userInstance->setClassFieldsFromDB($dbObjUser);
+        // user logged in: $session->getMsg("Logged in: " . $userInstance->fullname);
+        // ?sessionLogin??
+        // 1/22/19 5P Left off here **********************
+      } else {
+        // set errorm message $userInstance->errors[] =
+        echo "pw failed return to login screen";
+        die;
+      }
     }
-    // no user found -- BUT why no "mbrick02" when in db ?check findUser
-    echo $debugStatement;  // DEBUG 01/16/19
-    die();  // DEBUG 01/16/19
+    // DEBUG 01/16/19 *********************
+    // assume no user found
+    echo "no user found, return to login";
+    die();
   }
 
   protected function validate() {
@@ -166,7 +169,8 @@ class User extends DB {
     }
 
     parent::validate(); // call checkUnique and other default functions
-    static::$_error = !empty($this->errors); // $this->errors not empty - error(s) (also in Create() caller)
+    static::$_error = !empty($this->errors);
+      // $this->errors not empty - error(s) (also in Create() caller)
     return  empty($this->errors); // validate if no errors (else validate false)
   }
 

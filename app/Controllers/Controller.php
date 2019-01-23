@@ -40,7 +40,7 @@ class Controller {
 		$userOptions = [];
 		if ($loggedIn) {
 			$userOptions = [
-				'userButton' => 'Edit Profile or logout',
+				'userButton' => 'Edit Profile or <a href="/user/logout">Logout</a>',
 				'loginOrProfile' => 'Edit Prifile or logout',
 			];
 		} else {

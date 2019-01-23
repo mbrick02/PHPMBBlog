@@ -6,4 +6,5 @@ $app->group('/user', function() use ($app){
 
   $app->post('/create', 'AuthController:postSignup');
   $app->post('/login', 'AuthController:login');
+  $app->get('/logout', 'AuthController:logout');
 });

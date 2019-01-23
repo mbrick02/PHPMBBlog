@@ -4,6 +4,7 @@
   //    $publicHeader, $cartExists, $routeHasProfile, $content, $rightCol;
   global $session;
   $lgdIn = $session->is_logged_in(); // **NOTE: may want all logged-in options set/used in Controller 11/20/18
+  // $lgOut = "<br /><a href=\"/user/logout\">Logout</a>";
   echo $publicHeader;
   include TEMPLATE_PATH . DS . 'partials' . DS . 'navhead.php';
 ?>
@@ -15,7 +16,7 @@
         ?><br>
         <li><div class="dropdown">
                 <?php if($lgdIn) {  // move this to controller???? ?>
-                <?php echo "Logged in as: " . $session->username; } else {  ?>
+                <?php echo $userButton; } else { // "Logged in as: " . $session->username . $lgOut; ?>
                 <?php   echo $userButton; } ?>
 
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">

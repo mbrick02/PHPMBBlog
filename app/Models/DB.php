@@ -87,7 +87,7 @@ abstract class DB {
 		*/
 		$dbObj = empty($modelObj) ? static::$_results[0] : $modelObj;
 		foreach ($dbObj as $key => $val) {
-			if (!in_array($key, $notInDBCols)){
+			if (!in_array($key, static::$notInDBCols)){
 				$this->fields[$key] = $val;
 			}
 		}

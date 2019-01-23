@@ -58,6 +58,15 @@ class AuthController extends Controller {
     return $response->withRedirect($this->router->pathFor('home'));
   }
 
+  public function logout($request, $response){
+    global $session;
+    global $app;
+
+    $session->logout();
+
+    return $response->withRedirect($this->router->pathFor('home'));
+  }
+
   public function login($request, $response){
     global $session;
     global $db;
@@ -81,12 +90,12 @@ class AuthController extends Controller {
         $validUser = User::verifyUser($unameOREmail, $pw);
 
         if ($validUser) {
-          // user logged in: $session->getMsg("Logged in: " . $userInstance->fullname);
-          // ?sessionLogin??
-          // **1/22/19 Do all Session functions in AuthController:login
-          // 1/22/19 5P Left off here **********************
-          $session::login($validUser);
-          $session::message("Logged in: " . $validUser->username);
+          $session->login($validUser);
+          // DEBUG 1/23/19 ***********NOT GETTIN USERNAME**********
+          // echo "valid user name: " . $validUser->getFullname();
+          // die();
+
+          $session::message("Logged in: " . $validUser->fields['username']);
 
           } else {
               $session->errMsg(array("Bad username and/or password"));

@@ -57,8 +57,12 @@ class User extends DB {
     parent::getInstance();
   }   *********************     */
 
-  public function fullname() {
+  public static function fullname() {
     return static::$columns['fname'] . " " . static::$columns['lname'];
+  }
+
+  public function getFullname() {
+    return $this->fields['fname'] . " " . $this->fields['lname'];
   }
 
   public static function findUser($username) {

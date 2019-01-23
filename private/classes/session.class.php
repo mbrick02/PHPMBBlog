@@ -39,8 +39,8 @@ class Session {
     if($user) {
       // prevent session fixation attacks
       session_regenerate_id();
-      $this->user_id = $_SESSION['user_id'] = $user->id;
-      $this->username = $_SESSION['username'] = $user->username;
+      $this->user_id = $_SESSION['user_id'] = $user->fields['id'];
+      $this->username = $_SESSION['username'] = $user->fields['username'];
       // $this->username = $_SESSION['fullname'] = $user->fullname();
       $this->last_login = $_SESSION['last_login'] = time();
     }

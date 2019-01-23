@@ -264,7 +264,7 @@ abstract class DB {
   }
 
   public function results() {
-  	return self::$_results;
+  	return self::$_results;  // should also be able to do $user::results() ????????
   }
 
 	public function first() {

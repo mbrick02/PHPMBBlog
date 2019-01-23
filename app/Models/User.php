@@ -68,17 +68,8 @@ class User extends DB {
     $dbUsers = static::get(array("username", "=", $username));
 
     if ($dbUsers) {
-      $numbUsers = self::count();
-      $user = array_shift($dbUsers); // get single user from DB
-
-      if (count($user) > 1) { // check users>1 (should be impossible if DB works)
-        static::$_error = true;
-        // $this(must be: ?static::)->errors[] = "CONTACT ADMIN - DB error: more than one user with this username.";
-        // can't use $this->errors with static/class object/value.
-        return false;
-      } else { // only 1 user -- as should be
-        return $user;
-      }
+      $user = array_shift($dbUsers);
+      return $user;
     } else { // NO $dbUser result
       return false;
     }
@@ -86,34 +77,21 @@ class User extends DB {
 
   public static function verifyUser($usrnam, $pw){
     /* test if user/password combo valid
+      called, so far, by: AuthController:login
       input: $usrnam (username), $pw (password)
-      return: false or $user result object (?array)
-    test input as unique id of username or password */
+      return: false or $user object
+      Note for ERR: findUser can set stati::$_error true - on DB error, but ?NOT set here
+      */
     $userInstance = User::getInstance("", []);
     $dbObjUser = User::findUser($usrnam);
-    $modelFlds = array();
-    // ?? Not sure if this is right way to go$modelFlds['user'] = $dbUser;
-     // DEBUG 01/16/19
-    $debugStatement = "No user found in User:verifyUser"; // DEBUG 01/16/19
 
     if ($dbObjUser) {
-      $debugStatement = "User found ";
-
       if (password_verify($pw, $dbObjUser->hashed_password)) {
         $userInstance->setClassFieldsFromDB($dbObjUser);
-        // user logged in: $session->getMsg("Logged in: " . $userInstance->fullname);
-        // ?sessionLogin??
-        // 1/22/19 5P Left off here **********************
-      } else {
-        // set errorm message $userInstance->errors[] =
-        echo "pw failed return to login screen";
-        die;
+        return $userInstance;
       }
     }
-    // DEBUG 01/16/19 *********************
-    // assume no user found
-    echo "no user found, return to login";
-    die();
+    return false;  // no such user or password
   }
 
   protected function validate() {

@@ -1,4 +1,6 @@
 <?php
+use app\Models\User as User;
+
 
 class Session {
   private $user_id;
@@ -33,7 +35,7 @@ class Session {
 
 // end Codecourse PHP OOP Login CSRF (p12/23)  session/token ***
 
-  public function login($user) {
+  public function login(User $user) {
     if($user) {
       // prevent session fixation attacks
       session_regenerate_id();
@@ -94,7 +96,7 @@ class Session {
   }
 
   public function getMsg($msg="") { // instance get message
-    return self::message($msg);
+    return self::message($msg);  // I should also be able to do $session::message()
   }
 
   public static function errMsg($errmsg=[]) {
@@ -126,8 +128,9 @@ class Session {
       $output .= "<div class=\"errors\">";
       $output .= "Please fix the following errors:";
       $output .= "<ul>";
+
       foreach($errors as $error) {
-        $output .= "<li>" . h($error) . "</li>";
+        $output .= "<li>" . h($error) . "</li>";  // funtions:h() special chars
       }
       $output .= "</ul>";
       $output .= "</div>";

@@ -63,14 +63,10 @@ class AuthController extends Controller {
     global $db;
 
     $allPostVars = $request->getParsedBody(); // login vars NOT user as in signup
-    /*
-    $allPostVars returns:
-    'login' =>
-   array (size=3)
-     'token' => string '4cc29d3db4823b7cd8c07d0a55dd12b9' (length=32)
-     'usernameOREmail' => string 'x' (length=1)
-     'password' => string 'y' (length=1)
-    */
+    /*  $allPostVars returns: 'login' =>  array (size=3)
+    'token' => string '4cc29d3db4823b7cd8c07d0a55dd12b9' (length=32)
+    'usernameOREmail' => string 'x' (length=1)
+    'password' => string 'y' (length=1) */
     $unameOREmail = isset($allPostVars['login']['usernameOREmail'])? $allPostVars['login']['usernameOREmail'] : '';
     $pw = isset($allPostVars['login']['password'])? $allPostVars['login']['password'] : '';
 
@@ -79,34 +75,27 @@ class AuthController extends Controller {
     if (!empty($unameOREmail)) { // 1st test not empty
       if (has_valid_email_format($unameOREmail)) {
         // lookup Email
-        echo "Lookup email in AuthController:login";
+        echo "Lookup email in AuthController:login - need to lookup email User:verifyEmail";
         die;
       } else { // not an email so look for user
         $validUser = User::verifyUser($unameOREmail, $pw);
-        echo "Valid User in AuthController:login";
-        die;
-      }
 
-    } elseif (!has_length(static::$columns['email'], array('max' => 255))) {
-      $this->errors[] = "Last name must be less than 255 characters.";
-    } elseif (!has_valid_email_format(static::$columns['email'])) {
+        if ($validUser) {
+          // user logged in: $session->getMsg("Logged in: " . $userInstance->fullname);
+          // ?sessionLogin??
+          // **1/22/19 Do all Session functions in AuthController:login
+          // 1/22/19 5P Left off here **********************
+          $session::login($validUser);
+          $session::message("Logged in: " . $validUser->username);
 
-
-    }
-
-    // Need to change login[] array to user for getInstance
-    //  login to user vals: $user = User::getInstance($db, $allPostVars);
-
-    // retrieve value from usernameOREmail form field
-    // 12/8/18 this is following struc of signup() above which
-    //    uses User::initializeModel() (via DB::getInstance()), but
-    //    but signup Form assumes table user and assigns all form vals
-    //    to array user[].  Here we get array name is set to login
-
-    // username or email, look for user, if user then, password_verify($pw, $dbhash)
-    //  do email verify 1st, but even if verified email...
-    //    if email not found, still test username
-
+          } else {
+              $session->errMsg(array("Bad username and/or password"));
+          }
+        }  // end if ($validUser)
+    } else {
+      $session->errMsg(array("Please enter username or email and password"));
+    } // end if(!empty($unameOREmail)) - else
+    return $response->withRedirect($this->router->pathFor('home'));  // return to home???? or previous w/Vals?
   }
 
   public function getEditUser($request, $response) {

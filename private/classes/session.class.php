@@ -5,6 +5,7 @@ use app\Models\User as User;
 class Session {
   private $user_id;
   public $username;
+  public $privilege_id;
   private $last_login;
   // public const MAX_LOGIN_AGE = 60*60*24; // v7.1 NOT 7.0 1 day
   const MAX_LOGIN_AGE = 60*60*24; // 1 day
@@ -41,6 +42,8 @@ class Session {
       session_regenerate_id();
       $this->user_id = $_SESSION['user_id'] = $user->fields['id'];
       $this->username = $_SESSION['username'] = $user->fields['username'];
+      $this->privilege_id = $_SESSION['privilege_id'] = $user->fields['privilege_id'];
+
       // $this->username = $_SESSION['fullname'] = $user->fullname();
       $this->last_login = $_SESSION['last_login'] = time();
     }

@@ -1,0 +1,35 @@
+digraph structs {
+// particular example designed from PHP with MySQL Essential Trainine: 2 Build CMS
+// design based on: https://graphviz.herokuapp.com/ 
+  subgraph cluster_public {
+        labelloc = t
+        label = "Public Area"
+        // bgcolor="yellow"
+
+        node [shape = "record"
+        style="filled"
+        fillcolor="yellow"
+        ranksep=0.05
+        nodesep=0.01
+        len=0];
+
+        P1 [label="{Site pages|- navigation\l- page content\l- read only\l}" style="filled"]
+    }
+    graph [
+      label = "Admin Area"
+      labelloc = t
+      ]
+
+  node [shape=record fillcolor="lightblue" style="filled" labeljust="l"];
+
+  s0 [label="{Login page|- form\l- username\n- password}"]
+	s1 [label="{Admin menu|<f1> - manage content\l|<f2>- logout\l|<f3>- manage admins}"];
+	s2 [label="{Manage content|- subjects\l- pages\l}"];
+	s3 [label="{Manage admins|- admins\l}"];
+  s4 [label="{Logout|- do logout\l- back to login\l}"];
+	s0:s -> s1;
+  s1:f1 -> s2;
+  s1:f3 -> s3;
+  s1:f2 -> s4;
+
+}

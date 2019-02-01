@@ -5,10 +5,10 @@
   global $session;
   $lgdIn = $session->is_logged_in(); // **NOTE: may want all logged-in options set/used in Controller 11/20/18
   // $lgOut = "<br /><a href=\"/user/logout\">Logout</a>";
-  echo $publicHeader;
-  include TEMPLATE_PATH . DS . 'partials' . DS . 'navhead.php';
+  echo $publicHeader; // Logo, Page title, errors or other messages via partials/public_header
+  include TEMPLATE_PATH . DS . 'partials' . DS . 'navhead.php'; // navigation menu
 ?>
-<!-- ************** NAV HEAD TRIAL 10/6/18 ******************** -->
+<!-- ************** NAV HEAD experiment 10/6/18 ******************** -->
 			<ul class="nav navbar-nav navbar-right">
         <li><?php echo "<span class=\"glyphicon glyphicon-shopping-cart\"></span>&nbsp;". $cartExists; ?></li>
 				<?php // echo "<h4>" . ($lgdIn ? "Logged In" : "Not logged in") . "</h4><br>";
@@ -32,10 +32,8 @@
     </div> <!-- /.container-fluid -->
 	</nav>
 </div>
+<!-- ************  END NAV HEAD experi 10/16/18 ******************** -->
 
-
-
-<!-- ************  END NAV HEAD TRIAL 10/16/18 ******************** -->
     <div class="row container">
       <!-- include('partials._messages') -->
       <?php echo $content; ?>

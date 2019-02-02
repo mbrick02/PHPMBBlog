@@ -32,8 +32,7 @@ class HomeController extends Controller {
 		static::buildPage($optionvars);
   }
 
-  public function testMB($param1='')
-  {
+  public function testMB($param1='') { // route: /testMB
     $testPageFile = TEMPLATE_PATH . DS . 'testMBCodePage.html';
     $formVars = [];
     $testPage = static::$container->view->
@@ -42,8 +41,7 @@ class HomeController extends Controller {
      return $testPage;
   }
 
-  public function testPHP($param1='')
-  {
+  public function testPHP($param1='') { // route: /testMBPHP
     $testPageFile = TEMPLATE_PATH . DS . 'testMBPHPPage.php';
     $formVars = [];
     $testPage = static::$container->view->

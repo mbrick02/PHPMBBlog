@@ -6,7 +6,7 @@ namespace App\Controllers;
 use app\Models\User as User;
 
 class Controller {
-	protected static $container;
+	protected static $container; // set in bootstrap/app.php w/view as template class
 
 	static $rightColDoc;
 	static $rightColVars = [ 'rightColVars' => '',
@@ -62,6 +62,7 @@ class Controller {
 		$userOptions = static::userOptions($lgdIn); // base user button and form on logged in
 
 		static::$rightColDoc = TEMPLATE_PATH . DS . 'partials' . DS . 'rightCol.php';
+		// Note: $container->view is set to template.class.php
 		static::$rightCol = static::$container->view->renderWithVariables(static::$rightColDoc, static::$rightColVars, false);
 
 		static::$container->view->filename = 'partials' . DS . 'public_header.php';

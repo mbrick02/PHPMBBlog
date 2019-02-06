@@ -15,9 +15,11 @@
           // move above to CONTROLLER 11/20
         ?><br>
         <li><div class="dropdown">
-                <?php if($lgdIn) {  // move this to controller???? ?>
-                <?php echo $userButton; } else { // "Logged in as: " . $session->username . $lgOut; ?>
-                <?php   echo $userButton; } ?>
+                <?php if($lgdIn) {  // move this to controller????
+                        echo $userButton;
+                      } else { // "Logged in as: " . $session->username . $lgOut;
+                        echo $userButton;
+                      } ?>
 
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <a class="dropdown-item">

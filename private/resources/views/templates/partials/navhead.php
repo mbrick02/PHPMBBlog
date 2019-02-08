@@ -23,6 +23,6 @@
 			<ul class="nav navbar-nav">
 				<li class="<?php echo ($pageUrls['curURL'] == '/') ? 'active' : '';  ?>"><a
 						href="/">Home</a></li>
-				<li><a class="nav-link nav-item <?php echo ($pageUrls['curURL'] == '/about') ? "\"active\"" : "\"\"";  ?>"
+				<li><a class="nav-link nav-item<?php echo ($pageUrls['curURL'] == '/about') ? ' active' : '';  ?>"
 					  href="#">About</a></li>
 			</ul>

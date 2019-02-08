@@ -51,7 +51,7 @@
     nav #login-trigger:hover,
     nav #login .active,
     nav #signup a:hover {
-    background: #fff;
+    background: #ffd;
     }
 
     nav #login-content {

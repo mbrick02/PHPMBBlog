@@ -32,7 +32,7 @@ public static function instantiate($nameAry, $useDBVals = false) {
     return $object;
   }
 
-  public function formTopDecl($assiVars = [], $panelHeading) {
+  public function formTopDecl($assiVars = [], $panelHeading = "") {
     /* ****  Inputs:  form action, method ($assiVars['action'], [?'csrf_field'] etc.)
     Examp:<form action="{{ path_for('****auth.signup')}}" method="post" autocomplete="off">
        {{ csrf_field() }}
@@ -51,7 +51,11 @@ public static function instantiate($nameAry, $useDBVals = false) {
     }
 
     $output = self::retTag("div", ['class' => $mainDivClass]);
-    $output .= self::retClosedTag("div", ['class' => 'panel-heading'], "<h2>" . $panelHeading . "</h2>");
+
+    if (!empty($panelHeading)){ // create panel title and heading if exist
+      $output .= self::retClosedTag("div", ['class' => 'panel-heading'], "<h2>" . $panelHeading . "</h2>");
+    }
+
     $output .= self::retTag("div", ['class' => 'panel-body']);
     $output .= self::retTag("form", $formVars);
 
@@ -69,33 +73,29 @@ public static function instantiate($nameAry, $useDBVals = false) {
   }
 
   public static function retTag($tagType, $assiVars = []) {
-    /*
-      input: tag-type and assoc array of attribs and their vals
-      output: <tagtype attr1="attr1Val", attr2...>
-    */
+    /* input: tag-type and assoc array of attribs and their vals
+      output: <tagtype attr1="attr1Val", attr2...>  */
     $output = "<". $tagType;
     $assignVars = $assiVars;
-// ******10/31 ???SET VALS FROM DB/Form **?????$valuesAry
+
     foreach ($assiVars as $key => &$value) {
       // noValue - attribs that have no val e.g. 'required'
       if ($key == 'noValue') { continue; }
-      if ($key == 'class') { continue; }
+      if ($key == 'labelFor') { continue; }
+      if ($key == 'label') { continue; }
+      //if ($key == 'class') { continue; }  // **? why did I skip class???
       if ($key == 'name' && (!empty(static::$_nameAry))) {
         $value = static::$_nameAry . "[{$value}]";
       }
       $output .= " " . $key . "=\"{$value}\"";
     }
-
-    $class = " class =\"";
-
-    $class .= isset($assiVars['class']) ? $assiVars['class'] . "\"" : "\"";
-
-    $output .= $class;
+    // $class = " class =\""; // **? why did I skip class???
+    //$class .= isset($assiVars['class']) ? $assiVars['class'] . "\"" : "\"";  // **? why did I skip class???
+    // $output .= $class;  // **? why did I skip class???
 
     if (isset($assiVars['noValue'])) {
       $output .= " " . $assiVars['noValue'];
     }
-
     $output .= ">\n";
 
     return $output;
@@ -130,6 +130,23 @@ public static function instantiate($nameAry, $useDBVals = false) {
     return $output;
   }
 
+  public function retInpFldNLbl($assiVars = []) {
+    // inputs = $assiVars['type'] (options: 'name', 'value', etc)
+    // examp: <input type="hidden" name="token" value="<?php echo Token::generate(); ">
+
+    $output = "   <label for=\"{$assiVars['labelFor']}\">" . ucfirst($assiVars['label']) . ":</label>\n";
+
+    $inpVars = $assiVars;
+    if (!isset($inpVars['class'])) {
+      $inpVars['class'] = "form-control";
+    } elseif (!in_str($inpVars['class'], 'form-control')) {
+      $inpVars['class'] .= " form-control";
+    }
+
+    $output .= "   " . self::retTag("input", $inpVars);
+    return $output;
+  }
+
   public function retInpFld($assiVars = []) {
     // inputs = $assiVars['type'] (options: 'name', 'value', etc)
     // examp: <input type="hidden" name="token" value="<?php echo Token::generate(); ">
@@ -144,7 +161,90 @@ public static function instantiate($nameAry, $useDBVals = false) {
     return $output;
   }
 
-  public function retInpDiv($assiVars = []) {
+  public function retInpFldst($formPart = array("name" => "fieldset", "id" => "inputs", "class" => "fieldset", ),
+                                    $assiVars = []) {
+        // based on retInpDiv
+        // Inputs: $formPart (e.g. ("name" => "fieldset")),
+        //        (ONE array of tag attributes) $assiVars['labelFor'] (and labl, type, name, id, and class)
+        //        $mode (e.g. $user)
+        // returns: input field with label inside a section of $formPart['name'] (default 'fieldset')
+
+        $formPartStr = "<" . $formPart['name'];
+        $formPartStr .= (!empty($formPart['id'])) ? " id='" . $formPart['id'] . "'": '';
+        $formPartStr .= ((!empty($formPart['class'])) ? " class='" . $formPart['class'] . "'": '') . ">";
+        // ?? should above be foreach other than name ???
+        $output = "$formPartStr \n"; // e.g. fieldset id="inputs"
+        $output .= "   <label for=\"{$assiVars['labelFor']}\">" . ucfirst($assiVars['label']) . ":</label>\n";
+
+        $inpFldVars = [];
+
+        // set input field attribs - ignore label vars
+        foreach ($assiVars as $key => $value) {
+            $inpFldVars[$key] = $value;
+        }
+
+        $output .= "   " . $this->retInpFld($inpFldVars);
+        $output .= "</" . $formPart['name'] . ">\n";
+        return $output;
+      }
+
+    public function retInpsFldst($formPart = array("name" => "fieldset", "id" => "inputs", "class" => "fieldset", ),
+                                  $assiVarsSet = []) {
+      // ***BUG currently have foreach that needs $values which should be passed in by caller into $assiVarsSet
+      // based on (supersedes) retInpFldst with multiple inputs
+      // called by (design): retInpsSec (from ?retInpsSec from mkInpsValSec)
+      // Inputs: $formPart (e.g. ("name" => "fieldset")),
+      //        $assiVarsSet array w/item['labelFor'] (and labl, type, name, id, and class)
+      //        $mode (e.g. $user)
+      // returns: input field with label inside a Section of default ('fieldset') or give group class
+
+      $formPartStr = "<" . $formPart['name'];
+      $formPartStr .= (!empty($formPart['id'])) ? " id='" . $formPart['id'] . "'": '';
+      $formPartStr .= ((!empty($formPart['class'])) ? " class='" . $formPart['class'] . "'": '') . ">";
+      // ?? should above be foreach other than name ???
+      $output = "$formPartStr \n"; // e.g. fieldset id="inputs"
+
+
+      /*  *** 2/8/19 all but top and bottom handled by mkInpsValSec ????????????????????
+      foreach ($assiVarsSet as $assiVars) {
+        $newFldVars = $assiVars;
+        if ($assiVars['type'] == 'text'){  // create standard text input field
+          $fldName = $assiVars['name'];
+          $newFldVars = [
+            'name' => (isset($assiVars['name']) ? $assiVars['name'] : $fldName),
+            'labelFor' => (isset($assiVars['labelFor']) ? $assiVars['labelFor'] : $fldName),
+            'label' => (isset($assiVars['label']) ? $assiVars['label'] : $fldName),
+            'id' => (isset($assiVars['id']) ? $assiVars['id'] : $fldName),
+          ];
+
+          if (isset($assiVars['value']) && (!empty($values[$field]))) {  // val from caller (e.g. retInpsSec() from mkInpsValSec($aryFldSets, $model[->getCols]))
+            $newFldVars['value'] = $assiVars['value'];
+          }
+        } elseif (!isset($assiVars['name']) && (isset($assiVars['type'])) ) {
+          $this->retInpTypeNLbl($assiVars['type'], []);
+        } else { // DEBUG ******* (REMOVE) 2/8/19
+          echo "Prog ERROR: HTML form tag in F_Build:retInpsFldst NOT text or type";
+          die();
+        }
+
+        $output .= "   <label for=\"{$assiVars['labelFor']}\">" . ucfirst($assiVars['label']) . ":</label>\n";
+
+        $inpFldVars = [];
+
+        // set input field attribs - ignore label vars
+        foreach ($assiVars as $key => $value) {
+            $inpFldVars[$key] = $value;
+        }
+
+        $output .= "   " . $this->retInpFld($inpFldVars) . "\n";
+      } // end foreach($assiVarsSet)  ******
+      */
+      $output .= "</" . $formPart['name'] . ">\n";
+      return $output;
+    }
+
+
+  public function retInpDiv($assiVars = [], $grpCls = "form-group") {
     // Debug prob 10/2018 commented out 1/2019
     // if (is_null($assiVars) || (!is_array($assiVars))) { // || !array_key_exists('labelFor', $assiVars))
     //   echo "debug 2018 apparently assiVar null in retInpDiv hasnt happened yet...<br />";
@@ -153,16 +253,15 @@ public static function instantiate($nameAry, $useDBVals = false) {
     // }
 
     // Inputs: $assiVars['labelFor'] (and labl, type, name, id, and class)
-    $output = "<div class=\"form-group\"> \n";
+    // returns: input field with label inside a div of default or give group class
+    $output = "<div class=\"$grpCls\"> \n";
     $output .= "<label for=\"{$assiVars['labelFor']}\">" . ucfirst($assiVars['label']) . ":</label>\n";
 
     $inpFldVars = [];
 
     // set input field attribs - ignore label vars
     foreach ($assiVars as $key => $value) {
-      if (($key != 'labelFor') && ($key != 'label')) {
         $inpFldVars[$key] = $value;
-      }
     }
 
     $output .= $this->retInpFld($inpFldVars);
@@ -172,9 +271,69 @@ public static function instantiate($nameAry, $useDBVals = false) {
 
   } // DEBUG**: else { "returnTxtField with no assignedVars"}
 
-  public function retSimpTxtInpDiv($fldNameNLabel = []) {
-/*   inputs: $fldNameNLabel['name'], (option ['label'])
+  public function retInpsSec($fldsNameNLabel = [], $secType = "fieldset") {
+/*   based on (to supercede) retSimpTxtInpSec but inputs multiple Input fields
+      inputs: $fldNameNLabel['name'], (option ['label'])
+      return: form section such as "fieldset" with input field(s) */
+/******************based on retSimpTextInpSec below***********************************debug/rewrite
+      $fldAttribs = $origfldAttr; // e.g. ['name' => $field, ];
+      $field = $fldAttribs['name'];
+      $values = $model->getCols();  // e.g. $user->getCols for class column vals
+
+      if (isset($values[$field]) && (!empty($values[$field]))) {
+          // use model val if exists
+          $fldAttribs['value'] = $values[$field];
+      }
+      return $this->retSimpTxtInpSec($fldAttribs, $secTyp);
+
+      8888888888888888888888888**********************************
+    $name = $fldNameNLabel['name'];
+    $txtFldVars = [
+      'type' => 'text',
+      'name' => $name,
+      'labelFor' => $name,
+      'label' => $name,
+      'id' => $name,
+    ];
+
+    $txtFldVars = array_replace($txtFldVars, $fldNameNLabel); // add poss vals like 'value' or replace 'label'
+    $txtFldVars['label'] = isset($fldNameNLabel['label']) ? $fldNameNLabel['label'] : ucfirst($name);
+
+    // retInpsFldst($formPart = array("name" => "fieldset", "id" => "inputs",
+    // "class" => "fieldset", ), $assiVars = [])
+    $fieldSec = array("name" => $secType, "id" => "inputs", "class" => "fieldset", );
+    $output = $this->retInpsFldst($fieldSec, $txtFldVars); // TODO make $txtFldVars an ARRAY
 */
+    return $output;
+  }
+
+  public function retSimpTxtInpSec($fldNameNLabel = [], $secType = "fieldset") {
+/*   based on retSimpTxtInpDiv
+      inputs: $fldNameNLabel['name'], (option ['label'])
+      return: (return Simple Text Input in Section) form sect such as "fieldset" ONLY 1 input field */
+
+    $name = $fldNameNLabel['name'];
+    $txtFldVars = [
+      'type' => 'text',
+      'name' => $name,
+      'labelFor' => $name,
+      'label' => $name,
+      'id' => $name,
+    ];
+    $txtFldVars = array_replace($txtFldVars, $fldNameNLabel); // add poss vals like 'value' or replace 'label'
+    $txtFldVars['label'] = isset($fldNameNLabel['label']) ? $fldNameNLabel['label'] : ucfirst($name);
+
+    // retInpsFldst($formPart = array("name" => "fieldset", "id" => "inputs",
+    // "class" => "fieldset", ), $assiVars = [])
+    $fieldSec = array("name" => $secType, "id" => "inputs", "class" => "fieldset", );
+    $output = $this->retInpFldst($fieldSec, $txtFldVars); // TODO make $txtFldVars an ARRAY in retInpsFldst
+
+    return $output;
+  }
+
+  public function retSimpTxtInpDiv($fldNameNLabel = []) {
+    /*   inputs: $fldNameNLabel['name'], (option ['label'])
+    */
     $name = $fldNameNLabel['name'];
     $txtFldVars = [
       'type' => 'text',
@@ -197,6 +356,18 @@ public static function instantiate($nameAry, $useDBVals = false) {
     $output .= "</div>";
 
     return $output;
+  }
+
+  public function retInpTypeNLbl($type, $assiVars = []) {  // type name and id are all same
+    $typeVars = $assiVars;
+    $typeVars['type'] = $type;
+    $typeVars['name'] = $type;
+    $typeVars['id'] = $type;
+    $typeVars['label'] = $type;
+    $typeVars['labelFor'] = $type;
+    // 11/18 currently NO NEED for $assiVars, but maybe future...
+
+    return $this->retInpFldNLbl($typeVars); //  . "\n"
   }
 
   public function retInpTypeDiv($type, $assiVars = []) {  // type name and id are all same
@@ -232,15 +403,84 @@ public static function instantiate($nameAry, $useDBVals = false) {
     // DEL (old ver): include TEMPLATE_PATH . DS . 'partials' . DS . 'form_bottom.php';
   }
 
-  public function mkSimpTxtInpValDiv($origfldAttr, $model) {
-    /*
+  public function mkInpsValSec($origfldAttrSets, $model, $secTyp = "fieldset",
+    $formPart = array("name" => "fieldset", "id" => "inputs", "class" => "fieldset", )) {
+    /* based on mkSimpTxtInpValSec; called by view->form
     // create input text type w/Value check: <input type="text"...>
+    // Note: this ONLY makes 1 text input field
+    */
+    $values = $model->getCols();  // e.g. $user->getCols for class column vals
+
+    $formPartStr = "<" . $formPart['name'];
+    $formPartStr .= (!empty($formPart['id'])) ? " id='" . $formPart['id'] . "'": '';
+    $formPartStr .= ((!empty($formPart['class'])) ? " class='" . $formPart['class'] . "'": '') . ">";
+    // ?? should above be foreach other than name ???
+    $output = "$formPartStr \n"; // e.g. fieldset id="inputs"
+
+// 2/8/19 4P:  ...
+    foreach ($origfldAttrSets as $assiVars) {
+      $fldAttribs = $assiVars; // e.g. ['name' => $field, ];
+      $field = "";
+
+      // 'type' that defines name (and field other than input) like password ??
+      if ((isset($fldAttribs['type'])) && (!isset($fldAttribs['name']))) {
+        $fldAttribs['name'] = $fldAttribs['type'];
+      }
+      if (isset($fldAttribs['name'])){  // only text fields have names? what about checkbox?
+        $fieldNm = $fldAttribs['name'];
+      }
+
+      // defaults for most inputs attribs unless otherwise set
+      if(!empty($fldAttribs['name'])) {  // should always be true
+        $fldAttribs['labelFor'] = $fieldNm;
+        $fldAttribs['label'] = $fieldNm;
+        $fldAttribs['id'] = $fieldNm;
+      }
+      // set or reset input field attribs
+      foreach ($assiVars as $key => $value) {
+          $fldAttribs[$key] = $value;
+      }
+      if ((!empty($field)) && (isset($values[$field]) && (!empty($values[$field])))) { // type text
+          // use model val if exists
+          $fldAttribs['value'] = $values[$field];
+      }
+      $output .= "   " . $this->retInpFldNLbl($fldAttribs) . "\n";
+    }  // end foreach ($origfldAttrSets as $assiVars)
+
+    $output .= "</" . $formPart['name'] . ">\n";
+    return $output;
+  }
+
+  public function mkSimpTxtInpValSec($origfldAttr, $model, $secTyp = "fieldset") {
+    /* 2/9/19 based on and to supercede: mkSimpTxtInpValSec TO BE superceded by mkInpsValSec
+    sets val and creates input text type w/Value (e.g. <input type="text"...>)
+    inputs: field attributes from view->form
+    output: Section/fieldset containing input field w/val  via retSimpTxtInpSec (or Should: mkTypeInpValSec)
+    // Note: this ONLY makes 1 text input field
     */
     $fldAttribs = $origfldAttr; // e.g. ['name' => $field, ];
     $field = $fldAttribs['name'];
-    $values = $model->getCols();
+    $values = $model->getCols();  // e.g. $user->getCols for class column vals
 
     if (isset($values[$field]) && (!empty($values[$field]))) {
+        // use model val if exists
+        $fldAttribs['value'] = $values[$field];
+    }
+    return $this->retSimpTxtInpSec($fldAttribs, $secTyp); // sect only 1 TEXT input (more/diff use retInpsSec)
+  }
+
+  public function mkSimpTxtInpValDiv($origfldAttr, $model) {
+    /*
+    // sets val and creates input text type w/Value (e.g. <input type="text"...>)
+    inputs: field attributes from view->form
+    output: a div containing input field w/val  via retSimpTxtInpDiv
+    */
+    $fldAttribs = $origfldAttr; // e.g. ['name' => $field, ];
+    $field = $fldAttribs['name'];
+    $values = $model->getCols();  // e.g. $user->getCols for class column vals
+
+    if (isset($values[$field]) && (!empty($values[$field]))) {
+        // use model val if exists
         $fldAttribs['value'] = $values[$field];
     }
     return $this->retSimpTxtInpDiv($fldAttribs);

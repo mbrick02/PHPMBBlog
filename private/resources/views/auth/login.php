@@ -16,14 +16,18 @@ $formAtrrib = [
 	'method' => 'post',
 	'mainDivClass' => 'col-md-12 float-left',
 ];
-$formContent = $form->formTopDecl($formAtrrib, "Login");
+$formContent = $form->formTopDecl($formAtrrib); // , "Login"
 
-$formContent .= $form->mkSimpTxtInpValDiv([
-		'name' => 'usernameOREmail',
-		'label' => 'Username or Email',
-		'placeholder' => "uname_or_email@dom.com"], $user);
+$aryTagsAttrs[] = array('name' => 'usernameOREmail',
+							'label' => 'Username or Email',
+							'type' => 'text',
+							'placeholder' => "uname_or_email@dom.com");
 
-$formContent .= $form->retInpTypeDiv("password", []); // note: don't save val
+$aryTagsAttrs[] = array('type' => 'password');
+$formContent .= $form->mkInpsValSec($aryTagsAttrs, $user);
+// 2/7/19+ test above - this "worked"$formContent .= $form->mkSimpTxtInpValSec($aryTagsAttrs[0], $user); // ** 2/8/19 change to: $form->mkInpsValSec($aryTagsAttrs, $user);
+// UPDATE above to: $formContent .= $form->retInpsValSec($aryFields, $user);
+// $formContent .= $form->retInpTypeNLbl("password", []); // note: don't save val  // was retInpTypeDiv(...)
 
 $formContent .= $form->endForm(['submitTitle' =>'Login']);
 // ** already set by formTopDecl: $formContent = FormBuild::retClosedTag("div",

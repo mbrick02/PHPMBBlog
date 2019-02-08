@@ -45,7 +45,7 @@ class Controller {
 			];
 		} else {
 			$userButton = '<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"';
-			$userButton .= ' data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Login</button>';
+			$userButton .= ' data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Login <span>▼</span></button>';
 			$userButton .= ' or <a href="/user/create">Create User</a>';
 			$userOptions = [
 				'userButton' => $userButton,

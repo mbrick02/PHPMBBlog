@@ -40,5 +40,5 @@ $fldAttribs = [
 
 $formContent .= $form->retInpDiv($fldAttribs);  // note: don't save value if invalidated
 
-$formContent .= $form->endForm(['submitTitle' =>'Create User']);
+$formContent .= $form->endForm(['submitTitle' =>'Create User']); // assumes </form</div</div
 echo $formContent;

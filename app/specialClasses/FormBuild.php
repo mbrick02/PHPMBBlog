@@ -20,14 +20,15 @@ use Token as Token;
 */
 class FormBuild {
   private static $_nameAry = "";
-  private static $_useDBVals = false;
+  private static $_useDBVals; // set in __construct
 
-  private function __construct($nameAry = "", $useDBVals) {
+  private function __construct($nameAry = "", $useDBVals = false) {
     static::$_nameAry = $nameAry; // reset to empty
-    static::$_useDBVals = $useDBVals;  // fill form with any DB vals?
+    static::$_useDBVals = $useDBVals;  // fill form with any DB vals? (Currently NOT used)
+    // TODO: set vals from (if)model:     $values = $model->getCols();
   }
 
-public static function instantiate($nameAry, $useDBVals = false) {
+  public static function instantiate($nameAry, $useDBVals = false) {
     $object = new static($nameAry, $useDBVals);
     return $object;
   }
@@ -134,7 +135,7 @@ public static function instantiate($nameAry, $useDBVals = false) {
     // inputs = $assiVars['type'] (options: 'name', 'value', etc)
     // examp: <input type="hidden" name="token" value="<?php echo Token::generate(); ">
 
-    $output = "   <label for=\"{$assiVars['labelFor']}\">" . ucfirst($assiVars['label']) . ":</label>\n";
+    $output = "<label for=\"{$assiVars['labelFor']}\">" . ucfirst($assiVars['label']) . ":</label>\n";
 
     $inpVars = $assiVars;
     if (!isset($inpVars['class'])) {
@@ -186,9 +187,9 @@ public static function instantiate($nameAry, $useDBVals = false) {
         $output .= "   " . $this->retInpFld($inpFldVars);
         $output .= "</" . $formPart['name'] . ">\n";
         return $output;
-      }
+    }
 
-    public function retInpsFldst($formPart = array("name" => "fieldset", "id" => "inputs", "class" => "fieldset", ),
+  public function xdelNOTUSEDretInpsFldst($formPart = array("name" => "fieldset", "id" => "inputs", "class" => "fieldset", ),
                                   $assiVarsSet = []) {
       // ***BUG currently have foreach that needs $values which should be passed in by caller into $assiVarsSet
       // based on (supersedes) retInpFldst with multiple inputs
@@ -243,7 +244,6 @@ public static function instantiate($nameAry, $useDBVals = false) {
       return $output;
     }
 
-
   public function retInpDiv($assiVars = [], $grpCls = "form-group") {
     // Debug prob 10/2018 commented out 1/2019
     // if (is_null($assiVars) || (!is_array($assiVars))) { // || !array_key_exists('labelFor', $assiVars))
@@ -271,11 +271,11 @@ public static function instantiate($nameAry, $useDBVals = false) {
 
   } // DEBUG**: else { "returnTxtField with no assignedVars"}
 
-  public function retInpsSec($fldsNameNLabel = [], $secType = "fieldset") {
-/*   based on (to supercede) retSimpTxtInpSec but inputs multiple Input fields
+  public function delNOTUSEDretInpsSec($fldsNameNLabel = [], $secType = "fieldset") {
+    /*   based on (to supercede) retSimpTxtInpSec but inputs multiple Input fields
       inputs: $fldNameNLabel['name'], (option ['label'])
       return: form section such as "fieldset" with input field(s) */
-/******************based on retSimpTextInpSec below***********************************debug/rewrite
+      /******************based on retSimpTextInpSec below************debug/rewrite
       $fldAttribs = $origfldAttr; // e.g. ['name' => $field, ];
       $field = $fldAttribs['name'];
       $values = $model->getCols();  // e.g. $user->getCols for class column vals
@@ -303,12 +303,12 @@ public static function instantiate($nameAry, $useDBVals = false) {
     // "class" => "fieldset", ), $assiVars = [])
     $fieldSec = array("name" => $secType, "id" => "inputs", "class" => "fieldset", );
     $output = $this->retInpsFldst($fieldSec, $txtFldVars); // TODO make $txtFldVars an ARRAY
-*/
+    */
     return $output;
   }
 
   public function retSimpTxtInpSec($fldNameNLabel = [], $secType = "fieldset") {
-/*   based on retSimpTxtInpDiv
+    /*   based on retSimpTxtInpDiv
       inputs: $fldNameNLabel['name'], (option ['label'])
       return: (return Simple Text Input in Section) form sect such as "fieldset" ONLY 1 input field */
 
@@ -382,19 +382,18 @@ public static function instantiate($nameAry, $useDBVals = false) {
     return $this->retInpDiv($typeVars); //  . "\n"
   }
 
-  public function endForm ($submitTitleAry = []) {
-    extract($submitTitleAry);
-    $submitTitle = $submitTitleAry['submitTitle'];
-
+  public function endForm ($submitTitleAry = [], $endTags = array('form', 'div', 'div')) {
+    // input: ary submitTitle btn attribs, ary tags to end form; output: end of form
     $buttonAttribs = [
       'type' => 'submit',
       'class' => 'btn btn-default'
     ];
 
+    extract($submitTitleAry); // eg. ['submitTitle' =>'Creat usr'] => $submitTitle = 'Creat usr'
+    // TOO CUTE?: probably better - just pass in var $submitTitle but... future use?
+    //    e.g. could pass in $buttonAttribs and overwrite (default flag EXTR_OVERWRITE)
+    // DELETE: DEBUG **$submitTitle = $submitTitleAry['submitTitle'];
     $output = $this->retClosedTag("button", $buttonAttribs, $submitTitle);
-
-    $endTags = array('form', 'div', 'div');
-
     $output .= $this->endTags($endTags);
     return $output;
 
@@ -417,24 +416,18 @@ public static function instantiate($nameAry, $useDBVals = false) {
     // ?? should above be foreach other than name ???
     $output = "$formPartStr \n"; // e.g. fieldset id="inputs"
 
-// 2/8/19 4P:  ...
     foreach ($origfldAttrSets as $assiVars) {
       $fldAttribs = $assiVars; // e.g. ['name' => $field, ];
-      $field = "";
 
       // 'type' that defines name (and field other than input) like password ??
       if ((isset($fldAttribs['type'])) && (!isset($fldAttribs['name']))) {
         $fldAttribs['name'] = $fldAttribs['type'];
       }
-      if (isset($fldAttribs['name'])){  // only text fields have names? what about checkbox?
-        $fieldNm = $fldAttribs['name'];
-      }
-
       // defaults for most inputs attribs unless otherwise set
-      if(!empty($fldAttribs['name'])) {  // should always be true
-        $fldAttribs['labelFor'] = $fieldNm;
-        $fldAttribs['label'] = $fieldNm;
-        $fldAttribs['id'] = $fieldNm;
+      if((!empty($fldAttribs['name'])) && (isset($fldAttribs['name']))) {  // should always be true
+        $fldAttribs['labelFor'] = $fldAttribs['name'];
+        $fldAttribs['label'] = $fldAttribs['name'];
+        $fldAttribs['id'] = $fldAttribs['name'];
       }
       // set or reset input field attribs
       foreach ($assiVars as $key => $value) {
@@ -444,14 +437,14 @@ public static function instantiate($nameAry, $useDBVals = false) {
           // use model val if exists
           $fldAttribs['value'] = $values[$field];
       }
-      $output .= "   " . $this->retInpFldNLbl($fldAttribs) . "\n";
+      $output .= "   " . $this->retInpFldNLbl($fldAttribs);
     }  // end foreach ($origfldAttrSets as $assiVars)
 
     $output .= "</" . $formPart['name'] . ">\n";
     return $output;
   }
 
-  public function mkSimpTxtInpValSec($origfldAttr, $model, $secTyp = "fieldset") {
+  public function delNotUsedmkSimpTxtInpValSec($origfldAttr, $model, $secTyp = "fieldset") {
     /* 2/9/19 based on and to supercede: mkSimpTxtInpValSec TO BE superceded by mkInpsValSec
     sets val and creates input text type w/Value (e.g. <input type="text"...>)
     inputs: field attributes from view->form
@@ -492,7 +485,10 @@ public static function instantiate($nameAry, $useDBVals = false) {
         placeholder="u@dom.com" value="ifNonValid" class="form-control">
     */
     $fldAttribs = $origfldAttr;
-    $field = $fldAttribs['name'];
+    if((!isset($fldAttribs['name'])) && (isset($fldAttribs['type']))) {
+      $fldAttribs['name'] = $fldAttribs['type'];
+    }
+    $field = $fldAttribs['name'];  // form field 'name' = db model field (default)
     $values = $model->getCols();
 
     if (isset($values[$field]) && (!empty($values[$field]))) {

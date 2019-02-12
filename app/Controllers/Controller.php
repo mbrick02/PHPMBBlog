@@ -26,7 +26,7 @@ class Controller {
 	 protected static function buildLoginForm() {
 		 global $db;
 		 // $linkCreatUser = "<a href=\"/user/create\" ></a>" . "<div class=\"dropdown-divider\"></div>";
-		 $loginForm = VIEWS_PATH . DS . 'auth' . DS . 'login.php';
+		 $loginForm = VIEWS_PATH . DS . 'auth' . DS . 'loginForm.php';
 		 $user = User::getInstance($db); // note: base on db but NOT from -- poss. added user
 		 $formVars = [ 'user' => $user];
 		 $loginFormContent = static::$container->view->
@@ -44,8 +44,8 @@ class Controller {
 				'loginOrProfile' => 'Edit Prifile or logout',
 			];
 		} else {
-			$userButton = '<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"';
-			$userButton .= ' data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Login <span>▼</span></button>';
+			$userButton = '<a id="login-trigger" href="#" class="btn btn-secondary dropdown-toggle" type="button"';
+			$userButton .= ' data-toggle="login-content" aria-haspopup="true" aria-expanded="false">Login <span>▼</span></a>';
 			$userButton .= ' or <a href="/user/create">Create User</a>';
 			$userOptions = [
 				'userButton' => $userButton,
@@ -67,10 +67,27 @@ class Controller {
 
 		static::$container->view->filename = 'partials' . DS . 'public_header.php';
 
-		static::$container->view->set('page_title', 'blog'); // default
-		if (isset($contrVars['page_title'])) {
-			static::$container->view->set('page_title', $contrVars['page_title']);
-		}
+		$pageTitle = (isset($contrVars['page_title'])) ? $contrVars['page_title'] : 'blog'; // blog as default
+		static::$container->view->set('page_title', $pageTitle);
+		$localscripts = (isset($contrVars['localscripts'])) ? $contrVars['localscripts'] . "\n" : '';
+
+		// add default login dropdown menu script
+		$localscripts .= <<<'LOCAL_SCRIPT'
+<script>
+		$(document).ready(function(){
+		$('#login-trigger').click(function(){
+				$(this).next('#dropdownMenuButton').slideToggle(); // was login-content
+				$(this).toggleClass('active');
+
+				if ($(this).hasClass('active')) $(this).find('span').html('&#x25B2;')
+					else $(this).find('span').html('&#x25BC;')
+				})
+		});
+	</script>
+LOCAL_SCRIPT;
+
+		static::$container->view->set('localscripts', $localscripts);
+
 		static::$container->view->set('urlForIndex', "/");
 		static::$container->view->set('urlForMBBlogLogo', IMG_SRC . "mbBlogLogo.jpg");
 		// TODO: show backslash before stylesheets 10/29/18

@@ -14,14 +14,11 @@
 				<?php // echo "<h4>" . ($lgdIn ? "Logged In" : "Not logged in") . "</h4><br>";
           // move above to CONTROLLER 11/20
         ?><br>
-        <li><div class="dropdown">
-                <?php if($lgdIn) {  // move this to controller????
-                        echo $userButton;
-                      } else { // "Logged in as: " . $session->username . $lgOut;
-                        echo $userButton;
-                      } ?>
-
-					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <li id="login"><div class="dropdown">
+                <?php echo $userButton;
+                // moved logic to controller (for now - later: model?): if($lgdIn){} else { }
+                ?>
+					<div id="login-content" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <a class="dropdown-item">
                 <?php echo $loginOrProfile; ?><div class="dropdown-divider"></div>
                 <div><a class="dropdown-item" href="#">Other Menu Option</a></div>

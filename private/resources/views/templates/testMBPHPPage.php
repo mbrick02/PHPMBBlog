@@ -169,7 +169,8 @@
    <nav>
   <ul>
     <li id="login">
-      <a id="login-trigger" href="#">
+      <a id="login-trigger" href="#" class="btn btn-secondary dropdown-toggle" type="button"
+			data-toggle="login-content" aria-haspopup="true" aria-expanded="false">
         Log in <span>▼</span>
       </a>
       <div id="login-content">

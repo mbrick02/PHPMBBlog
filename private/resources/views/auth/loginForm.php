@@ -16,7 +16,8 @@ $formAtrrib = [
 	'method' => 'post',
 	'mainDivClass' => 'col-md-12 float-left',
 ];
-$formContent = $form->formTopDecl($formAtrrib); // , "Login"
+
+$formContent = $form->formTopDecl($formAtrrib, "", ['class'=> 'panel-body', 'id' => 'login-content']); // , "Login"
 
 $aryTagsAttrs[] = array('name' => 'usernameOREmail',
 							'label' => 'Username or Email',
@@ -24,12 +25,26 @@ $aryTagsAttrs[] = array('name' => 'usernameOREmail',
 							'placeholder' => "uname_or_email@dom.com");
 
 $aryTagsAttrs[] = array('type' => 'password');
+// debug 2/10/19 take out to test mkInpsValSec below & die():
 $formContent .= $form->mkInpsValSec($aryTagsAttrs, $user);
-// 2/7/19+ test above - this "worked"$formContent .= $form->mkSimpTxtInpValSec($aryTagsAttrs[0], $user); // ** 2/8/19 change to: $form->mkInpsValSec($aryTagsAttrs, $user);
-// UPDATE above to: $formContent .= $form->retInpsValSec($aryFields, $user);
-// $formContent .= $form->retInpTypeNLbl("password", []); // note: don't save val  // was retInpTypeDiv(...)
 
-$formContent .= $form->endForm(['submitTitle' =>'Login']);
+$aryTagsAttrs = []; // empty/reset array
+$aryTagsAttrs[] = array('type' => 'submit', 'name' => 'Login',
+			'value' => 'Login', 'class' => 'btn'); // add submit button
+$aryTagsAttrs[] = array('type' => 'checkbox','name'=>'remember_me',
+				'label' => 'Remember Me', 'noValue' => 'checked', 'value' => true);
+$noModel = '';
+// 2/10/19
+$formPart = array("name" => "fieldset", "id" => "outputs", "class" => "fieldset", );
+// $form->mkInpsValSec($origfldAttrSets, $model, $secTyp = "fieldset", $formPart)
+$lblNID = false;
+/* ($origfldAttrSets, $model = "", $secTyp = "fieldset",
+	$formPart = array("name" => "fieldset", "id" => "inputs", "class" => "fieldset", ),
+	$assumLblNID = true) */
+$formContent .= $form->mkInpsValSec($aryTagsAttrs, $noModel, "fieldset", $formPart, $lblNID);
+
+// $submitTagAttrs[] = array('type' => 'submit', value='Login' 'class' => 'btn btn-default')
+$formContent .= $form->endtags(array('form', 'div', 'div')); // was: endForm(['submitTitle' =>'Login']);
 // ** already set by formTopDecl: $formContent = FormBuild::retClosedTag("div",
 // ** already set by formTopDecl: 	 ['class' => 'col-md-6 col-md-offset-1 float-left'], $formContent);
 echo $formContent;

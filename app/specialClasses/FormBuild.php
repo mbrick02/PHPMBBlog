@@ -19,8 +19,8 @@ use Token as Token;
 "\n" for newline (Linux & Mac -- Win takes it okay)
 */
 class FormBuild {
-  private static $_nameAry = "";
-  private static $_useDBVals; // set in __construct
+  private static $_nameAry = ""; // used in retTag() for form value array
+  private static $_useDBVals; // set in __construct **Note: 2/11/19 Currently NOT USED
 
   private function __construct($nameAry = "", $useDBVals = false) {
     static::$_nameAry = $nameAry; // reset to empty
@@ -33,31 +33,28 @@ class FormBuild {
     return $object;
   }
 
-  public function formTopDecl($assiVars = [], $panelHeading = "") {
-    /* ****  Inputs:  form action, method ($assiVars['action'], [?'csrf_field'] etc.)
+  public function formTopDecl($frmAttr = [], $frmDivHeading = "", $frmBodyAttr = ['class'=> 'panel-body']) {
+    /* ****  Inputs:  form action, method ($assi_Vars['action'], [?'csrf_field'] etc.)
     Examp:<form action="{{ path_for('****auth.signup')}}" method="post" autocomplete="off">
-       {{ csrf_field() }}
-    **************** */
-    // xx decided to set elsewhere: note space before autocomlete but no space at end of str
-    // DEL: $autoCompl = isset($assiVars['autocomplete']) ? " autocomplete=\"" . $assiVars['autocomplete'] . "\"";
+       {{ csrf_field() }}**************** */
     $formVars = [
-      'action' => $assiVars['action'],
-      'method' => $assiVars['method'],
+      'action' => $frmAttr['action'],
+      'method' => $frmAttr['method'],
     ];
 
-    if (isset($assiVars['mainDivClass'])) {
-      $mainDivClass = $assiVars['mainDivClass'];
+    if (isset($frmAttr['mainDivClass'])) {
+      $mainDivClass = $frmAttr['mainDivClass'];
     } else { // default
       $mainDivClass = 'col-md-6 col-md-offset-1 float-left';
     }
-
     $output = self::retTag("div", ['class' => $mainDivClass]);
 
-    if (!empty($panelHeading)){ // create panel title and heading if exist
-      $output .= self::retClosedTag("div", ['class' => 'panel-heading'], "<h2>" . $panelHeading . "</h2>");
+    if (!empty($frmDivHeading)){ // create panel title and heading if exist
+      $output .= self::retClosedTag("div", ['class' => 'panel-heading'], "<h2>" . $frmDivHeading . "</h2>");
     }
 
-    $output .= self::retTag("div", ['class' => 'panel-body']);
+
+    $output .= self::retTag("div", $frmBodyAttr);
     $output .= self::retTag("form", $formVars);
 
     $token = Token::generate();
@@ -134,15 +131,23 @@ class FormBuild {
   public function retInpFldNLbl($assiVars = []) {
     // inputs = $assiVars['type'] (options: 'name', 'value', etc)
     // examp: <input type="hidden" name="token" value="<?php echo Token::generate(); ">
-
-    $output = "<label for=\"{$assiVars['labelFor']}\">" . ucfirst($assiVars['label']) . ":</label>\n";
+    $output = "";
+    if (isset($assiVars['label'])){
+      if (!isset($assiVars['labelFor'])) {
+        $assiVars['labelFor'] = $assiVars['name'];
+      }
+      if (!empty(static::$_nameAry)) {
+        $assiVars['labelFor'] = static::$_nameAry . "[{$assiVars['name']}]";
+      }
+      $output = "   <label for=\"{$assiVars['labelFor']}\">" . ucfirst($assiVars['label']) . ":</label>\n";
+    }
 
     $inpVars = $assiVars;
     if (!isset($inpVars['class'])) {
       $inpVars['class'] = "form-control";
-    } elseif (!in_str($inpVars['class'], 'form-control')) {
+    }/* elseif (!strpos($inpVars['class'], 'form-control')) {  // always have form-control ??maybe not???
       $inpVars['class'] .= " form-control";
-    }
+    } */
 
     $output .= "   " . self::retTag("input", $inpVars);
     return $output;
@@ -382,7 +387,7 @@ class FormBuild {
     return $this->retInpDiv($typeVars); //  . "\n"
   }
 
-  public function endForm ($submitTitleAry = [], $endTags = array('form', 'div', 'div')) {
+  public function endForm($submitTitleAry = [], $endTags = array('form', 'div', 'div')) {
     // input: ary submitTitle btn attribs, ary tags to end form; output: end of form
     $buttonAttribs = [
       'type' => 'submit',
@@ -402,43 +407,57 @@ class FormBuild {
     // DEL (old ver): include TEMPLATE_PATH . DS . 'partials' . DS . 'form_bottom.php';
   }
 
-  public function mkInpsValSec($origfldAttrSets, $model, $secTyp = "fieldset",
-    $formPart = array("name" => "fieldset", "id" => "inputs", "class" => "fieldset", )) {
-    /* based on mkSimpTxtInpValSec; called by view->form
-    // create input text type w/Value check: <input type="text"...>
-    // Note: this ONLY makes 1 text input field
-    */
-    $values = $model->getCols();  // e.g. $user->getCols for class column vals
-
-    $formPartStr = "<" . $formPart['name'];
-    $formPartStr .= (!empty($formPart['id'])) ? " id='" . $formPart['id'] . "'": '';
-    $formPartStr .= ((!empty($formPart['class'])) ? " class='" . $formPart['class'] . "'": '') . ">";
-    // ?? should above be foreach other than name ???
-    $output = "$formPartStr \n"; // e.g. fieldset id="inputs"
-
+  private function mkAssiVarsFromAttrSets($origfldAttrSets, $values = "", $assumLblNID = true) {
+    /* loop thru sets of field attributes and output label and input field for each
+      input: original sets of field attributes per each input tag, values passed in from db for fields
+      output: labels and input fields with attributes via retInpFldNLbl */
+    $output = "";
     foreach ($origfldAttrSets as $assiVars) {
-      $fldAttribs = $assiVars; // e.g. ['name' => $field, ];
-
+      $newAssiVars = $assiVars;
       // 'type' that defines name (and field other than input) like password ??
-      if ((isset($fldAttribs['type'])) && (!isset($fldAttribs['name']))) {
-        $fldAttribs['name'] = $fldAttribs['type'];
+      if ((isset($assiVars['type'])) && (!isset($assiVars['name']))) {
+        $newAssiVars['name'] = $assiVars['type'];
       }
+
       // defaults for most inputs attribs unless otherwise set
-      if((!empty($fldAttribs['name'])) && (isset($fldAttribs['name']))) {  // should always be true
-        $fldAttribs['labelFor'] = $fldAttribs['name'];
-        $fldAttribs['label'] = $fldAttribs['name'];
-        $fldAttribs['id'] = $fldAttribs['name'];
+      if((!empty($newAssiVars['name'])) && (isset($newAssiVars['name'])) && $assumLblNID) {  // should always be true
+        $newAssiVars['labelFor'] = $newAssiVars['name'];
+        $newAssiVars['label'] = $newAssiVars['name'];
+        $newAssiVars['id'] = $newAssiVars['name'];
       }
-      // set or reset input field attribs
+
+      // set or RESET input field attribs to old values
       foreach ($assiVars as $key => $value) {
-          $fldAttribs[$key] = $value;
+          $newAssiVars[$key] = $value;
       }
       if ((!empty($field)) && (isset($values[$field]) && (!empty($values[$field])))) { // type text
           // use model val if exists
-          $fldAttribs['value'] = $values[$field];
+          $newAssiVars['value'] = $values[$field];
       }
-      $output .= "   " . $this->retInpFldNLbl($fldAttribs);
+
+      $output .= $this->retInpFldNLbl($newAssiVars);
     }  // end foreach ($origfldAttrSets as $assiVars)
+    return $output;
+  }
+
+  public function mkInpsValSec($origfldAttrSets, $model = "", $secTyp = "fieldset",
+    $formPart = array("name" => "fieldset", "id" => "inputs", "class" => "fieldset", ),
+    $assumLblNID = true) {
+    /* based on mkSimpTxtInpValSec; called by view->form
+    // create input text type w/Value check: <input type="text"...>
+    // Note: this ONLY makes 1 text input field */
+    if (!empty($model)){
+      $values = $model->getCols();  // e.g. $user->getCols for class column vals
+    } else { $values = "";}
+
+    $formPartStr = "<" . $formPart['name'];
+    $formPartStr .= (!empty($formPart['id'])) ? " id='" . $formPart['id'] . "'": '';
+    $formPartStr .= (!empty($formPart['class']) ? " class='" . $formPart['class'] . "'": '') . ">";
+    // ?? should above be foreach other than name ???
+    $output = "$formPartStr \n"; // e.g. fieldset id="inputs"
+
+    $output .= $this->mkAssiVarsFromAttrSets($origfldAttrSets, $values, $assumLblNID);
+
 
     $output .= "</" . $formPart['name'] . ">\n";
     return $output;

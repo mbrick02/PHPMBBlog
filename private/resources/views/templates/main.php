@@ -19,10 +19,11 @@
                 // moved logic to controller (for now - later: model?): if($lgdIn){} else { }
                 ?>
 					<div id="login-content" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item">
-                <?php echo $loginOrProfile; ?><div class="dropdown-divider"></div>
-                <div><a class="dropdown-item" href="#">Other Menu Option</a></div>
-              </a>
+              <div>
+                <a class="dropdown-item"><?php echo $loginOrProfile; ?></a>
+              </div>
+              <div class="dropdown-divider"><a class="dropdown-item"></a></div>
+              <div><a class="dropdown-item" href="#">Other Menu Option</a></div>
               <!-- User Profile (update), Login, logout, Signup/Create in Controller->$loginOrProfile -->
           </div>
 				</div></li>

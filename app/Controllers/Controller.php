@@ -65,19 +65,20 @@ class Controller {
 		// Note: $container->view is set to template.class.php
 		static::$rightCol = static::$container->view->renderWithVariables(static::$rightColDoc, static::$rightColVars, false);
 
+		/* *** HEADER (public_header.php) settings: title, scripts, css ***/
 		static::$container->view->filename = 'partials' . DS . 'public_header.php';
 
 		$pageTitle = (isset($contrVars['page_title'])) ? $contrVars['page_title'] : 'blog'; // blog as default
 		static::$container->view->set('page_title', $pageTitle);
 		$localscripts = (isset($contrVars['localscripts'])) ? $contrVars['localscripts'] . "\n" : '';
 
-		// add default login dropdown menu script
+		// append default login dropdown menu script
 		$localscripts .= <<<'LOCAL_SCRIPT'
 <script>
 		$(document).ready(function(){
 		$('#login-trigger').click(function(){
-				$(this).next('#dropdownMenuButton').slideToggle(); // was login-content
-				$(this).toggleClass('active');
+				$('#login-content').slideToggle(); // was dropdownMenuButton (this).next().next
+				$("#login-content").toggleClass('active');
 
 				if ($(this).hasClass('active')) $(this).find('span').html('&#x25B2;')
 					else $(this).find('span').html('&#x25BC;')

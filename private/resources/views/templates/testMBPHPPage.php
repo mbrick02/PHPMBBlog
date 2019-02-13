@@ -1,196 +1,126 @@
-<!DOCTYPE html>
+<!doctype html>
+
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>PHP Test MB</title>
-  <style>
-    nav ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    position: relative;
-    float: right;
-    background: #eee;
-    border-bottom: 1px solid #fff;
-    border-radius: 3px;
-    }
+  <head>
+    <title>MB Blog Page Home</title>
+    <meta charset="utf-8">
+    <!-- Latest bstrap compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
+    <link rel="stylesheet" media="all" href="http://phpmbblog.org/stylesheets/public.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+		$(document).ready(function(){
+		$('#login-trigger').click(function(){
+				$(this).next().next().slideToggle(); // was dropdownMenuButton (this).next().next
+				$("#login-content").toggleClass('active');
 
-    nav li {
-    float: left;
-    }
+				if ($(this).hasClass('active')) $(this).find('span').html('&#x25B2;')
+					else $(this).find('span').html('&#x25BC;')
+				})
+		});
+	</script>
+  </head>
+  <body>
+    <header>
+      <h1>
+        <a href="/">
+          <img class="mb-icon" src="http://phpmbblog.org/images/mbBlogLogo.jpg" />MB Blog
+        </a>
+      </h1>
 
-    nav #login {
-    border-right: 1px solid #ddd;
-    box-shadow: 1px 0 0 #fff;
-    }
+    </header>
 
-    nav #login-trigger,
-    nav #signup a {
-    display: inline-block;
-    *display: inline;
-    *zoom: 1;
-    height: 25px;
-    line-height: 25px;
-    font-weight: bold;
-    padding: 0 8px;
-    text-decoration: none;
-    color: #444;
-    text-shadow: 0 1px 0 #fff;
-    }
+<div class="blog-masthead">
+  <nav class="navbar navbar-default">
+  		<!--  navbar navbar-expand-lg navbar-light bg-light -->
+  	<div class="container container-fluid">
+          <!-- Brand and toggle get grouped for better mobile display -->
+    		<div class="navbar-header">
 
-    nav #signup a {
-    border-radius: 0 3px 3px 0;
-    }
+    			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+    			data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+    			aria-expanded="false" aria-label="Toggle navigation">
+    				<span class="icon-bar"></span>
+    			</button>
+    			<a class="navbar-brand" href="/api/products">Brand</a>
+    		</div>
+    		<!-- Collect the nav links, forms, and oth content for toggling -->
+    		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+    			<ul class="nav navbar-nav">
+    				<li class="active"><a
+    						href="/">Home</a></li>
+    				<li><a class="nav-link nav-item"
+    					  href="#">About</a></li>
+    			</ul>
+    <!-- ************** NAV HEAD experiment 10/6/18 ******************** -->
+    			<ul class="nav navbar-nav navbar-right">
+            <li><div><span class="glyphicon glyphicon-shopping-cart"></span>&nbsp;No Cart</div></li>
+            <li id="login"><div class="dropdown">
+                    <a id="login-trigger" href="#" class="btn btn-secondary dropdown-toggle" type="button"
+                    data-toggle="login-content" aria-haspopup="true" aria-expanded="false">Login <span>▼</span></a>
+                    or <a href="/user/create">Create User</a>
+                    <!-- div id="login-content" class="dropdown-menu" aria-labelledby="dropdownMenuButton" -->
+                  <!-- *** was div for anchor dropdown-item -->
+                  <div id="login-content"> <!-- div was just holding dropdown-item "Other Menu Option" -->
+                      <!-- div class="col-md-12 float-left panel-body" id="was login-content" -->
+                        <form action="/user/login" method="post">
+                        <input type="hidden" name="login[token]" value="0a4aa770788a6ef522c1e2c7b828ee05"
+                        class="form-control">
+                        <fieldset id='inputs' class='fieldset'>
+                           <label for="login[usernameOREmail]">Username or Email:</label>
+                           <input name="login[usernameOREmail]" type="text" placeholder="uname_or_email@dom.com"
+                           id="usernameOREmail" class="form-control">
+                           <label for="login[password]">Password:</label>
+                           <input type="password" name="login[password]" id="password" class="form-control">
+                        </fieldset>
+                        <fieldset id='outputs' class='fieldset'>
+                           <input type="submit" name="login[Login]" value="Login" class="btn">
+                           <label for="login[remember_me]">Remember Me:</label>
+                           <input type="checkbox" name="login[remember_me]" value="1" class="form-control" checked>
+                        </fieldset>
+                        </form>
+                        <!-- was login content holding just form /div -->
+                  <!-- *** was /div for anchor dropdown-item  -->
+                  <div class="dropdown-divider"><a class="dropdown-item"></a></div>
+                  <a class="dropdown-item" href="#">Other Menu Option</a></div>
+                  <!-- User Profile (update), Login, logout, Signup/Create in Controller->$loginOrProfile -->
+              <!-- /div -->
+    				<!-- /div -->
+             </li>
+    			</ul>
+    		</div><!-- /.navbar-collapse -->
+      </div> <!-- /.container-fluid -->
+	</nav>
+</div>
+<!-- ************  END NAV HEAD experi 10/16/18 ******************** -->
 
-    nav #login-trigger {
-    border-radius: 3px 0 0 3px;
-    }
+    <div class="row container">
+      <!-- include('partials._messages') -->
+      <div class="col-md-6 col-md-offset-1 float-left">
+<div class="panel-heading">
+<h2>MB Blog</h2></div>
+<div class="panel-body">
+Welcome to MB Blog</div>
+</div>
+      <div class="float-right my-lg-0">
+<div class="my-lg-0">
+<h3>right side info passed in for user</h3></div>
+</div>
+</div>
 
-    nav #login-trigger:hover,
-    nav #login .active,
-    nav #signup a:hover {
-    background: #ffd;
-    }
+    </div> <!-- end of .container -->
 
-    nav #login-content {
-    display: none;
-    position: absolute;
-    top: 24px;
-    right: 0;
-    z-index: 999;
-    background: #fff;
-    background-image: linear-gradient(top, #fff, #eee);
-    padding: 15px;
-    box-shadow: 0 2px 2px -1px rgba(0,0,0,.9);
-    border-radius: 3px 0 3px 3px;
-    }
+        <!-- include('partials._javascript') -->
 
-    nav li #login-content {
-    right: 0;
-    width: 250px;
-    }
+        <!-- yield('scripts') -->
+      <div class="row">
+      <footer class="col-sm-6 col-md-8 footnote">
+        <p>&copy 2019 Michael Brickler</p>
+      </footer>
+    </div><!-- end row -->
 
-    /*--------------------*/
-
-    #inputs input {
-    background: #f1f1f1;
-    padding: 6px 5px;
-    margin: 0 0 5px 0;
-    width: 238px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    box-shadow: 0 1px 1px #ccc inset;
-    }
-
-    #inputs input:focus {
-    background-color: #fff;
-    border-color: #e8c291;
-    outline: none;
-    box-shadow: 0 0 0 1px #e8c291 inset;
-    }
-
-    /*--------------------*/
-
-    #login #actions {
-    margin: 10px 0 0 0;
-    }
-
-    #login #submit {
-    background-color: #d14545;
-    background-image: linear-gradient(top, #e97171, #d14545);
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
-    text-shadow: 0 1px 0 rgba(0,0,0,.5);
-    box-shadow: 0 0 1px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
-    border: 1px solid #7e1515;
-    float: left;
-    height: 30px;
-    padding: 0;
-    width: 100px;
-    cursor: pointer;
-    font: bold 14px Arial, Helvetica;
-    color: #fff;
-    }
-
-    #login #submit:hover,
-    #login #submit:focus {
-    background-color: #e97171;
-    background-image: linear-gradient(top, #d14545, #e97171);
-    }
-
-    #login #submit:active {
-    outline: none;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5) inset;
-    }
-
-    #login #submit::-moz-focus-inner {
-    border: none;
-    }
-
-    #login label {
-    float: right;
-    line-height: 30px;
-    }
-
-    #login label input {
-    position: relative;
-    top: 2px;
-    right: 2px;
-    }
-  </style>
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-  <link rel="stylesheet" media="all" href="stylesheets/public.css" />
-
-
-
-  <script>
-  $(document).ready(function(){
-  $('#login-trigger').click(function(){
-      $(this).next('#login-content').slideToggle();
-      $(this).toggleClass('active');
-
-      if ($(this).hasClass('active')) $(this).find('span').html('&#x25B2;')
-        else $(this).find('span').html('&#x25BC;')
-      })
-  });
-  </script>
-
-</head>
-<body>
-  <?php
-  echo 'hullo world! <br /><br />';
-   ?>
-   <nav>
-  <ul>
-    <li id="login">
-      <a id="login-trigger" href="#" class="btn btn-secondary dropdown-toggle" type="button"
-			data-toggle="login-content" aria-haspopup="true" aria-expanded="false">
-        Log in <span>▼</span>
-      </a>
-      <div id="login-content">
-        <form>
-          <fieldset id="inputs">
-            <input id="username" type="email" name="Email" placeholder="Your email address" required>
-            <input id="password" type="password" name="Password" placeholder="Password" required>
-          </fieldset>
-          <fieldset id="actions">
-            <input type="submit" id="submit" value="Log in">
-            <label><input type="checkbox" checked="checked">Keep me signed in</label>
-          </fieldset>
-        </form>
-      </div>
-    </li>
-    <li id="signup">
-      <a href="">Sign up FREE</a>
-    </li>
-  </ul>
-</nav>
-
-</body>
+    </body>
 </html>

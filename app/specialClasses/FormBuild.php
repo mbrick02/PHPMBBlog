@@ -33,10 +33,33 @@ class FormBuild {
     return $object;
   }
 
-  public function formTopDecl($frmAttr = [], $frmDivHeading = "", $frmBodyAttr = ['class'=> 'panel-body']) {
-    /* ****  Inputs:  form action, method ($assi_Vars['action'], [?'csrf_field'] etc.)
-    Examp:<form action="{{ path_for('****auth.signup')}}" method="post" autocomplete="off">
-       {{ csrf_field() }}**************** */
+  public function mkFormTopTkn($frmAttr){
+    /* Inputs: $frmAttr['action'], $frmAttr['method']
+        Outputs:  */
+    $formVars = [
+      'action' => $frmAttr['action'],
+      'method' => $frmAttr['method'],
+    ];
+
+
+    $output = self::retTag("form", $formVars);
+
+    $token = Token::generate();
+    $inputFldVars = [
+            'type' => 'hidden',
+            'name' => 'token',
+            'value' => $token,
+          ];
+
+    // examp: <input type="hidden" name="token" "value="<?php echo Token::generate();>">
+    $output .= $this->retInpFld($inputFldVars);
+    return $output;
+  }
+
+  public function formTopDivTkn($frmAttr, $frmDivHeading = "", $frmBodyAttr = ['class'=> 'panel-body']) {
+    /* ****  Inputs:  form action, method ($assi_Vars['action'],
+    Examp:<form action="{{ path_for('**auth.signup')}}" method="post" autocomplete="off"> & {csrf_fld()/Token}
+    ***TOO COMPLICATED AND NOT INTUITIVE used only in views/auth/signup.php ONLY********** */
     $formVars = [
       'action' => $frmAttr['action'],
       'method' => $frmAttr['method'],
@@ -118,7 +141,7 @@ class FormBuild {
   public static function retClosedTag($tagType, $assiVars = [], $tagContent="") {
     /*
     input: enclosed tag type, attrib assoc ary w/ vals, content for tag
-    output: <tag attr1="attr1Val" attr2...>tagcontent</tag>
+    output: <tag attr1="attr1Val" attr2...>tagcontent</tag> (tag encloses 'payload' of $tagContent)
     */
 
     $output = self::retTag($tagType, $assiVars);
@@ -139,17 +162,25 @@ class FormBuild {
       if (!empty(static::$_nameAry)) {
         $assiVars['labelFor'] = static::$_nameAry . "[{$assiVars['name']}]";
       }
-      $output = "   <label for=\"{$assiVars['labelFor']}\">" . ucfirst($assiVars['label']) . ":</label>\n";
+      $label = "   <label for=\"{$assiVars['labelFor']}\">" . ucfirst($assiVars['label']) . ":</label>\n";
     }
 
-    $inpVars = $assiVars;
+    // if (isset($assiVars['enclLblNInp'])) { }
+    // if (isset($assiVars['enclInp'])) { }
+    $inpVars = [];
+    foreach ($assiVars as $key => $value){
+      if ($key == "enclLblNInp") *******************************************{}
+      $inpVars[$key] = $value;
+    }
+
     if (!isset($inpVars['class'])) {
       $inpVars['class'] = "form-control";
     }/* elseif (!strpos($inpVars['class'], 'form-control')) {  // always have form-control ??maybe not???
       $inpVars['class'] .= " form-control";
     } */
 
-    $output .= "   " . self::retTag("input", $inpVars);
+    // *** 2/14/19 add in retClosedTag() for spans and combind with label and combine for retClosedTag(div/OrOthTag)
+    $xoutput .= "   " . self::retTag("input", $inpVars);
     return $output;
   }
 
@@ -167,7 +198,7 @@ class FormBuild {
     return $output;
   }
 
-  public function retInpFldst($formPart = array("name" => "fieldset", "id" => "inputs", "class" => "fieldset", ),
+  public function xdelretInpFldst($formPart = array("name" => "fieldset", "id" => "inputs", "class" => "fieldset", ),
                                     $assiVars = []) {
         // based on retInpDiv
         // Inputs: $formPart (e.g. ("name" => "fieldset")),
@@ -276,7 +307,7 @@ class FormBuild {
 
   } // DEBUG**: else { "returnTxtField with no assignedVars"}
 
-  public function delNOTUSEDretInpsSec($fldsNameNLabel = [], $secType = "fieldset") {
+  public function xdelNOTUSEDretInpsSec($fldsNameNLabel = [], $secType = "fieldset") {
     /*   based on (to supercede) retSimpTxtInpSec but inputs multiple Input fields
       inputs: $fldNameNLabel['name'], (option ['label'])
       return: form section such as "fieldset" with input field(s) */
@@ -312,7 +343,7 @@ class FormBuild {
     return $output;
   }
 
-  public function retSimpTxtInpSec($fldNameNLabel = [], $secType = "fieldset") {
+  public function xdelretSimpTxtInpSec($fldNameNLabel = [], $secType = "fieldset") {
     /*   based on retSimpTxtInpDiv
       inputs: $fldNameNLabel['name'], (option ['label'])
       return: (return Simple Text Input in Section) form sect such as "fieldset" ONLY 1 input field */
@@ -428,6 +459,7 @@ class FormBuild {
 
       // set or RESET input field attribs to old values
       foreach ($assiVars as $key => $value) {
+          // ***2/14/19 ?test for enclosing tag(s)? span tags?
           $newAssiVars[$key] = $value;
       }
       if ((!empty($field)) && (isset($values[$field]) && (!empty($values[$field])))) { // type text
@@ -463,7 +495,7 @@ class FormBuild {
     return $output;
   }
 
-  public function delNotUsedmkSimpTxtInpValSec($origfldAttr, $model, $secTyp = "fieldset") {
+  public function xdelNotUsedmkSimpTxtInpValSec($origfldAttr, $model, $secTyp = "fieldset") {
     /* 2/9/19 based on and to supercede: mkSimpTxtInpValSec TO BE superceded by mkInpsValSec
     sets val and creates input text type w/Value (e.g. <input type="text"...>)
     inputs: field attributes from view->form

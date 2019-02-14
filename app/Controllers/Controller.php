@@ -80,7 +80,7 @@ class Controller {
 				$('#login-content').slideToggle(); // was dropdownMenuButton (this).next().next
 				$("#login-content").toggleClass('active');
 
-				if ($(this).hasClass('active')) $(this).find('span').html('&#x25B2;')
+				if ($("#login-content").hasClass('active')) $(this).find('span').html('&#x25B2;')
 					else $(this).find('span').html('&#x25BC;')
 				})
 		});

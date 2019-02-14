@@ -15,7 +15,7 @@ $formAtrrib = [
 	'action' => '/user/create',
 	'method' => 'post',
 ];
-$formContent = $form->formTopDecl($formAtrrib, "Sign up");
+$formContent = $form->formTopDivTkn($formAtrrib, "Sign up");
 
 $formContent .= $form->mkSimpTxtInpValDiv(['name' => 'username'], $user);
 

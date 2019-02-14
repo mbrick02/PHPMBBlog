@@ -14,10 +14,10 @@ $form = FormBuild::instantiate('login'); // 'login' sets up: $args = $_POST['log
 $formAtrrib = [
 	'action' => '/user/login',
 	'method' => 'post',
-	'mainDivClass' => 'col-md-12 float-left',
 ];
 
-$formContent = $form->formTopDecl($formAtrrib, "", ['class'=> 'panel-body', 'id' => 'login-content']); // , "Login"
+// old: $formContent = $form->formTopDivTkn($formAtrrib,"",['class'=>'panel-body','id'=>'login-content']);
+$formContent = $form->mkFormTopTkn($formAtrrib);
 
 $aryTagsAttrs[] = array('name' => 'usernameOREmail',
 							'label' => 'Username or Email',
@@ -31,11 +31,11 @@ $formContent .= $form->mkInpsValSec($aryTagsAttrs, $user);
 $aryTagsAttrs = []; // empty/reset array
 $aryTagsAttrs[] = array('type' => 'submit', 'name' => 'Login',
 			'value' => 'Login', 'class' => 'btn'); // add submit button
-$aryTagsAttrs[] = array('type' => 'checkbox','name'=>'remember_me',
-				'label' => 'Remember Me', 'noValue' => 'checked', 'value' => true);
+$aryTagsAttrs[] = array('type'=>'checkbox','name'=>'remember_me','id'=>'remember_me',
+				'class'=>'checkbox','label'=>'Remember Me','noValue'=>'checked','value'=>true);
 $noModel = '';
 // 2/10/19
-$formPart = array("name" => "fieldset", "id" => "outputs", "class" => "fieldset", );
+$formPart = array("name" => "fieldset", "id" => "actions", "class" => "fieldset", );
 // $form->mkInpsValSec($origfldAttrSets, $model, $secTyp = "fieldset", $formPart)
 $lblNID = false;
 /* ($origfldAttrSets, $model = "", $secTyp = "fieldset",
@@ -44,7 +44,8 @@ $lblNID = false;
 $formContent .= $form->mkInpsValSec($aryTagsAttrs, $noModel, "fieldset", $formPart, $lblNID);
 
 // $submitTagAttrs[] = array('type' => 'submit', value='Login' 'class' => 'btn btn-default')
-$formContent .= $form->endtags(array('form', 'div', 'div')); // was: endForm(['submitTitle' =>'Login']);
-// ** already set by formTopDecl: $formContent = FormBuild::retClosedTag("div",
-// ** already set by formTopDecl: 	 ['class' => 'col-md-6 col-md-offset-1 float-left'], $formContent);
+$formContent .= $form->endtags(array('form'));
+// above was: endForm(['submitTitle' =>'Login']); (and assumed 2 divs)
+// ** already set by formTopDivTkn: $formContent = FormBuild::retClosedTag("div",
+// ** already set by formTopDivTkn: 	 ['class' => 'col-md-6 col-md-offset-1 float-left'], $formContent);
 echo $formContent;

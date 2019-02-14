@@ -24,6 +24,12 @@ body {
   width: 890px;
 }
 
+.group:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
 /* CSS from online Login Form  */
 ul.nav ul {
   margin: 0;
@@ -41,26 +47,28 @@ ul.nav li {
 }
 
 ul.nav li#login {
-  clear:both;
+  clear: both;
   border-right: 1px solid #ddd;
   box-shadow: 1px 0 0 #fff;
 }
 
 ul.nav #login-trigger,
-ul.nav #signup a {
-  display: inline-block;
+ul.nav #remember_me {
+  // display: inline-block;
   *display: inline;
   *zoom: 1;
+  clear: both;
   height: 25px;
   line-height: 25px;
   font-weight: bold;
-  padding: 0 8px;
+  padding: 0;
   text-decoration: none;
-  color: #444;
+  // color: #444;
   text-shadow: 0 1px 0 #fff;
+  text-align: left;
 }
 
-ul.nav #signup a {
+ul.nav #remember_me {
   border-radius: 0 3px 3px 0;
 }
 
@@ -70,7 +78,7 @@ ul.nav #login-trigger {
 
 ul.nav #login-trigger:hover,
 ul.nav #login .active,
-ul.nav #signup a:hover {
+ul.nav #remember_me input[type=checkbox]:hover {
   background: #fff;
 }
 
@@ -91,14 +99,13 @@ ul.nav li #login-content {
   right: 0;
   width: 250px;
 }
-
 /*--------------------*/
 
 ul.nav fieldset#inputs input {
   background: #f1f1f1;
   padding: 6px 5px;
   margin: 0 0 5px 0;
-  width: 238px;
+  width: 100%;
   border: 1px solid #ccc;
   border-radius: 3px;
   box-shadow: 0 1px 1px #ccc inset;
@@ -114,7 +121,7 @@ ul.nav fieldset#inputs input {
 /*--------------------*/
 
 #login #actions {
-  margin: 10px 0 0 0;
+  margin: 5px 0 0 0;
 }
 
 #login #submit {
@@ -152,11 +159,34 @@ ul.nav fieldset#inputs input {
 
 #login label {
   float: right;
-  line-height: 30px;
+  line-height: 5px;
+  padding: .3em;
+}
+
+#login div.lblNcheckbox { // block contains checkbox and label nothing currently here 2/19
+}
+
+#login label.checkboxLbl {
+  position: relative;
+  margin-top: .8em;
+  float: left;
+}
+
+#login span.checkbox { // container that checkbox can float-left in
+}
+
+#login input[type="checkbox"] {
+  vertical-align: middle;
+  display: inline-block;
+  margin-left: -3.4em;
+  margin-top: .7em;
+  width: 50%;
+  height: 50%;
+  float: left;
 }
 
 #login label input {
   position: relative;
-  top: 2px;
-  right: 2px;
+  top: 1px;
+  right: 1px;
 }

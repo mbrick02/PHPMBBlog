@@ -17,7 +17,7 @@
 				$(this).next().next().slideToggle(); // was dropdownMenuButton (this).next().next
 				$("#login-content").toggleClass('active');
 
-				if ($(this).hasClass('active')) $(this).find('span').html('&#x25B2;')
+				if ($(this).next().next().hasClass('active')) $(this).find('span').html('&#x25B2;')
 					else $(this).find('span').html('&#x25BC;')
 				})
 		});
@@ -66,6 +66,7 @@
                   <!-- *** was div for anchor dropdown-item -->
                   <div id="login-content"> <!-- div was just holding dropdown-item "Other Menu Option" -->
                       <!-- div class="col-md-12 float-left panel-body" id="was login-content" -->
+                      <div class="group"></div>
                         <form action="/user/login" method="post">
                         <input type="hidden" name="login[token]" value="0a4aa770788a6ef522c1e2c7b828ee05"
                         class="form-control">
@@ -76,15 +77,23 @@
                            <label for="login[password]">Password:</label>
                            <input type="password" name="login[password]" id="password" class="form-control">
                         </fieldset>
-                        <fieldset id='outputs' class='fieldset'>
-                           <input type="submit" name="login[Login]" value="Login" class="btn">
-                           <label for="login[remember_me]">Remember Me:</label>
-                           <input type="checkbox" name="login[remember_me]" value="1" class="form-control" checked>
+                        <fieldset id='actions' class='fieldset'>
+                           <input id="submit" type="submit" name="login[Login]" value="Login" class="btn">
+
+                           <div class="lblNcheckbox" id="remember_me">
+                             <label class="checkboxLbl" style="" for="login[remember_me]">Remember Me:</label>
+                             <span class="checkbox">
+                               <input type="checkbox" name="login[remember_me]" value="1" class="form-control" checked>
+                             </span>
+                           </div>
+
                         </fieldset>
                         </form>
                         <!-- was login content holding just form /div -->
                   <!-- *** was /div for anchor dropdown-item  -->
+                  <div class="group"></div>
                   <div class="dropdown-divider"><a class="dropdown-item"></a></div>
+
                   <a class="dropdown-item" href="#">Other Menu Option</a></div>
                   <!-- User Profile (update), Login, logout, Signup/Create in Controller->$loginOrProfile -->
               <!-- /div -->

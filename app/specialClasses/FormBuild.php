@@ -146,15 +146,17 @@ class FormBuild {
 
     $output = self::retTag($tagType, $assiVars);
     $output .= $tagContent;
-    $output .= self::endTag($tagType);
+    $output .= "\n" . "    " .self::endTag($tagType);
 
     return $output;
   }
 
   public function retInpFldNLbl($assiVars = []) {
-    // inputs = $assiVars['type'] (options: 'name', 'value', etc)
-    // examp: <input type="hidden" name="token" value="<?php echo Token::generate(); ">
+    // inputs = $assiVars['type'] (options: 'name', 'value', etc. w/option for label and input encl tag)
+    // examp: <div><input type="hidden" name="token" value="<?php echo Token::generate(); "></div>
     $output = "";
+    $label = "";
+    $indent = "    ";
     if (isset($assiVars['label'])){
       if (!isset($assiVars['labelFor'])) {
         $assiVars['labelFor'] = $assiVars['name'];
@@ -162,25 +164,44 @@ class FormBuild {
       if (!empty(static::$_nameAry)) {
         $assiVars['labelFor'] = static::$_nameAry . "[{$assiVars['name']}]";
       }
-      $label = "   <label for=\"{$assiVars['labelFor']}\">" . ucfirst($assiVars['label']) . ":</label>\n";
+      // **** 2/14/19 missing:<label class="checkboxLbl"
+      $lblClass = isset($assiVars['lblClass']) ? " class=\"" . $assiVars['lblClass'] . "\"" : '';
+      $label = "<label" . $lblClass. " for=\"{$assiVars['labelFor']}\">" . ucfirst($assiVars['label']) . ":</label>\n";
     }
 
-    // if (isset($assiVars['enclLblNInp'])) { }
-    // if (isset($assiVars['enclInp'])) { }
+
     $inpVars = [];
     foreach ($assiVars as $key => $value){
-      if ($key == "enclLblNInp") *******************************************{}
+      if ($key == 'enclLblNInp') continue; // array of Label & Input enclosing tag (eg. div)
+      if ($key == 'enclInp') continue; // array of Input enclosing tag (eg. <span>)
+      if ($key == 'lblClass') continue;  // skip label class
       $inpVars[$key] = $value;
     }
 
     if (!isset($inpVars['class'])) {
-      $inpVars['class'] = "form-control";
-    }/* elseif (!strpos($inpVars['class'], 'form-control')) {  // always have form-control ??maybe not???
-      $inpVars['class'] .= " form-control";
-    } */
+      $inpVars['class'] = "form-control"; // default
+    }/* elseif (!strpos($inpVars['class'], 'form-control')) {  $inpVars['class'] .= " form-control";  } */ // always form-control?
 
-    // *** 2/14/19 add in retClosedTag() for spans and combind with label and combine for retClosedTag(div/OrOthTag)
-    $xoutput .= "   " . self::retTag("input", $inpVars);
+    $inpTag = self::retTag("input", $inpVars);
+
+    if (isset($assiVars['enclInp'])) {
+      $tag = $assiVars['enclInp']['tag'];
+      $tagAttribs = array_slice($assiVars['enclInp'],1); // Note: 1st element must be 'tag'
+      $content = $indent . $indent . $inpTag;
+      $inpTag = $indent . self::retClosedTag($tag, $tagAttribs, $content);
+    } else {
+      $inpTag = $indent . $inpTag;
+    }
+
+    if (isset($assiVars['enclLblNInp'])) {
+      $tag = $assiVars['enclLblNInp']['tag'];
+      $tagAttribs = array_slice($assiVars['enclLblNInp'],1); // Note: 1st element must be 'tag'
+      $content = $indent . $indent . $label . "\n" . $indent . $indent . $inpTag;
+      $output = self::retClosedTag($tag, $tagAttribs, $content);
+    } else {
+      $output = $indent . $label . "\n" . $indent . $inpTag;
+    }
+
     return $output;
   }
 
@@ -388,7 +409,7 @@ class FormBuild {
 
   public function retTxtAreaDiv($assiVars = []) {
     $output = "<div class=\"form-group\"> \n";
-    $output .= $this->retClosedTag("textarea", $assiVars) . "\n";
+    $output .= self::retClosedTag("textarea", $assiVars) . "\n";
     $output .= "</div>";
 
     return $output;
@@ -429,7 +450,7 @@ class FormBuild {
     // TOO CUTE?: probably better - just pass in var $submitTitle but... future use?
     //    e.g. could pass in $buttonAttribs and overwrite (default flag EXTR_OVERWRITE)
     // DELETE: DEBUG **$submitTitle = $submitTitleAry['submitTitle'];
-    $output = $this->retClosedTag("button", $buttonAttribs, $submitTitle);
+    $output = self::retClosedTag("button", $buttonAttribs, $submitTitle);
     $output .= $this->endTags($endTags);
     return $output;
 
@@ -477,7 +498,7 @@ class FormBuild {
     $assumLblNID = true) {
     /* based on mkSimpTxtInpValSec; called by view->form
     // create input text type w/Value check: <input type="text"...>
-    // Note: this ONLY makes 1 text input field */
+    // Note: 1 to many input fields can be in $origfldAttrSets */
     if (!empty($model)){
       $values = $model->getCols();  // e.g. $user->getCols for class column vals
     } else { $values = "";}

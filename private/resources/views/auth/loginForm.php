@@ -29,10 +29,16 @@ $aryTagsAttrs[] = array('type' => 'password');
 $formContent .= $form->mkInpsValSec($aryTagsAttrs, $user);
 
 $aryTagsAttrs = []; // empty/reset array
+/*
+if ($key == 'enclLblNInp') continue; // array of Label & Input enclosing tag (eg. div)
+if ($key == 'enclInp') continue;
+*/
 $aryTagsAttrs[] = array('type' => 'submit', 'name' => 'Login',
 			'value' => 'Login', 'class' => 'btn'); // add submit button
 $aryTagsAttrs[] = array('type'=>'checkbox','name'=>'remember_me','id'=>'remember_me',
-				'class'=>'checkbox','label'=>'Remember Me','noValue'=>'checked','value'=>true);
+				'class'=>'checkbox','label'=>'Remember Me','noValue'=>'checked', 'lblClass'=>'checkboxLbl', 
+				'value'=>true, 'enclLblNInp' => ['tag'=>'div','class'=>'lblNcheckbox','id'=>'remember_me',],
+				'enclInp' => ['tag'=>'span', 'class'=>'checkbox']); // label & checkbox (enclosed in span) endlosed in div
 $noModel = '';
 // 2/10/19
 $formPart = array("name" => "fieldset", "id" => "actions", "class" => "fieldset", );
@@ -40,8 +46,9 @@ $formPart = array("name" => "fieldset", "id" => "actions", "class" => "fieldset"
 $lblNID = false;
 /* ($origfldAttrSets, $model = "", $secTyp = "fieldset",
 	$formPart = array("name" => "fieldset", "id" => "inputs", "class" => "fieldset", ),
-	$assumLblNID = true) */
-$formContent .= $form->mkInpsValSec($aryTagsAttrs, $noModel, "fieldset", $formPart, $lblNID);
+	$assumLblNID = true)
+	 */
+$formContent .= $form->mkInpsValSec($aryTagsAttrs, $noModel, "fieldset", $formPart, $lblNID); // create submit checkbox fieldset
 
 // $submitTagAttrs[] = array('type' => 'submit', value='Login' 'class' => 'btn btn-default')
 $formContent .= $form->endtags(array('form'));

@@ -34,9 +34,9 @@ if ($key == 'enclLblNInp') continue; // array of Label & Input enclosing tag (eg
 if ($key == 'enclInp') continue;
 */
 $aryTagsAttrs[] = array('type' => 'submit', 'name' => 'Login',
-			'value' => 'Login', 'class' => 'btn'); // add submit button
+			'value' => 'Login', 'class' => 'submitbtn'); // add submit button
 $aryTagsAttrs[] = array('type'=>'checkbox','name'=>'remember_me','id'=>'remember_me',
-				'class'=>'checkbox','label'=>'Remember Me','noValue'=>'checked', 'lblClass'=>'checkboxLbl', 
+				'class'=>'checkbox','label'=>'Remember Me','noValue'=>'checked', 'lblClass'=>'checkboxLbl',
 				'value'=>true, 'enclLblNInp' => ['tag'=>'div','class'=>'lblNcheckbox','id'=>'remember_me',],
 				'enclInp' => ['tag'=>'span', 'class'=>'checkbox']); // label & checkbox (enclosed in span) endlosed in div
 $noModel = '';

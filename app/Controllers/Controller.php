@@ -18,10 +18,10 @@ class Controller {
 
 	static $publicHeader = "";
 
-// pass in entire $container make available to 'child'/extended controllers
-  public function __construct($container, $args = []) { // defaults set here options in initialize
+	// pass in entire $container make avail to 'child'/extended controllers
+	public function __construct($container, $args = []) { // defaults here, options in initialize
 		static::$container = $container; // container defined in bootstrap/app.php
-   }
+  }
 
 	 protected static function buildLoginForm() {
 		 global $db;

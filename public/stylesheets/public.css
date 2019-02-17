@@ -124,7 +124,7 @@ ul.nav fieldset#inputs input {
   margin: 5px 0 0 0;
 }
 
-#login #submit {
+#login input[type=submit].submitbtn {
   background-color: #d14545;
   background-image: linear-gradient(top, #e97171, #d14545);
   -moz-border-radius: 3px;

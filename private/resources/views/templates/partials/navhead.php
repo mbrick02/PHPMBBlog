@@ -14,7 +14,10 @@
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
 			data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
 			aria-expanded="false" aria-label="Toggle navigation">
-				<span class="icon-bar"></span>
+			<span class="sr-only">Toggle navigation</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
 			</button>
 			<a class="navbar-brand" href="<?php echo $pageUrls['products']; ?>">Brand</a>
 		</div>

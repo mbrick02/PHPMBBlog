@@ -43,7 +43,7 @@ LOCAL_SCRIPT;
   ?>
 </head>
 <body>
-<header>
+<header class="row">
   <?php
     include TEMPLATE_PATH . DS . 'partials' . DS . 'newHeaderSec.php';
     include TEMPLATE_PATH . DS . 'partials' . DS . 'newNavhead.php';
@@ -68,11 +68,11 @@ LOCAL_SCRIPT;
 <!-- ?extra/unnecessary: /div -->
 
 </div> <!-- end of row container -->
-      <div class="row">
+<div class="row">
       <footer class="col-sm-6 col-md-8 footnote">
         <p>&copy 2019 Michael Brickler</p>
       </footer>
-    </div><!-- end row -->
+</div><!-- end row -->
 
 </body>
 </html>

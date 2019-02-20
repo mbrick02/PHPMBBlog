@@ -15,8 +15,8 @@
       $bstrapCSSHref = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css";
       $bstrapCSSInteg = "sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u";
       $bstrapCSSOrg = "anonymous";
-      $bstrapCSSIntegStr = "href=\"" . $bstrapCSSHref . "\" \n integrity=\"" . $bstrapCSSInteg . "\" ";
-      $bstrapCSSIntegStr .= "\n crossorigin=\"" . $bstrapCSSOrg . "\" \n";
+      $bstrapCSSIntegStr = "href=\"" . $bstrapCSSHref . "\" \n   integrity=\"" . $bstrapCSSInteg . "\" ";
+      $bstrapCSSIntegStr .= "\n   crossorigin=\"" . $bstrapCSSOrg . "\" \n";
 
       /* <!-- link rel="stylesheet" media="all" href="<?php echo $locStylesheet; ?>" />
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -27,6 +27,10 @@
       $localscripts = "";
       $localscripts .= <<<'LOCAL_SCRIPT'
   <script>
+    // trying to make submenu have a higher z-index so it doesn't shove next row down
+    // from stackoverflow :
+    // $(this).parent().css('position', 'relative');
+    // $(this).parent().css('z-index', 3000);
       $(document).ready(function(){
       $('#login-trigger').click(function(){
           $('#login-content').slideToggle(); // was dropdownMenuButton (this).next().next

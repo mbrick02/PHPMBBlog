@@ -193,14 +193,14 @@ ul.nav fieldset#inputs input {
 
 // 2/19/19 problem with submenus expanding container
 // or moving items below from test submenus
-.dropdown-menu {
+li.dropdown ul.dropdown-menu {
   position: absolute;
   z-index: -1;
   top: 100%;
-  opacity: 0;
-  transition: opacity linear 0.15s;
-  box-shadow: 0px 2px 3px rgba(0,0,0,0.2);
-  background: purple;
+  // oxxxpacity: 0;
+  // transition: opacity linear 0.15s;
+  // box-shadow: 0px 2px 3px rgba(0,0,0,0.2);
+  background-color: red;
 }
 
 .dropdown-menu li {
@@ -208,9 +208,11 @@ ul.nav fieldset#inputs input {
   clear:both;
 }
 
-.dropdown li:hover .dropdown-menu {
+.dropdown .dropdown-menu {
   z-index: 1;
   opacity: 1;
+  top: 100%;
+  position: absolute;
 }
 
 .navbar {

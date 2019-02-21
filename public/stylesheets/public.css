@@ -210,6 +210,10 @@ li.dropdown ul.dropdown-menu li {  // 2/21/19 NOT working - get Inbox & Drafts "
   clear:both;
 }
 
+ul.navbar-nav li.dropdown {
+  max-width: 1em;
+}
+
 .dropdown .dropdown-menu {
   z-index: 1;
   opacity: 1;

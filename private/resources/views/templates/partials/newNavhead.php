@@ -25,7 +25,7 @@
                  <li class="dropdown">
                      <a href="#" data-toggle="dropdown" class="dropdown-toggle">Messages <b class="caret"></b></a>
                      <ul class="dropdown-menu">
-                         <li><a href="#">Inbox&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
+                         <li><a href="#">Inbox</a></li> <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
                          <li><a href="#">Drafts</a></li>
                          <li><a href="#">Sent Items</a></li>
                          <li class="divider"></li>

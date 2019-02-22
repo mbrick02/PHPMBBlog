@@ -191,8 +191,8 @@ ul.nav fieldset#inputs input {
   right: 1px;
 }
 
-// 2/19/19 problem with submenus expanding container
-// or moving items below from test submenus
+/* // 2/19/19 problem with submenus expanding container
+// or moving items below from test submenus */
 /* li.dropdown ul.dropdown-menu {
   position: absolute;
   z-index: -1;
@@ -202,23 +202,32 @@ ul.nav fieldset#inputs input {
   // box-shadow: 0px 2px 3px rgba(0,0,0,0.2);
   // background-color: red;
 } //  -- this reference did nothing */
-// to change this element background-color etc use: .navbar-nav > li > .dropdown ?
+/* to change this element background-color etc use: .navbar-nav > li > .dropdown ? */
 
-li.dropdown ul.dropdown-menu li {  // 2/21/19 NOT working - get Inbox & Drafts "li"s on same line
+/* li.dropdown ul.dropdown-menu li {  // 2/21/19 NOT working -
   display:block;
   max-width: 1em;
   clear:both;
+} */
+
+/* .dropdown .dropdown-menu li {
+  width: 7em; // make "Drafts" tag go to next line (not sure why this works)
+} */
+
+.dropdown .dropdown-menu li {
+    position: relative;
+    clear: both;
 }
 
-ul.navbar-nav li.dropdown {
-  max-width: 1em;
-}
+/* DELETE (doesn't seem to do anything) ul.navbar-nav li.dropdown {
+  max-width: 1em; // trying to make "Drafts" tag go to next line (not sure why it isn't)
+} */
 
 .dropdown .dropdown-menu {
   z-index: 1;
   opacity: 1;
-  top: 100%;
-  position: absolute; // so doesnt take other elements out of flow
+  top: 100%; /* drops element below the container */
+  position: absolute; /* doesnt take other elements out of flow */
 }
 
 .navbar {

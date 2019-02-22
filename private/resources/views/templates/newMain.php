@@ -7,6 +7,7 @@
       $urlForIndex = "/";
       $urlForMBBlogLogo = IMG_SRC . "mbBlogLogo.jpg";
       $locStylesheet = getBaseUrl() . 'stylesheets/public.css';
+      // ???2/22/19: do we pass in $menuStructure and $loginForm ?????
 
       // <!-- 2018 bstrap compiled and minified CSS -->
       /* link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"

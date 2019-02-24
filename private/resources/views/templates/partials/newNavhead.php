@@ -1,5 +1,5 @@
 <?php
-// echo $publicHeader; // Logo, Page title, errors or other messages via partials/public_header
+// echo $publicHeader; // currently in newMain: Logo, Page title, errs or oth msgs - partials/public_header
  ?>
 
  <div class="blog-masthead">
@@ -7,7 +7,7 @@
      <!--  navbar navbar-expand-lg navbar-light bg-light -->
      <!-- Brand and toggle get grouped for better mobile display -->
      <div class="container">
-         <div class="navbar-header">
+         <div class="navbar-header"><!-- This makes hamburger icon for small screens -->
              <button type="button" class="navbar-toggle" data-toggle="collapse"
               data-target="#bs-example-navbar-collapse-1">
                  <span class="sr-only">Toggle navigation</span>
@@ -19,7 +19,7 @@
          </div>
          <!-- Collect the nav links, forms, and other content for toggling -->
          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-             <ul class="nav navbar-nav">
+             <ul class="nav navbar-nav"><!-- left side menu bar -->
                  <li><a href="#">Home</a></li>
                  <li><a href="#">Profile</a></li>
                  <li class="dropdown">
@@ -49,4 +49,3 @@
      </div>
    </nav>
  </div><!-- masthead -->
- <!-- ************  END NAV HEAD experi 10/16/18 ******************** -->

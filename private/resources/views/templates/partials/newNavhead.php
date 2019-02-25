@@ -1,5 +1,20 @@
 <?php
 // echo $publicHeader; // currently in newMain: Logo, Page title, errs or oth msgs - partials/public_header
+$indnt = "    ";
+$indnt3 = $indnt . $indnt . $indnt;
+$indnt5 = $indnt3 . $indnt . $indnt;
+// 3-line "hamburger" menu button for mobile device menu
+$hamburgBtn = $indnt3 . '<button type="button" class="navbar-toggle" data-toggle="collapse"' . "\n";
+$hamburgBtn .= $indnt3 . $indnt . 'data-target="#bs-example-navbar-collapse-1">' . "\n";
+$hamburgBtn .= $indnt5 . '<span class="sr-only">Toggle navigation</span>' . "\n";
+$hamburgBtn .= $indnt5 . '<span class="icon-bar"></span>' . "\n";
+$hamburgBtn .= $indnt5 . '<span class="icon-bar"></span>' . "\n";
+$hamburgBtn .= $indnt5 . '<span class="icon-bar"></span>' . "\n";
+$hamburgBtn .= $indnt3 . $indnt . '</button>' . "\n";
+
+$brand = $indnt3 . $indnt . '<a class="navbar-brand" href="#">Brand</a>' . "\n";
+
+$leftTpMenu = ""; // 02/24/19 put in lines below
  ?>
 
  <div class="blog-masthead">
@@ -8,14 +23,9 @@
      <!-- Brand and toggle get grouped for better mobile display -->
      <div class="container">
          <div class="navbar-header"><!-- This makes hamburger icon for small screens -->
-             <button type="button" class="navbar-toggle" data-toggle="collapse"
-              data-target="#bs-example-navbar-collapse-1">
-                 <span class="sr-only">Toggle navigation</span>
-                 <span class="icon-bar"></span>
-                 <span class="icon-bar"></span>
-                 <span class="icon-bar"></span>
-             </button>
-             <a class="navbar-brand" href="#">Brand</a>
+<?php echo $hamburgBtn; ?>
+<?php echo $brand; ?>
+
          </div>
          <!-- Collect the nav links, forms, and other content for toggling -->
          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">

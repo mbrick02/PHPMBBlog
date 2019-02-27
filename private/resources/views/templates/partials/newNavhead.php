@@ -1,8 +1,6 @@
 <?php
   // echo $publicHeader; // currently in newMain: Logo, Page title, errs or oth msgs - partials/public_header
-  $indnt = "    ";
-  $indnt3 = $indnt . $indnt . $indnt;
-  $indnt5 = $indnt3 . $indnt . $indnt;
+
   // 3-line "hamburger" menu button for mobile device menu
   $hamburgBtn = $indnt3 . '<button type="button" class="navbar-toggle" data-toggle="collapse"' . "\n";
   $hamburgBtn .= $indnt3 . $indnt . 'data-target="#bs-example-navbar-collapse-1">' . "\n";
@@ -48,7 +46,24 @@
   */
 
   $navMnuR = $indnt3 . $indnt . '<ul class="nav navbar-nav navbar-right"> <!-- rt side menu -->';
-  $navMnuR .= $indnt5 . '<li class="dropdown">';
+  $navMnuR .= $indnt5 . '<li> <span class="glyphicon glyphicon-shopping-cart"></span>&nbsp;' . $cartExists . '</li>';
+  $navMnuR .= $indnt5 . $indnt . '<li id="login"><div class="dropdown">';
+  $navMnuR .= $indnt5 . $indnt . $indnt . $userButton;
+  $navMnuR .= $indnt5 . $indnt . '<div id="login-content" class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
+  $navMnuR .= $indnt5 . $indnt . $indnt . '<div>';
+  $navMnuR .= $indnt5 . $indnt3 . '<a class="dropdown-item">' . $loginOrProfile . '</a>';
+  $navMnuR .= $indnt5 . $indnt . $indnt . '</div>';
+  $navMnuR .= $indnt5 . $indnt . $indnt . '<div class="dropdown-divider"><a class="dropdown-item"></a></div>';
+  $navMnuR .= $indnt5 . $indnt . '<div><a class="dropdown-item" href="#">Other Menu Option</a></div>';
+  //  <!-- User Profile (update), Login, logout, Signup/Create in Controller->$loginOrProfile -->
+  $navMnuR .= $indnt5 . $indnt . '</div>';
+  $navMnuR .= $indnt5 . $indnt . '</div></li>';
+  $navMnuR .= $indnt5 . $indnt . '</ul>';
+  $navMnuR .= $indnt5 . '</li>';
+  $navMnuR .= $indnt3 . $indnt . '</ul>';
+
+// remainder of OLD test version for comparisson/substitution 2/26/19
+/*
   $navMnuR .= $indnt5 . $indnt . '<a href="#" data-toggle="dropdown" class="dropdown-toggle">Admin <b class="caret"></b></a>';
   $navMnuR .= $indnt5 . $indnt . '<ul class="dropdown-menu">';
   $navMnuR .= $indnt5 . $indnt . $indnt . '<li><a href="#">Action</a></li>';
@@ -58,6 +73,77 @@
   $navMnuR .= $indnt5 . $indnt . '</ul>';
   $navMnuR .= $indnt5 . '</li>';
   $navMnuR .= $indnt3 . $indnt . '</ul>';
+*/
+
+    /*  current right menu (w/login form):
+    <ul class="nav navbar-nav navbar-right">
+      <li><?php echo "<span class=\"glyphicon glyphicon-shopping-cart\"></span>&nbsp;". $cartExists; ?></li>
+      <?php // echo "<h4>" . ($lgdIn ? "Logged In" : "Not logged in") . "</h4><br>";
+        // move above to CONTROLLER 11/20
+      ?><br>
+      <li id="login"><div class="dropdown">
+              <?php echo $userButton;
+              // moved logic to controller (for now - later: model?): if($lgdIn){} else { }
+              ?>
+        <div id="login-content" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <div>
+              <a class="dropdown-item"><?php echo $loginOrProfile; ?></a>
+            </div>
+            <div class="dropdown-divider"><a class="dropdown-item"></a></div>
+            <div><a class="dropdown-item" href="#">Other Menu Option</a></div>
+            <!-- User Profile (update), Login, logout, Signup/Create in Controller->$loginOrProfile -->
+        </div>
+      </div></li>
+    </ul>
+    <!-- above is right menu below ends the section(s)
+  </div><!-- /.navbar-collapse -->
+  </div> <!-- /.container-fluid -->
+  </nav>
+    */
+
+    /* current rightside menu with vars expanded:
+    <ul class="nav navbar-nav navbar-right">
+          <li><span class="glyphicon glyphicon-shopping-cart"></span>&nbsp;No Cart</li>
+  				<br>
+          <li id="login"><div class="dropdown">
+                  <a id="login-trigger" href="#" class="btn btn-secondary dropdown-toggle" type="button" data-toggle="login-content" aria-haspopup="true" aria-expanded="false">Login <span>▼</span></a> or <a href="/user/create">Create User</a>					<div id="login-content" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <div>
+                  <a class="dropdown-item"><form action="/user/login" method="post">
+  <input type="hidden" name="login[token]" value="2e23d713d3e6de798586a4976eebdc81" class="form-control">
+  <fieldset id='inputs' class='fieldset'>
+      <label for="login[usernameOREmail]">Username or Email:</label>
+
+          <input name="login[usernameOREmail]" type="text" placeholder="uname_or_email@dom.com" id="usernameOREmail" class="form-control">
+      <label for="login[password]">Password:</label>
+
+          <input type="password" name="login[password]" id="password" class="form-control">
+  </fieldset>
+  <fieldset id='actions' class='fieldset'>
+
+          <input type="submit" name="login[Login]" value="Login" class="submitbtn">
+  <div class="lblNcheckbox" id="remember_me">
+          <label class="checkboxLbl" for="login[remember_me]">Remember Me:</label>
+
+              <span class="checkbox">
+          <input type="checkbox" name="login[remember_me]" id="remember_me" class="checkbox" value="1" checked>
+
+      </span>
+
+      </div>
+  </fieldset>
+  </form>
+  </a>
+                </div>
+                <div class="dropdown-divider"><a class="dropdown-item"></a></div>
+                <div><a class="dropdown-item" href="#">Other Menu Option</a></div>
+                <!-- User Profile (update), Login, logout, Signup/Create in Controller->$loginOrProfile -->
+            </div>
+  				</div></li>
+  			</ul>
+  		</div><!-- /.navbar-collapse -->
+      </div> <!-- /.container-fluid -->
+  	</nav>
+    */
 
   /*  sample/test right menu:
   <ul class="nav navbar-nav navbar-right"> <!-- right side menu -->
@@ -73,78 +159,6 @@
       </li>
   </ul>
   */
-
-  /*  current right menu (w/login form):
-  <ul class="nav navbar-nav navbar-right">
-    <li><?php echo "<span class=\"glyphicon glyphicon-shopping-cart\"></span>&nbsp;". $cartExists; ?></li>
-    <?php // echo "<h4>" . ($lgdIn ? "Logged In" : "Not logged in") . "</h4><br>";
-      // move above to CONTROLLER 11/20
-    ?><br>
-    <li id="login"><div class="dropdown">
-            <?php echo $userButton;
-            // moved logic to controller (for now - later: model?): if($lgdIn){} else { }
-            ?>
-      <div id="login-content" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <div>
-            <a class="dropdown-item"><?php echo $loginOrProfile; ?></a>
-          </div>
-          <div class="dropdown-divider"><a class="dropdown-item"></a></div>
-          <div><a class="dropdown-item" href="#">Other Menu Option</a></div>
-          <!-- User Profile (update), Login, logout, Signup/Create in Controller->$loginOrProfile -->
-      </div>
-    </div></li>
-  </ul>
-  <!-- above is right menu below ends the section(s)
-</div><!-- /.navbar-collapse -->
-</div> <!-- /.container-fluid -->
-</nav>
-  */
-
-  /* current rightside menu with vars expanded:
-  <ul class="nav navbar-nav navbar-right">
-        <li><span class="glyphicon glyphicon-shopping-cart"></span>&nbsp;No Cart</li>
-				<br>
-        <li id="login"><div class="dropdown">
-                <a id="login-trigger" href="#" class="btn btn-secondary dropdown-toggle" type="button" data-toggle="login-content" aria-haspopup="true" aria-expanded="false">Login <span>▼</span></a> or <a href="/user/create">Create User</a>					<div id="login-content" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <div>
-                <a class="dropdown-item"><form action="/user/login" method="post">
-<input type="hidden" name="login[token]" value="2e23d713d3e6de798586a4976eebdc81" class="form-control">
-<fieldset id='inputs' class='fieldset'>
-    <label for="login[usernameOREmail]">Username or Email:</label>
-
-        <input name="login[usernameOREmail]" type="text" placeholder="uname_or_email@dom.com" id="usernameOREmail" class="form-control">
-    <label for="login[password]">Password:</label>
-
-        <input type="password" name="login[password]" id="password" class="form-control">
-</fieldset>
-<fieldset id='actions' class='fieldset'>
-
-        <input type="submit" name="login[Login]" value="Login" class="submitbtn">
-<div class="lblNcheckbox" id="remember_me">
-        <label class="checkboxLbl" for="login[remember_me]">Remember Me:</label>
-
-            <span class="checkbox">
-        <input type="checkbox" name="login[remember_me]" id="remember_me" class="checkbox" value="1" checked>
-
-    </span>
-
-    </div>
-</fieldset>
-</form>
-</a>
-              </div>
-              <div class="dropdown-divider"><a class="dropdown-item"></a></div>
-              <div><a class="dropdown-item" href="#">Other Menu Option</a></div>
-              <!-- User Profile (update), Login, logout, Signup/Create in Controller->$loginOrProfile -->
-          </div>
-				</div></li>
-			</ul>
-		</div><!-- /.navbar-collapse -->
-    </div> <!-- /.container-fluid -->
-	</nav>
-  */
-
-
 ?>
 
  <div class="blog-masthead">

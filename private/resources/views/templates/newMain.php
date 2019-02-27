@@ -2,12 +2,18 @@
 <html lang="en">
   <head>
     <?php
+      global $session;
+      $cartExists = $session->exists('cart') ? $session->get('cart')['totalQty'] : 'No Cart';
+
       $htmlTitle = "MB Blog Home";
       $webTitle = "MB Blog";
       $urlForIndex = "/";
       $urlForMBBlogLogo = IMG_SRC . "mbBlogLogo.jpg";
       $locStylesheet = getBaseUrl() . 'stylesheets/public.css';
       // ???2/22/19: do we pass in $menuStructure and $loginForm ?????
+      $indnt = "    ";
+      $indnt3 = $indnt . $indnt . $indnt;
+      $indnt5 = $indnt3 . $indnt . $indnt;
 
       // <!-- 2018 bstrap compiled and minified CSS -->
       /* link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -24,6 +30,61 @@
       <script src=""></script>  --> */
       $pageJquery = "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js";
       $pageBstrpJS = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js";
+
+      $loginOrProfile = ""; // eventually use immediate below but cur test use next section 2/27/19
+      /*
+      $loginForm = VIEWS_PATH . DS . 'auth' . DS . 'loginForm.php';
+      $user = User::getInstance($db); // note: base on db but NOT from -- poss. added user
+      $formVars = [ 'user' => $user];
+      $loginFormContent = static::$container->view->
+       renderWithVariables($loginForm, $formVars, false);
+
+       return $loginFormContent;
+      */
+
+      $loginOrProfile = $indnt3 . $indnt . '<form action="/user/login" method="post">';
+      $loginOrProfile .= $indnt5 . '<input type="hidden" name="login[token]" value="2e23d713d3e6de798586a4976eebdc81" class="form-control">';
+      $loginOrProfile .= $indnt5 . $indnt . '<fieldset id="inputs" class="fieldset">';
+      $loginOrProfile .= $indnt5 . $indnt . $indnt . '<label for="login[usernameOREmail]">Username or Email:</label>';
+      $loginOrProfile .= $indnt5 . $indnt . $indnt . '<input name="login[usernameOREmail]" type="text" placeholder="uname_or_email@dom.com"';
+      $loginOrProfile .= $indnt5 . $indnt . $indnt . ' id="usernameOREmail" class="form-control">';
+      $loginOrProfile .= $indnt5 . $indnt . $indnt . '<label for="login[password]">Password:</label>';
+      $loginOrProfile .= $indnt5 . $indnt . $indnt . '<input type="password" name="login[password]" id="password" class="form-control">';
+      $loginOrProfile .= $indnt5 . $indnt . '</fieldset>';
+      $loginOrProfile .= $indnt5 . $indnt . '<fieldset id="actions" class="fieldset">';
+      $loginOrProfile .= $indnt5 . $indnt . $indnt . '<input type="submit" name="login[Login]" value="Login" class="submitbtn">';
+      $loginOrProfile .= $indnt5 . $indnt . $indnt . '<div class="lblNcheckbox" id="remember_me">';
+      $loginOrProfile .= $indnt5 . $indnt . $indnt . '<label class="checkboxLbl" for="login[remember_me]">Remember Me:</label>';
+      $loginOrProfile .= $indnt5 . $indnt . $indnt . '<span class="checkbox">';
+      $loginOrProfile .= $indnt5 . $indnt . $indnt . '<input type="checkbox" name="login[remember_me]" id="remember_me" class="checkbox" value="1" checked>';
+      $loginOrProfile .= $indnt5 . $indnt . $indnt . '</span>';
+      $loginOrProfile .= $indnt5 . $indnt . $indnt . '</div>';
+      $loginOrProfile .= $indnt5 . $indnt . '</fieldset>';
+      $loginOrProfile .= $indnt5 . '</form>';
+      /*
+      <form action="/user/login" method="post">
+      <input type="hidden" name="login[token]" value="2e23d713d3e6de798586a4976eebdc81" class="form-control">
+      <fieldset id='inputs' class='fieldset'>
+      <label for="login[usernameOREmail]">Username or Email:</label>
+      <input name="login[usernameOREmail]" type="text" placeholder="uname_or_email@dom.com" id="usernameOREmail" class="form-control">
+      <label for="login[password]">Password:</label>
+      <input type="password" name="login[password]" id="password" class="form-control">
+      </fieldset>
+      <fieldset id='actions' class='fieldset'>
+      <input type="submit" name="login[Login]" value="Login" class="submitbtn">
+      <div class="lblNcheckbox" id="remember_me">
+      <label class="checkboxLbl" for="login[remember_me]">Remember Me:</label>
+        <span class="checkbox">
+      <input type="checkbox" name="login[remember_me]" id="remember_me" class="checkbox" value="1" checked>
+      </span>
+      </div>
+      </fieldset>
+      </form>
+      */
+
+      $userButton = '<a id="login-trigger" href="#" class="btn btn-secondary dropdown-toggle" type="button"';
+      $userButton .= ' data-toggle="login-content" aria-haspopup="true" aria-expanded="false">Login <span>▼</span></a>';
+      $userButton .= ' or <a href="/user/create">Create User</a>';
 
       $localscripts = "";
       $localscripts .= <<<'LOCAL_SCRIPT'

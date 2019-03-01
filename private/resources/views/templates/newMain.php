@@ -33,11 +33,12 @@
 
       $loginOrProfile = ""; // eventually use immediate below but cur test use next section 2/27/19
       /*
-      $loginForm = VIEWS_PATH . DS . 'auth' . DS . 'loginForm.php';
+      // from orig buildLoginForm via userOptions from buildPage in Controller content:
+      $loginFormPth = VIEWS_PATH . DS . 'auth' . DS . 'loginForm.php';
       $user = User::getInstance($db); // note: base on db but NOT from -- poss. added user
-      $formVars = [ 'user' => $user];
+      $formVars = ['user' => $user];
       $loginFormContent = static::$container->view->
-       renderWithVariables($loginForm, $formVars, false);
+       renderWithVariables($loginFormPth, $formVars, false);
 
        return $loginFormContent;
       */
@@ -105,6 +106,19 @@
     </script>
 LOCAL_SCRIPT;
 
+      // original concespt for presenting messages:   <!-- include('partials._messages') -->
+      $content = $indnt3 . $indnt . '<div class="col-md-6 col-md-offset-1 float-left">';
+      $content .= $indnt3 . $indnt . '<div class="panel-heading">';
+      $content .= $indnt3 . $indnt . '<h2>MB Blog</h2>';
+      $content .= $indnt3 . $indnt . '</div>';
+      $content .= $indnt3 . $indnt . '<div class="panel-body">Welcome to MB Blog</div>';
+      $content .= $indnt3 . $indnt . '</div>';
+
+      $rightCol = $indnt3 . $indnt . '<div class="float-right my-lg-0">';
+      $rightCol .= $indnt5 . '<div class="my-lg-0">';
+      $rightCol .= $indnt5 . $indnt . '<h3>right side info passed in for user</h3>';
+      $rightCol .= $indnt3 . $indnt . '</div></div>';
+
     include TEMPLATE_PATH . DS . 'partials' . DS . 'newPublicHead.php';
   ?>
 </head>
@@ -116,29 +130,15 @@ LOCAL_SCRIPT;
   ?>
 </header>
 <div class="row container">
-      <!-- include('partials._messages') -->
-      <div class="col-md-6 col-md-offset-1 float-left">
-        <div class="panel-heading">
-          <h2>MB Blog</h2>
-        </div>
-        <div class="panel-body">
-          Welcome to MB Blog
-        </div>
+  <!-- include('partials._messages') -->
+  <?php echo $content; ?>
+  <?php echo $rightCol; ?>
+</div> <!-- end of .container -->
 
-      </div>
-      <div class="float-right my-lg-0">
-        <div class="my-lg-0">
-          <h3>right side info passed in for user</h3>
-        </div>
-      </div>
-<!-- ?extra/unnecessary: /div -->
+    <!-- include('partials._javascript') -->
 
-</div> <!-- end of row container -->
-<div class="row">
-      <footer class="col-sm-6 col-md-8 footnote">
-        <p>&copy 2019 Michael Brickler</p>
-      </footer>
-</div><!-- end row -->
+<?php include TEMPLATE_PATH . DS . 'partials' . DS . 'public_footer.php'; ?>
+
 
 </body>
 </html>

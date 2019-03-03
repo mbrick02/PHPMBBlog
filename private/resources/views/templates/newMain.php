@@ -43,25 +43,25 @@
        return $loginFormContent;
       */
 
-      $loginOrProfile = $indnt3 . $indnt . '<form action="/user/login" method="post">';
-      $loginOrProfile .= $indnt5 . '<input type="hidden" name="login[token]" value="2e23d713d3e6de798586a4976eebdc81" class="form-control">';
-      $loginOrProfile .= $indnt5 . $indnt . '<fieldset id="inputs" class="fieldset">';
-      $loginOrProfile .= $indnt5 . $indnt . $indnt . '<label for="login[usernameOREmail]">Username or Email:</label>';
+      $loginOrProfile = $indnt3 . $indnt . '<form action="/user/login" method="post">' . "\n";
+      $loginOrProfile .= $indnt5 . '<input type="hidden" name="login[token]" value="2e23d713d3e6de798586a4976eebdc81" class="form-control">' . "\n";
+      $loginOrProfile .= $indnt5 . $indnt . '<fieldset id="inputs" class="fieldset">' . "\n";
+      $loginOrProfile .= $indnt5 . $indnt . $indnt . '<label for="login[usernameOREmail]">Username or Email:</label>' . "\n";
       $loginOrProfile .= $indnt5 . $indnt . $indnt . '<input name="login[usernameOREmail]" type="text" placeholder="uname_or_email@dom.com"';
-      $loginOrProfile .= $indnt5 . $indnt . $indnt . ' id="usernameOREmail" class="form-control">';
-      $loginOrProfile .= $indnt5 . $indnt . $indnt . '<label for="login[password]">Password:</label>';
-      $loginOrProfile .= $indnt5 . $indnt . $indnt . '<input type="password" name="login[password]" id="password" class="form-control">';
-      $loginOrProfile .= $indnt5 . $indnt . '</fieldset>';
-      $loginOrProfile .= $indnt5 . $indnt . '<fieldset id="actions" class="fieldset">';
-      $loginOrProfile .= $indnt5 . $indnt . $indnt . '<input type="submit" name="login[Login]" value="Login" class="submitbtn">';
-      $loginOrProfile .= $indnt5 . $indnt . $indnt . '<div class="lblNcheckbox" id="remember_me">';
-      $loginOrProfile .= $indnt5 . $indnt . $indnt . '<label class="checkboxLbl" for="login[remember_me]">Remember Me:</label>';
-      $loginOrProfile .= $indnt5 . $indnt . $indnt . '<span class="checkbox">';
-      $loginOrProfile .= $indnt5 . $indnt . $indnt . '<input type="checkbox" name="login[remember_me]" id="remember_me" class="checkbox" value="1" checked>';
-      $loginOrProfile .= $indnt5 . $indnt . $indnt . '</span>';
-      $loginOrProfile .= $indnt5 . $indnt . $indnt . '</div>';
-      $loginOrProfile .= $indnt5 . $indnt . '</fieldset>';
-      $loginOrProfile .= $indnt5 . '</form>';
+      $loginOrProfile .= $indnt5 . $indnt . $indnt . ' id="usernameOREmail" class="form-control">' . "\n";
+      $loginOrProfile .= $indnt5 . $indnt . $indnt . '<label for="login[password]">Password:</label>' . "\n";
+      $loginOrProfile .= $indnt5 . $indnt . $indnt . '<input type="password" name="login[password]" id="password" class="form-control">' . "\n";
+      $loginOrProfile .= $indnt5 . $indnt . '</fieldset>' . "\n";
+      $loginOrProfile .= $indnt5 . $indnt . '<fieldset id="actions" class="fieldset">' . "\n";
+      $loginOrProfile .= $indnt5 . $indnt . $indnt . '<input type="submit" name="login[Login]" value="Login" class="submitbtn">' . "\n";
+      $loginOrProfile .= $indnt5 . $indnt . $indnt . '<div class="lblNcheckbox" id="remember_me">' . "\n";
+      $loginOrProfile .= $indnt5 . $indnt . $indnt . '<label class="checkboxLbl" for="login[remember_me]">Remember Me:</label>' . "\n";
+      $loginOrProfile .= $indnt5 . $indnt . $indnt . '<span class="checkbox">' . "\n";
+      $loginOrProfile .= $indnt5 . $indnt . $indnt . '<input type="checkbox" name="login[remember_me]" id="remember_me" class="checkbox" value="1" checked>' . "\n";
+      $loginOrProfile .= $indnt5 . $indnt . $indnt . '</span>' . "\n";
+      $loginOrProfile .= $indnt5 . $indnt . $indnt . '</div>' . "\n";
+      $loginOrProfile .= $indnt5 . $indnt . '</fieldset>' . "\n";
+      $loginOrProfile .= $indnt5 . '</form>' . "\n";
       /*
       <form action="/user/login" method="post">
       <input type="hidden" name="login[token]" value="2e23d713d3e6de798586a4976eebdc81" class="form-control">
@@ -84,8 +84,8 @@
       */
 
       $userButton = '<a id="login-trigger" href="#" class="btn btn-secondary dropdown-toggle" type="button"';
-      $userButton .= ' data-toggle="login-content" aria-haspopup="true" aria-expanded="false">Login <span>▼</span></a>';
-      $userButton .= ' or <a href="/user/create">Create User</a>';
+      $userButton .= ' data-toggle="login-content" aria-haspopup="true" aria-expanded="false">Login <span>▼</span></a>' . "\n";
+      $userButton .= ' or <a href="/user/create">Create User</a>' . "\n";
 
       $localscripts = "";
       $localscripts .= <<<'LOCAL_SCRIPT'
@@ -107,17 +107,17 @@
 LOCAL_SCRIPT;
 
       // original concespt for presenting messages:   <!-- include('partials._messages') -->
-      $content = $indnt3 . $indnt . '<div class="col-md-6 col-md-offset-1 float-left">';
-      $content .= $indnt3 . $indnt . '<div class="panel-heading">';
-      $content .= $indnt3 . $indnt . '<h2>MB Blog</h2>';
-      $content .= $indnt3 . $indnt . '</div>';
-      $content .= $indnt3 . $indnt . '<div class="panel-body">Welcome to MB Blog</div>';
-      $content .= $indnt3 . $indnt . '</div>';
+      $content = $indnt3 . $indnt . '<div class="col-md-6 col-md-offset-1 float-left">' . "\n";
+      $content .= $indnt3 . $indnt . '<div class="panel-heading">' . "\n";
+      $content .= $indnt3 . $indnt . '<h2>MB Blog</h2>' . "\n";
+      $content .= $indnt3 . $indnt . '</div>' . "\n";
+      $content .= $indnt3 . $indnt . '<div class="panel-body">Welcome to MB Blog</div>' . "\n";
+      $content .= $indnt3 . $indnt . '</div>' . "\n";
 
-      $rightCol = $indnt3 . $indnt . '<div class="float-right my-lg-0">';
-      $rightCol .= $indnt5 . '<div class="my-lg-0">';
-      $rightCol .= $indnt5 . $indnt . '<h3>right side info passed in for user</h3>';
-      $rightCol .= $indnt3 . $indnt . '</div></div>';
+      $rightCol = $indnt3 . $indnt . '<div class="float-right my-lg-0">' . "\n";
+      $rightCol .= $indnt5 . '<div class="my-lg-0">' . "\n";
+      $rightCol .= $indnt5 . $indnt . '<h3>right side info passed in for user</h3>' . "\n";
+      $rightCol .= $indnt3 . $indnt . '</div></div>' . "\n";
 
     include TEMPLATE_PATH . DS . 'partials' . DS . 'newPublicHead.php';
   ?>

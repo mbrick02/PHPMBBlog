@@ -12,39 +12,39 @@
 
   $brand = $indnt3 . $indnt . '<a class="navbar-brand" href="#">Brand</a>' . "\n";
 
-  $navMnuL = $indnt3 . $indnt . '<ul class="nav navbar-nav"><!-- left side menu bar -->';
-  $navMnuL .= $indnt5 . '<li><a href="#">Home</a></li>';
-  $navMnuL .= $indnt5 . '<li class="dropdown">';
-  $navMnuL .= $indnt5 . $indnt . '<a href="#" data-toggle="dropdown" class="dropdown-toggle">';
-  $navMnuL .= 'Submenu <b class="caret"></b></a>';
-  $navMnuL .= $indnt5 . $indnt . '<ul class="dropdown-menu">';
-  $navMnuL .= $indnt5 . $indnt . $indnt . '<li><a href="#">Link1</a></li>';
-  $navMnuL .= $indnt5 . $indnt . $indnt . '<li><a href="#">Link2</a></li>';
-  $navMnuL .= $indnt5 . $indnt . $indnt . '<li><a href="#">Link3</a></li>';
-  $navMnuL .= $indnt5 . $indnt . $indnt . '<li class="divider"></li>';
-  $navMnuL .= $indnt5 . $indnt . $indnt . '<li><a href="#">Link4</a></li>';
-  $navMnuL .= $indnt5 . $indnt . '</ul>';
-  $navMnuL .= $indnt5 . '</li>';
-  $navMnuL .= $indnt5 . '<li><a href="#">About</a></li>';
-  $navMnuL .= $indnt3 . $indnt . '</ul>';
+  $navMnuL = $indnt3 . $indnt . '<ul class="nav navbar-nav"><!-- left side menu bar -->' . "\n";
+  $navMnuL .= $indnt5 . '<li><a href="#">Home</a></li>' . "\n";
+  $navMnuL .= $indnt5 . '<li class="dropdown">' . "\n";
+  $navMnuL .= $indnt5 . $indnt . '<a href="#" data-toggle="dropdown" class="dropdown-toggle">' . "\n";
+  $navMnuL .= 'Submenu <b class="caret"></b></a>' . "\n";
+  $navMnuL .= $indnt5 . $indnt . '<ul class="dropdown-menu">' . "\n";
+  $navMnuL .= $indnt5 . $indnt . $indnt . '<li><a href="#">Link1</a></li>' . "\n";
+  $navMnuL .= $indnt5 . $indnt . $indnt . '<li><a href="#">Link2</a></li>' . "\n";
+  $navMnuL .= $indnt5 . $indnt . $indnt . '<li><a href="#">Link3</a></li>' . "\n";
+  $navMnuL .= $indnt5 . $indnt . $indnt . '<li class="divider"></li>' . "\n";
+  $navMnuL .= $indnt5 . $indnt . $indnt . '<li><a href="#">Link4</a></li>' . "\n";
+  $navMnuL .= $indnt5 . $indnt . '</ul>' . "\n";
+  $navMnuL .= $indnt5 . '</li>' . "\n";
+  $navMnuL .= $indnt5 . '<li><a href="#">About</a></li>' . "\n";
+  $navMnuL .= $indnt3 . $indnt . '</ul>' . "\n";
 
 
-  $navMnuR = $indnt3 . $indnt . '<ul class="nav navbar-nav navbar-right"> <!-- rt side menu -->';
-  $navMnuR .= $indnt5 . '<li> <span class="glyphicon glyphicon-shopping-cart"></span>&nbsp;' . $cartExists . '</li>';
-  $navMnuR .= $indnt5 . $indnt . '<li id="login"><div class="dropdown">';
+  $navMnuR = $indnt3 . $indnt . '<ul class="nav navbar-nav navbar-right"> <!-- rt side menu -->' . "\n";
+  $navMnuR .= $indnt5 . '<li> <span class="glyphicon glyphicon-shopping-cart"></span>&nbsp;' . $cartExists . '</li>' . "\n";
+  $navMnuR .= $indnt5 . $indnt . '<li id="login"><div class="dropdown">' . "\n";
   $navMnuR .= $indnt5 . $indnt . $indnt . $userButton;
-  $navMnuR .= $indnt5 . $indnt . '<div id="login-content" class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
-  $navMnuR .= $indnt5 . $indnt . $indnt . '<div>';
-  $navMnuR .= $indnt5 . $indnt3 . '<a class="dropdown-item">' . $loginOrProfile . '</a>';
-  $navMnuR .= $indnt5 . $indnt . $indnt . '</div>';
-  $navMnuR .= $indnt5 . $indnt . $indnt . '<div class="dropdown-divider"><a class="dropdown-item"></a></div>';
-  $navMnuR .= $indnt5 . $indnt . '<div><a class="dropdown-item" href="#">Other Menu Option</a></div>';
+  $navMnuR .= $indnt5 . $indnt . '<div id="login-content" class="dropdown-menu" aria-labelledby="dropdownMenuButton">' . "\n";
+  $navMnuR .= $indnt5 . $indnt . $indnt . '<div>' . "\n";
+  $navMnuR .= $indnt5 . $indnt3 . '<a class="dropdown-item">' . $loginOrProfile . '</a>' . "\n";
+  $navMnuR .= $indnt5 . $indnt . $indnt . '</div>' . "\n";
+  $navMnuR .= $indnt5 . $indnt . $indnt . '<div class="dropdown-divider"><a class="dropdown-item"></a></div>' . "\n";
+  $navMnuR .= $indnt5 . $indnt . '<div><a class="dropdown-item" href="#">Other Menu Option</a></div>' . "\n";
   //  <!-- User Profile (update), Login, logout, Signup/Create in Controller->$loginOrProfile -->
-  $navMnuR .= $indnt5 . $indnt . '</div>';
-  $navMnuR .= $indnt5 . $indnt . '</div></li>';
-  $navMnuR .= $indnt5 . $indnt . '</ul>';
-  $navMnuR .= $indnt5 . '</li>';
-  $navMnuR .= $indnt3 . $indnt . '</ul>';
+  $navMnuR .= $indnt5 . $indnt . '</div>' . "\n";
+  $navMnuR .= $indnt5 . $indnt . '</div></li>' . "\n";
+  $navMnuR .= $indnt5 . $indnt . '</ul>' . "\n";
+  $navMnuR .= $indnt5 . '</li>' . "\n";
+  $navMnuR .= $indnt3 . $indnt . '</ul>' . "\n";
 
     /*  current right menu (w/login form):
     <ul class="nav navbar-nav navbar-right">

@@ -66,8 +66,6 @@ class Controller {
 		static::$rightCol = static::$container->view->renderWithVariables(static::$rightColDoc, static::$rightColVars, false);
 
 		/* *** HEADER (public_header.php) settings: title, scripts, css ***/
-		static::$container->view->filename = 'partials' . DS . 'public_header.php';
-
 		$pageTitle = (isset($contrVars['page_title'])) ? $contrVars['page_title'] : 'blog'; // blog as default
 		static::$container->view->set('page_title', $pageTitle);
 		$localscripts = (isset($contrVars['localscripts'])) ? $contrVars['localscripts'] . "\n" : '';
@@ -88,7 +86,6 @@ class Controller {
 LOCAL_SCRIPT;
 
 		static::$container->view->set('localscripts', $localscripts);
-
 		static::$container->view->set('urlForIndex', "/");
 		static::$container->view->set('urlForMBBlogLogo', IMG_SRC . "mbBlogLogo.jpg");
 		// TODO: show backslash before stylesheets 10/29/18
@@ -101,12 +98,12 @@ LOCAL_SCRIPT;
 			$msgHeader .= $session->display_errors($session->errMsg());
 		}
 		static::$container->view->set('msgHeader',  $msgHeader);
-
-		static::$publicHeader = static::$container->view->returnText();
+		static::$container->view->filename = 'partials' . DS . 'public_header.php';
+		static::$publicHeader = static::$container->view->returnText(); // render publiHeader w/vars
 
 		// update cartExists to $cartContent = $session->exists('cart') ? 'Shows a cart' : 'No Cart'
 
-		static::$templateVars = [ // set default vars
+		static::$templateVars = [ // set default vars for main.php and included navhead.php
 			'cartExists' => $session->exists('cart') ? $session->get('cart')['totalQty'] : 'No Cart',
 			'userButton' => $userOptions['userButton'],
 			'loginOrProfile' => $userOptions['loginOrProfile'],

@@ -13,6 +13,7 @@ $app->get('/', 'HomeController:index')->setName('home');
 
 $app->get('/testMB', 'HomeController:testMB');
 $app->get('/testMBPHP', 'HomeController:testPHP');
+$app->get('/create_task', 'HomeController:createTask');
 
 /* ***NOTE all post route controllers must do token check:
 if(Token::check($_POST['token'])) {

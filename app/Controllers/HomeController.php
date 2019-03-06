@@ -49,4 +49,13 @@ class HomeController extends Controller {
 
      return $testPage;
   }
+
+  public function createTask($param1='') { // route: /testMBPHP
+    $testPageFile = TEMPLATE_PATH . DS . 'testCreateTask.php';
+    $formVars = [];
+    $testPage = static::$container->view->
+     renderWithVariables($testPageFile, $formVars, false);
+
+     return $testPage;
+  }
 }

@@ -82,6 +82,10 @@ ul.nav #remember_me input[type=checkbox]:hover {
   background: #fff;
 }
 
+li a.active {
+  background-color: orange; // not so good for this color scheme, but...
+}
+
 ul.nav #login-content {
   display: none;
   position: absolute;

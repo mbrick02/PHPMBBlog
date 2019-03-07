@@ -38,6 +38,6 @@ class PDOConn extends PDO {
 			    WHERE calories < :calories AND colour = :colour');
 			$sth->execute(array(':calories' => $calories,
 			 									':colour' => $colour)); *** */
-			return $stmt;
+			return $stmt; // result
 		}
 	}

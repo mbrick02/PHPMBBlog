@@ -21,16 +21,16 @@
       </p>
 
       <div class="row">
-   <form class="col s12">
+   <form class="col s12" action="submit_task.php" method="post">
      <div class="row">
        <div class="input-field col s6">
-         <input placeholder="Enter task title" id="task_title" type="text" class="validate">
+         <input placeholder="Enter task title" name="task_title" id="task_title" type="text" class="validate">
          <label for="first_name">Task Title</label>
        </div>
        <div class="input-field col s6">
          <p>
            <label>
-             <input type="checkbox" />
+             <input type="checkbox" name="finished" value="1" />
              <span>Finished</span>
            </label>
          </p>
@@ -38,7 +38,7 @@
      </div>
      <div class="row">
        <div class="input-field col s12">
-         <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+         <button class="btn waves-effect waves-light" type="submit" name="submit" value="Submit">Submit
   <i class="material-icons right">send</i>
 </button>
        </div>

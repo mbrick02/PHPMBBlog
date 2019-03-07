@@ -27,24 +27,27 @@
         <th>Finished</th>
         <th>Action</th>
       </tr>
-      <tr>
-        <td>Task title</td>
-        <td>Date Created</td>
-        <td>Finished</td>
-        <td>Action</td>
-      </tr>
-      <tr>
-        <td>Task title</td>
-        <td>Date Created</td>
-        <td>Finished</td>
-        <td>Action</td>
-      </tr>
-      <tr>
-        <td>Task title</td>
-        <td>Date Created</td>
-        <td>Finished</td>
-        <td>Action</td>
-      </tr>
+      <?php
+          // loop through the results
+          while ($row = $result->fetch(PDO::FETCH_OBJ)) {
+              $update_url = ;
+              $date_created = date('js \of F Y', $row->date_created);
+
+              if ($row->finished>0) {
+                  $finished = 'yes';
+              } else {
+                  $finished = 'no';
+              }
+      ?>
+            <tr>
+              <td><?= $row->task_title ?></td>
+              <td><?= $date_created ?></td>
+              <td><?= $finished ?></td>
+              <td><a href="<?= $update_url ?>" class="waves-effect waves-light btn-small">Update</a></td>
+            </tr>
+      <?php
+        } // end while
+      ?>
     </table>
       </div>
 

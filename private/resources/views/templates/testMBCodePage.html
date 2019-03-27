@@ -29,8 +29,11 @@
       </tr>
       <?php
           // loop through the results
+          $update_url = '/indexCSATask';
+          echo 'sample code here....';
+          /* see /indexTask
           while ($row = $result->fetch(PDO::FETCH_OBJ)) {
-              $update_url = ;
+              $update_url = "";
               $date_created = date('js \of F Y', $row->date_created);
 
               if ($row->finished>0) {
@@ -38,15 +41,16 @@
               } else {
                   $finished = 'no';
               }
+              */
       ?>
             <tr>
-              <td><?= $row->task_title ?></td>
-              <td><?= $date_created ?></td>
-              <td><?= $finished ?></td>
+              <td><?php echo 'row- >task_title'; ?></td>
+              <td><?php echo 'date_created' ?></td>
+              <td><?php echo 'finished' ?></td>
               <td><a href="<?= $update_url ?>" class="waves-effect waves-light btn-small">Update</a></td>
             </tr>
       <?php
-        } // end while
+        // } end while
       ?>
     </table>
       </div>

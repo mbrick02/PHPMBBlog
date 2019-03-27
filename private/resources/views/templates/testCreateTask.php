@@ -1,22 +1,24 @@
 <?php
-if (isset($_GET['id'])) {
-    $update_id = $_GET['id'];
+//if (isset($_GET['id'])) {
+if (isset($task_id) && (!$task_id == '')) {
+    // $update_id = $request()->params('id');
+    $update_id = $task_id;
     $headline = 'Update Task';
 
     // fetch task title from db
-    require_once 'class/Mdl_tasks.php';
+    require_once 'del_spcodecrsmdl_task.class.php';
     $mdl_tasks = new MDl_tasks;
     $mysql_query = 'select * from tasks where id = '.$update_id;
     $result = $mdl_tasks->Query($mysql_query);
     while ($row = $result->fetch(PDO::FETCH_OBJ)) {
-        $task_tile = $row->task_title;
-        $finished = $row->finished;
-}
-
-
+        $task_title = $row->title;
+        $descripton = $row->description;
+        $finished = $row->completed;
+    }
 } else {  // this is an insert
     $headline = 'Create New Task';
     $task_title = '';
+    $descripton = '';
     $finished = '';
 }
 ?>
@@ -39,7 +41,7 @@ if (isset($_GET['id'])) {
     <div class ="container">
       <h1><?= $headline ?></h1>
       <p>
-        <a href="/testMB" class="waves-effect waves-light btn">
+        <a href="/indexSCATask" class="waves-effect waves-light btn">
           <i class="material-icons left">cloud</i>Previous Page</a>
       </p>
 
@@ -47,13 +49,17 @@ if (isset($_GET['id'])) {
    <form class="col s12" action="/submit_task" method="post">
      <div class="row">
        <div class="input-field col s6">
-         <input placeholder="Enter task title" name="task_title" id="task_title" type="text" class="validate">
-         <label for="first_name">Task Title</label>
+         <input placeholder="Enter task title" name="title" value="<?= $task_title ?>" id="title" type="text" class="validate">
+         <label for="title">Task Title</label>
+       </div>
+       <div class="input-field col s6">
+         <input placeholder="Enter description" name="description" value="<?= $descripton ?>" id="description" type="text" class="validate">
+         <label for="description">Description</label>
        </div>
        <div class="input-field col s6">
          <p>
            <label>
-             <input type="checkbox" name="finished" value="1" />
+             <input type="checkbox" name="finished" value="1" <?php if ($finished == 1) { echo 'checked'; } ?>>
              <span>Finished</span>
            </label>
          </p>
@@ -62,14 +68,19 @@ if (isset($_GET['id'])) {
      <div class="row">
        <div class="input-field col s12">
          <button class="btn waves-effect waves-light" type="submit" name="submit" value="Submit">Submit
-  <i class="material-icons right">send</i>
-</button>
+          <i class="material-icons right">send</i>
+        </button>
+        <button class="btn red darken-3 waves-effect waves-light" type="submit" name="submit" value="Delete">Delete
+         <i class="material-icons right">delete_forever</i>
+        </button>
        </div>
      </div>
      <?php
-       if (isset($update_id)) { ?>
+       if (isset($update_id)) {
+           ?>
        <input type="hidden" name="update_id" value="<?= $update_id ?>">
-     <?php } ?>
+     <?php
+       } ?>
    </form>
  </div>
     </div>

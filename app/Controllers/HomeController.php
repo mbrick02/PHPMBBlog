@@ -50,16 +50,20 @@ class HomeController extends Controller {
      return $testPage;
   }
 
-  public function createTask($param1='') { // route: /create_task
+  public function createTask($request, $response, $args) { // route: /create_task
     $pageFile = TEMPLATE_PATH . DS . 'testCreateTask.php';
-    $formVars = [];
+    //debug - var_dump($args);
+    //debug - die();
+
+    $task_id = empty($args) ? '' : $args['id'];
+    $formVars = ['task_id' => $task_id]; // added 3/27/19 to get id
     $testPage = static::$container->view->
      renderWithVariables($pageFile, $formVars, false);
 
      return $testPage;
   }
 
-  public function indexTask() { // route: /create_task
+  public function indexTask() { // route: /indexTask
     $pageFile = TEMPLATE_PATH . DS . 'indexTask.php';
     $formVars = [];
     $testPage = static::$container->view->
@@ -68,7 +72,7 @@ class HomeController extends Controller {
      return $testPage;
   }
 
-  public function submitTask() { // route: /submit_task
+  public function submitTask($request, $response) { // route: /submit_task
     $pageFile = TEMPLATE_PATH . DS . 'submitTask.php';
     $formVars = [];
     $testPage = static::$container->view->

@@ -15,9 +15,10 @@ $app->get('/indexTask', 'TaskController:index'); // **MOVE to Routs/Tasks.php
 $app->get('/testMB', 'HomeController:testMB');
 $app->get('/testMBPHP', 'HomeController:testPHP');
 $app->get('/create_task', 'HomeController:createTask');
+$app->get('/create_task/{id}', 'HomeController:createTask');
 $app->get('/indexSCATask', 'HomeController:indexTask');
-$app->get('/submit_task', 'HomeController:submitTask');
-
+$app->get('/submit_task', 'HomeController:submitTask');  // Should NOT happen
+$app->post('/submit_task', 'HomeController:submitTask');
 
 /* ***NOTE all post route controllers must do token check:
 if(Token::check($_POST['token'])) {

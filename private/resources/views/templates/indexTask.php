@@ -1,6 +1,6 @@
 <?php
-// use app\Models\Task as Task;
-// this should be handled by initialize->autoload:
+// NOT using app\Models\Task as Task;
+// NOT setup to be handled by initialize->autoload:
 require_once('del_spcodecrsmdl_task.class.php');
 // for below: in initialize.php as require_once('speedcodeclasses.php');
 // require_once 'class/Mdl_tasks.php';  // MB Note 3/26/19: after month break, reminder - model of lesson 8 & 9 above
@@ -13,13 +13,13 @@ Use $db->run via PDOConnect: function run($sql, $args = NULL)
 examp: WHERE calories < :calories AND colour = :colour');...
     $sth->execute(array(':calories' => $calories,...
 
-    Note in mbblog task, fields: id, title, conpleted(T/F), created_at, updated_at
+    Note in mbblog task, fields: id, title, completed(T/F), created_at, updated_at
     INSERT INTO tasks (body, completed) VALUES ('first task for Speed Coding Course', False);
 */
 // note for code below: <?= is short for: <?php echo
 $mysql_query = 'select * from tasks order by created_at desc';
 
-$mdlTask = new Mdl_task;
+$mdlTask = new Mdl_tasks;
 $result = $mdlTask->query($mysql_query);
 ?>
 <!DOCTYPE html>
@@ -47,14 +47,14 @@ $result = $mdlTask->query($mysql_query);
     <table class="striped">
       <tr>
         <th>Task title</th>
-        <th>Date Created</th>
+        <th>Description</th>
         <th>Finished</th>
         <th>Action</th>
       </tr>
     <?php
         // loop through the results
         while ($row = $result->fetch(PDO::FETCH_OBJ)) {
-            $update_url = 'create_task.php?'.$row->id;
+            $update_url = 'create_task/'.$row->id;
             $date_created = date('js \of F Y', $row->created_at);
 
             if ($row->completed>0) {
@@ -73,7 +73,6 @@ $result = $mdlTask->query($mysql_query);
         // end while
       }
       ?>
-
 
     </table>
       </div>

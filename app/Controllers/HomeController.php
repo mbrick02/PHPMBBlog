@@ -33,28 +33,37 @@ class HomeController extends Controller {
   }
 
   public function testMB($param1='') { // route: /testMB
-    $testPageFile = TEMPLATE_PATH . DS . 'testMBCodePage.html';
+    $pageFile = TEMPLATE_PATH . DS . 'testMBCodePage.html';
     $formVars = [];
     $testPage = static::$container->view->
-     renderWithVariables($testPageFile, $formVars, false);
+     renderWithVariables($pageFile, $formVars, false);
 
      return $testPage;
   }
 
   public function testPHP($param1='') { // route: /testMBPHP
-    $testPageFile = TEMPLATE_PATH . DS . 'testMBPHPPage.php';
+    $pageFile = TEMPLATE_PATH . DS . 'testMBPHPPage.php';
     $formVars = [];
     $testPage = static::$container->view->
-     renderWithVariables($testPageFile, $formVars, false);
+     renderWithVariables($pageFile, $formVars, false);
 
      return $testPage;
   }
 
-  public function createTask($param1='') { // route: /testMBPHP
-    $testPageFile = TEMPLATE_PATH . DS . 'testCreateTask.php';
+  public function createTask($param1='') { // route: /create_task
+    $pageFile = TEMPLATE_PATH . DS . 'testCreateTask.php';
     $formVars = [];
     $testPage = static::$container->view->
-     renderWithVariables($testPageFile, $formVars, false);
+     renderWithVariables($pageFile, $formVars, false);
+
+     return $testPage;
+  }
+
+  public function indexTask() { // route: /create_task
+    $pageFile = TEMPLATE_PATH . DS . 'indexTask.php';
+    $formVars = [];
+    $testPage = static::$container->view->
+     renderWithVariables($pageFile, $formVars, false);
 
      return $testPage;
   }

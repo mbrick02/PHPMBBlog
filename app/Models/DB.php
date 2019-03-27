@@ -203,7 +203,7 @@ abstract class DB {
 		// return  empty($this->errors); // validate if no errors (else validate false)
   }
 
-	public function create($formVals) {
+	public function create($formVals) {  // 3/19 Don't seem to use $formVals in this ver -- all set in $columns
 			static::$_error = !($this->validate()); // set $_error to not validate()
 			if (!(static::$_error)){  // try to create if no errors -- || (empty($this->errors)
 				/* remove specific arrays of keys without modifying original array

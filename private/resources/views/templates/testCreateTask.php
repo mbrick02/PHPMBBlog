@@ -1,3 +1,26 @@
+<?php
+if (isset($_GET['id'])) {
+    $update_id = $_GET['id'];
+    $headline = 'Update Task';
+
+    // fetch task title from db
+    require_once 'class/Mdl_tasks.php';
+    $mdl_tasks = new MDl_tasks;
+    $mysql_query = 'select * from tasks where id = '.$update_id;
+    $result = $mdl_tasks->Query($mysql_query);
+    while ($row = $result->fetch(PDO::FETCH_OBJ)) {
+        $task_tile = $row->task_title;
+        $finished = $row->finished;
+}
+
+
+} else {  // this is an insert
+    $headline = 'Create New Task';
+    $task_title = '';
+    $finished = '';
+}
+?>
+
 <!DOCTYPE html>
   <html>
     <head>
@@ -14,7 +37,7 @@
     <body>
 
     <div class ="container">
-      <h1>Create New Task</h1>
+      <h1><?= $headline ?></h1>
       <p>
         <a href="/testMB" class="waves-effect waves-light btn">
           <i class="material-icons left">cloud</i>Previous Page</a>
@@ -43,12 +66,13 @@
 </button>
        </div>
      </div>
+     <?php
+       if (isset($update_id)) { ?>
+       <input type="hidden" name="update_id" value="<?= $update_id ?>">
+     <?php } ?>
    </form>
  </div>
     </div>
-
-
-
       <!--JavaScript at end of body for optimized loading-->
       <script type="text/javascript" src="js/materialize.min.js"></script>
     </body>

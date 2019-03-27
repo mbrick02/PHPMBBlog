@@ -40,7 +40,7 @@ $container['view'] = function($container) {
 }; // *** end container['view'] = function (){}
 
 
-$controllers = array("HomeController", "AuthController", "ProductController");
+$controllers = array("HomeController", "AuthController", "ProductController", "TaskController");
 $appController = "";
 
 foreach ($controllers as $controller) {

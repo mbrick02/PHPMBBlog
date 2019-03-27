@@ -1,7 +1,8 @@
 <?php
 /* ***NOTE all post route controllers must do token check:
 if(Token::check($_POST['token'])) {echo 'Process order';} */
-// ALSO: load ALL controllers into bootstrap/app.php:container (array)
+// ***ALSO: load ALL controllers
+/// into bootstrap/app.php:container (array) $controllers = array("HomeController", "AuthController...
 namespace App\Controllers;
 use app\Models\User as User;
 

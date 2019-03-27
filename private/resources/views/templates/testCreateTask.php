@@ -44,7 +44,7 @@ if (isset($_GET['id'])) {
       </p>
 
       <div class="row">
-   <form class="col s12" action="submit_task.php" method="post">
+   <form class="col s12" action="/submit_task" method="post">
      <div class="row">
        <div class="input-field col s6">
          <input placeholder="Enter task title" name="task_title" id="task_title" type="text" class="validate">

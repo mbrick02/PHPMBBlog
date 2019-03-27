@@ -11,11 +11,13 @@ spl_autoload_register('route_autoload'); */
 // $app->get('/hello/:arg1', function ($name) use ($app) {  echo "Hello $name";})->name('hello');
 $app->get('/', 'HomeController:index')->setName('home');
 
+$app->get('/indexTask', 'TaskController:index'); // **MOVE to Routs/Tasks.php
 $app->get('/testMB', 'HomeController:testMB');
 $app->get('/testMBPHP', 'HomeController:testPHP');
 $app->get('/create_task', 'HomeController:createTask');
 $app->get('/indexSCATask', 'HomeController:indexTask');
-$app->get('/indexTask', 'TaskController:index');
+$app->get('/submit_task', 'HomeController:submitTask');
+
 
 /* ***NOTE all post route controllers must do token check:
 if(Token::check($_POST['token'])) {

@@ -67,4 +67,13 @@ class HomeController extends Controller {
 
      return $testPage;
   }
+
+  public function submitTask() { // route: /submit_task
+    $pageFile = TEMPLATE_PATH . DS . 'submitTask.php';
+    $formVars = [];
+    $testPage = static::$container->view->
+     renderWithVariables($pageFile, $formVars, false);
+
+     return $testPage;
+  }
 }

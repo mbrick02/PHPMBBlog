@@ -1,4 +1,7 @@
 <?php
+if(!isset($_SESSION)) {
+    session_start();
+}
 if (!isset($_POST)) {
     die('You should not be here.');
 }
@@ -25,6 +28,7 @@ if ($submit == 'Submit') {
         // update the record [note: he got code from phpMyAdmin - record ->[Edit]
         $update_id = $_POST['update_id'];
         $mysql_query = "UPDATE `tasks` SET `title` = '$task_title', `description`= '$descripton', `completed` = $finished WHERE `id`= $update_id";
+        $flash_msg = 'The record was successfully updated.';
     } else {
         // insert a new record
       $mysql_query = "
@@ -33,9 +37,14 @@ if ($submit == 'Submit') {
       VALUES
       ('$task_title', '$descripton', $finished)
       ";
+      $flash_msg = 'The record was successfully created.';
     }
 
     if ($mdl_tasks->query($mysql_query)) { // do the query (insert or  update)
+      // set the flashdata
+      $_SESSION['flash_msg'] = $flash_msg;
+
+      // redirect back to index.php
       header('location: /indexSCATask');
       die();
     } else {
@@ -50,8 +59,13 @@ if ($submit == 'Submit') {
   require_once 'del_spcodecrsmdl_task.class.php';
   $mdl_tasks = new Mdl_tasks;
   $mdl_tasks->query($mysql_query);
+  $flash_msg = 'The record was successfully updated.';
 
   if ($mdl_tasks->query($mysql_query)) { // do the query (insert or  update)
+    // set the flashdata
+    $_SESSION['flash_msg'] = $flash_msg;
+
+    // redirect back to index.php
     header('location: /indexSCATask');
     die();
   } else {

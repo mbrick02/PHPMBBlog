@@ -1,26 +1,16 @@
 <?php
-// NOT using app\Models\Task as Task;
-// NOT setup to be handled by initialize->autoload:
+if(!isset($_SESSION)) {
+    session_start();
+}
 require_once('del_spcodecrsmdl_task.class.php');
-// for below: in initialize.php as require_once('speedcodeclasses.php');
-// require_once 'class/Mdl_tasks.php';  // MB Note 3/26/19: after month break, reminder - model of lesson 8 & 9 above
-/* Use my Slim $db for queries for this SpeedCode Academy testing
-$mdl_tasks = new Mdl_tasks;
-$mysql_query = 'select * from tasks order by created_at desc';
-$result = $mdl_tasks->query($mysql_query);
 
-Use $db->run via PDOConnect: function run($sql, $args = NULL)
-examp: WHERE calories < :calories AND colour = :colour');...
-    $sth->execute(array(':calories' => $calories,...
-
-    Note in mbblog task, fields: id, title, completed(T/F), created_at, updated_at
-    INSERT INTO tasks (body, completed) VALUES ('first task for Speed Coding Course', False);
-*/
 // note for code below: <?= is short for: <?php echo
 $mysql_query = 'select * from tasks order by created_at desc';
 
 $mdlTask = new Mdl_tasks;
 $result = $mdlTask->query($mysql_query);
+
+$flashdata_helper = new Flashdata_helper;
 ?>
 <!DOCTYPE html>
   <html>
@@ -39,6 +29,7 @@ $result = $mdlTask->query($mysql_query);
 
       <div class ="container">
     <h1>Your Tasks</h1>
+    <?= $flashdata_helper->flashdata() ?>
     <p>
       <a href="/create_task" class="waves-effect waves-light btn">
         <i class="material-icons left">cloud</i>Create New Task</a>

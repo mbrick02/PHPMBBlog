@@ -27,3 +27,36 @@ class Mdl_tasks
         return $stmt;
     }
 }
+
+class Flashdata_helper {
+  //  MB materializecss note s12=full width, m6 is half for med screens
+  private $html_start = '<div class="row">
+    <div class="col s12">
+      <div class="card blue-grey darken-1">
+        <div class="card-content white-text">
+          <span class="card-title">Card Title</span>
+          <p>';
+
+    private $html_end = '</p>
+        </div>
+        <!-- <div class="card-action">
+          <a href="#">This is a link</a>
+          <a href="#">This is a link</a>
+        </div> -->
+      </div>
+    </div>
+  </div>';
+
+  function set_flashdata($msg, $theme) { // UNUSED possible expansion
+    $_SESSION['flash_msg'] = $msg;
+    $_SESSION['flash_theme'] =  $theme; // could be used to chng msg look
+  }
+
+  function flashdata() {
+      // attempt to display flash_msg
+      if (isset($_SESSION['flash_msg'])) {
+        echo $this->html_start .$_SESSION['flash_msg'].$this->html_end;
+        unset($_SESSION['flash_msg']);
+      }
+  }
+}

@@ -29,7 +29,7 @@ if (isset($task_id) && (!$task_id == '')) {
       <!--Import Google Icon Font-->
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       <!--Import materialize.css-->
-      <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+      <link type="text/css" rel="stylesheet" href="/css/materialize.min.css"  media="screen,projection"/>
       <!-- link rel="stylesheet" media="all" href="xxxhttp://phpmbblog.org/css/public.css" / -->
 
       <!--Let browser know website is optimized for mobile-->
@@ -50,11 +50,11 @@ if (isset($task_id) && (!$task_id == '')) {
      <div class="row">
        <div class="input-field col s6">
          <input placeholder="Enter task title" name="title" value="<?= $task_title ?>" id="title" type="text" class="validate">
-         <label for="title">Task Title</label>
+         <label for="title" style="top: -50%">Task Title</label>
        </div>
        <div class="input-field col s6">
          <input placeholder="Enter description" name="description" value="<?= $descripton ?>" id="description" type="text" class="validate">
-         <label for="description">Description</label>
+         <label for="description" style="top: -50%">Description</label>
        </div>
        <div class="input-field col s6">
          <p>

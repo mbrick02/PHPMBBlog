@@ -1,7 +1,7 @@
 <?php
 //if (isset($_GET['id'])) {
 if (isset($task_id) && (!$task_id == '')) {
-    // $update_id = $request()->params('id');
+    // MB Slim Note: $update_id set in createTask controller
     $update_id = $task_id;
     $headline = 'Update Task';
 

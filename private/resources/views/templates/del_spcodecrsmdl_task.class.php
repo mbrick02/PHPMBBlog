@@ -60,3 +60,40 @@ class Flashdata_helper {
       }
   }
 }
+
+class Mdl_members {
+
+    private $pdo;
+
+    function __construct() {
+        //connect to the database
+        $host = 'localhost';
+        $user = 'michael';
+        $password = 'Job4Fau';// for MAMP others empty '' by default
+        $dbname = 'mbblog';
+
+        //set the DSN
+        $dsn = 'mysql:host='.$host.';dbname='.$dbname;
+
+        //create a PDO instance
+        $this->pdo = new PDO($dsn, $user, $password);
+    }
+
+    function query($mysql_query) {
+        //executes a MySQL query and returns the result
+        $result = $this->pdo->query($mysql_query);
+        return $result;
+    }
+
+    function get_countries() {
+        $countries = [];
+        $mysql_query = 'select * from countries order by country';
+        $result = $this->pdo->query($mysql_query);
+        //loop through the results
+        while ($row = $result->fetch(PDO::FETCH_OBJ)) {
+            $countries[$row->id] = $row->country; //add to countries array
+        }
+
+        return $countries;
+    }
+  }

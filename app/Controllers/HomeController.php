@@ -80,4 +80,41 @@ class HomeController extends Controller {
 
      return $testPage;
   }
+
+public function createMember($request, $response, $args) { // route: /create_member
+  $pageFile = TEMPLATE_PATH . DS . 'create_member.php';
+  $formVars = [];
+  $member_id = empty($args) ? '' : $args['id'];
+  $formVars = ['member_id' => $member_id];
+
+  $testPage = static::$container->view->
+   renderWithVariables($pageFile, $formVars, false);
+
+  return $testPage;
+}
+public function members($request, $response) { // route: /members
+  $pageFile = TEMPLATE_PATH . DS . 'members.php';
+  $formVars = [];
+  $testPage = static::$container->view->
+   renderWithVariables($pageFile, $formVars, false);
+
+   return $testPage;
+}
+public function membvwcreate($request, $response) { // route: /membvwcreate
+  $pageFile = TEMPLATE_PATH . DS . 'members' . DS . 'create.php';
+  $formVars = [];
+  $testPage = static::$container->view->
+   renderWithVariables($pageFile, $formVars, false);
+
+   return $testPage;
+}
+public function membvwmanage($request, $response) { // route: /membvwmanage
+  $pageFile = TEMPLATE_PATH . DS . 'members' . DS . 'manage.php';
+  $formVars = [];
+  $testPage = static::$container->view->
+   renderWithVariables($pageFile, $formVars, false);
+
+   return $testPage;
+}
+
 }

@@ -11,6 +11,7 @@ spl_autoload_register('route_autoload'); */
 // $app->get('/hello/:arg1', function ($name) use ($app) {  echo "Hello $name";})->name('hello');
 $app->get('/', 'HomeController:index')->setName('home');
 
+// ** used in SpeedCoding course 3/19
 $app->get('/indexTask', 'TaskController:index'); // **MOVE to Routs/Tasks.php
 $app->get('/testMB', 'HomeController:testMB');
 $app->get('/testMBPHP', 'HomeController:testPHP');
@@ -18,7 +19,11 @@ $app->get('/create_task', 'HomeController:createTask');
 $app->get('/create_task/{id}', 'HomeController:createTask');
 $app->get('/indexSCATask', 'HomeController:indexTask');
 $app->get('/submit_task', 'HomeController:submitTask');  // Should NOT happen
-$app->post('/submit_task', 'HomeController:submitTask');
+$app->get('/create_member', 'HomeController:createMember');
+$app->get('/create_member/{id}', 'HomeController:createMember');
+$app->get('/members', 'HomeController:members');
+$app->get('/membvwcreate', 'HomeController:membvwcreate');
+$app->get('/membvwmanage', 'HomeController:membvwmanage');
 
 /* ***NOTE all post route controllers must do token check:
 if(Token::check($_POST['token'])) {

@@ -24,6 +24,7 @@ $app->get('/create_member/{id}', 'HomeController:createMember');
 $app->get('/members', 'HomeController:members');
 $app->get('/membvwcreate', 'HomeController:membvwcreate');
 $app->get('/membvwmanage', 'HomeController:membvwmanage');
+$app->post('/submit_member', 'HomeController:submit_member');
 
 /* ***NOTE all post route controllers must do token check:
 if(Token::check($_POST['token'])) {

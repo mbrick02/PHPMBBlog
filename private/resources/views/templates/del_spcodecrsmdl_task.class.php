@@ -153,6 +153,50 @@ class Mdl_members
             $countries[$row->id] = $row->country; //add to countries array
         }
 
-        return $countries;
+        return $countries;  // return array of countries
     }
+}
+
+class Validation_helper {
+
+  public $validation_errors = [];
+  public function check_required($form_field, $label){
+    if ($_POST[$form_field] == ''){
+      $this->validation_errors[] = 'The '.$label.' field is required.';
+    }
+  }
+
+  public function check_valid_email($form_field, $label){
+    if (!filter_var($_POST[$form_field], FILTER_VALIDATE_EMAIL)) {
+      $this->validation_errors[] = 'The '.$label.' field must be a valid email address.';
+    }
+  }
+
+  public function check_numeric($form_field, $label){
+    if (!is_numeric($_POST[$form_field])) {
+      $this->validation_errors[] = 'The '.$label.' field must be numeric.';
+    }
+  }
+
+  public function got_errors() {
+      $num_errors = count($this->validation_errors);
+
+      if ($num_errors>0) {
+        return true; // we have error(s)
+      } else {
+        return false; // no errors
+      }
+  }
+
+  public function display_errors() {
+    $got_errors = $this->got_errors();
+
+    if ($got_errors == true) {
+      $validation_errors = $this->validation_errors;
+      foreach ($validation_errors as $error) {
+        echo '<p style="color: red;">'.$error."</p>";
+      }
+    }
+  }
+
 }

@@ -4,8 +4,8 @@ require_once('del_spcodecrsmdl_task.class.php');
 
 $mdl_members = new Mdl_members;
 
-if (!isset($member_id)) {
-  $validation_helper = new Validation_helper;  // stop $validation_helper loading 2nd create.php
+if (!isset($_POST['submit']))  {  // speed coding: if (!isset($_POST['submit'])) but w/Slim ?!isset($member_id)
+  $validation_helper = new Validation_helper;  // stop $validation_helper loading Twice
 }
 
 if (isset($member_id) && (!$member_id == '')) { // $member_id set in controller

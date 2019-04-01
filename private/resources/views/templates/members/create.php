@@ -60,7 +60,7 @@
 
                 <div class="row">
                     <div class="input-field col s6">
-                      <select name="$country_id">
+                      <select name="country_id">
                         <option value="<?= $country_id ?>"><?= $selected_country_description ?></option>
                         <?php
                             foreach ($countries as $country_key => $country_value) {
